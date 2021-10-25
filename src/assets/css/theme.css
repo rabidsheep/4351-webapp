@@ -1,0 +1,17 @@
+:root {
+    --background: #3a3939;
+    --text: #ffffff;
+    --text2: #000000;
+    --label: rgba(88, 88, 88, 0.904);
+    --accent: #eed1e4;
+    --button-icon: #eed1e4;
+    --button: #847676;
+    --button-l1: #a79797;
+    --input-border: rgba(92, 92, 92, 0.493);
+    --input-border-focus: rgb(68, 68, 68);
+    --primary: #ffffff;
+    --success: #4CAF50;
+    --info: #2196F3;
+    --warning: #FB8C00;
+    --error: #FF5252;
+}

@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <nav id="nav">
       <ul class="items">
           <li :class="$route.path === '/' ? 'item active' : 'item'">
@@ -38,7 +38,7 @@
 export default {
   name: 'App',
   mounted: function() {
-    
+
     /* code for shifting nav menu underline */
     const target = document.querySelector(".target");
     const links = document.querySelectorAll("#nav a");
@@ -93,25 +93,7 @@ export default {
 
     }
 
-    /*function mouseoutNavFunc() {
-      if (document.querySelector('#nav .item.active--hover')) {
-        document.querySelector('#nav .item.active--hover').classList.remove('active--hover')
-      }
-      
-      if (document.querySelector('#nav .item.active')) {
-          const rect = document.querySelector('#nav .item.active a').getBoundingClientRect();
-
-          target.classList.remove('inactive');
-          target.style.width = `${rect.width}px`;
-          target.style.height = `${rect.height}px`;
-          target.style.top = `${rect.top + 10}px`;
-          target.style.left = `${rect.left}px`;
-
-          document.querySelector('#nav .item.active').classList.add("active--hover");
-        } else {
-          target.classList.add('inactive');
-        }
-    }*/
+ 
 
     for (let i = 0; i < links.length; i++) {
       links[i].addEventListener("click", (e) => e.preventDefault());

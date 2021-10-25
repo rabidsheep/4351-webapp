@@ -20,12 +20,14 @@ export default new Vuetify({
       mobileBreakpoint: 740,
     },
     theme: {
-      dark: true,
+      disable: true,
+      /*dark: true,
       options: {customProperties: true},
       themes: {
         dark: {
             background: '#3a3939',
             text: '#ffffff',
+            text2: '#000000',
             accent: '#b21d45',
             accent2: '#eed1e4',
             button: '#847676',
@@ -35,6 +37,6 @@ export default new Vuetify({
             warning: '#FB8C00',
             error: '#FF5252',
         }
-      }
+      }*/
     }
   });

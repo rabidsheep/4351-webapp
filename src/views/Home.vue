@@ -1,10 +1,8 @@
 <template>
     <div id="home">
         <div class="header">
-            <div class="wrapper">
             <h1>The Curious Cat</h1>
-            <v-layout><v-divider /> <h2>Cat Cafe</h2> <v-divider /></v-layout>
-            </div>
+            <v-divider class="d1" /> <h2>Cat Cafe</h2> <v-divider class="d2" />
         </div>
 
         <div class="signin">
@@ -20,9 +18,9 @@
             <br />
 
             <button>
-                <v-icon>mdi-google</v-icon>
+                <v-icon>mdi-paw</v-icon>
                 <v-divider vertical />
-                <label>Login with Gmail</label>
+                <label>I HAVE AN ACCOUNT!</label>
             </button>
             </div>
         </div>
