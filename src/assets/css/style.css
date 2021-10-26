@@ -86,6 +86,16 @@ button .v-icon {
     margin: 0px 10px;
 }
 
+input,
+select {
+    transition: 0.3s;
+}
+
+input:disabled,
+select:disabled {
+    background-color: var(--input-disabled);
+}
+
 /** HOME **/
 
 #home {
@@ -173,7 +183,7 @@ button .v-icon {
     box-shadow: 5px 5px 0px rgba(0,0,0,.14);
     color: rgb(68, 56, 56);
     line-height: initial;
-    max-width: 760px;
+    max-width: 660px;
     width: 90%;
     display: grid;
     row-gap: 10px;
@@ -200,13 +210,15 @@ button .v-icon {
     gap: 20px;
 }
 
-#reservation .guest__name {
+#reservation .guest__name,
+#reservation .guest__contact {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-#reservation .guest__name > div {
+#reservation .guest__name > div,
+#reservation .guest__contact > div {
     flex: calc(50% - 20px);
 }
 
@@ -231,6 +243,7 @@ button .v-icon {
     -moz-appearance: auto !important;
     -webkit-appearance: auto !important;
     appearance: auto !important;
+    min-width: max-content;
 }
 
 #reservation .billing .checkbox {
@@ -251,6 +264,10 @@ button .v-icon {
     width: max-content;
 }
 
+#reservation ::placeholder {
+    color:rgba(100, 100, 100, 0.6);
+}
+
 .input__text,
 #reservation .exp {
     display: grid;
@@ -262,7 +279,6 @@ button .v-icon {
     border-radius: 8px;
     padding: 5px;
     width: 100%;
-    transition: 0.3s;
 }
 
 .input__text input:focus-visible {
@@ -276,4 +292,13 @@ button .v-icon {
     color: var(--label);
     font-size: 0.9em;
     text-transform: uppercase;
+}
+
+label > i {
+    text-transform: none;
+    font-size: 0.8em
+}
+
+label > span.req {
+    color: var(--warning);
 }

@@ -7,32 +7,67 @@
             <div class="fields">
                 <div class="guest__name">
                     <div class="input__text first">
-                        <label for="fname">First Name</label>
-                        <input id="fname" />
+                        <label for="fname">First Name <span class="req">*</span></label>
+                        <input
+                        v-model="customer.firstName"
+                        id="fname"
+                        required />
                     </div>
 
                     <div class="input__text last">
-                        <label for="lname">Last Name</label>
-                        <input id="lname" />
+                        <label for="lname">Last Name <span class="req">*</span></label>
+                        <input
+                        v-model="customer.lastName"
+                        id="lname"
+                        required />
+                    </div>
+                </div>
+
+                <div class="guest__contact">
+                    <div class="input__text em">
+                        <label for="email">E-mail <span class="req">*</span></label>
+                        <input
+                        v-model="customer.email"
+                        id="email"
+                        required />
+                    </div>
+
+                    <div class="input__text ph">
+                        <label for="phone">Phone # <i>(Optional)</i></label>
+                        <input
+                        v-model="customer.phone"
+                        placeholder="###-###-####"
+                        maxlength="12"
+                        @keyup="addDashes($event.key, $event.target.value)"
+                        id="phone" />
                     </div>
                 </div>
 
                 <div class="guest__address">
                     <div class="input__text address">
-                        <label for="maddress">Mailing Address</label>
-                        <input id="maddress" />
+                        <label for="maddress">Mailing Address <span class="req">*</span></label>
+                        <input
+                        v-model="customer.address"
+                        id="maddress"
+                        required />
                     </div>
                 </div>
 
                 <div class="guest__address2">
                     <div class="input__text add__city">
-                        <label for="mcity">City</label>
-                        <input id="mcity" />
+                        <label for="mcity">City <span class="req">*</span></label>
+                        <input
+                        v-model="customer.city"
+                        id="mcity"
+                        required />
                     </div>
 
                     <div class="input__select add__state">
-                        <label for="mstate">State</label>
-                        <select id="mstate">
+                        <label for="mstate">State <span class="req">*</span></label>
+                        <select
+                        v-model="customer.state"
+                        id="mstate"
+                        required>
                             <option
                             v-for="(state, i) in states"
                             :key="i"
@@ -43,8 +78,11 @@
                     </div>
 
                     <div class="input__text add__zip">
-                        <label for="mzip">Zip Code</label>
-                        <input id="mzip" />
+                        <label for="mzip">Zip Code <span class="req">*</span></label>
+                        <input
+                        v-model="customer.zip"
+                        id="mzip"
+                        required />
                     </div>
                 </div>
             </div>
@@ -56,27 +94,45 @@
             <div class="fields">
                 <div class="cardholder">
                     <div class="input__text chname">
-                        <label for="card__name">CARDHOLDER'S NAME</label>
-                        <input id="card__name" />
+                        <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
+                        <input
+                        v-model="payment.ch"
+                        id="card__name"
+                        required />
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="input__text cnum">
-                        <label for="card__num">Card Number</label>
-                        <input id="card__num" />
+                        <label for="card__num">Card # <span class="req">*</span></label>
+                        <input
+                        v-model="payment.num"
+                        id="card__num"
+                        placeholder="#### #### #### ####"
+                        maxlength="19"
+                        @input="addSpaces($event.target.value)"
+                        required />
                     </div>
 
                     <div class="input__text ccvv">
-                        <label for="card__cvv">CVV</label>
-                        <input id="card__cvv" />
+                        <label for="card__cvv">CVV <span class="req">*</span></label>
+                        <input
+                        v-model="payment.cvv"
+                        id="card__cvv"
+                        placeholder="###"
+                        maxlength="3"
+                        required />
                     </div>
 
                     <div class="expiration">
                         <div class="input__select exp">
-                            <label for="card__expiration">Expiration Date</label>
+                            <label for="card__expiration">Expiration Date <span class="req">*</span></label>
                             <div id="card__expiration">
-                                <select id="card__month">
+                                <select
+                                v-model="expMonth"
+                                @change="payment.exp = expMonth + '/' + expYear"
+                                id="card__month"
+                                required>
                                     <option
                                     v-for="(month, i) in months"
                                     :key="i"
@@ -87,7 +143,11 @@
                                     </option>
                                 </select>
                                 /
-                                <select id="card__year">
+                                <select
+                                v-model="expYear"
+                                @change="payment.exp = expMonth + '/' + expYear"
+                                id="card__year"
+                                required>
                                     <option
                                     v-for="j in 21"
                                     :key="j"
@@ -113,27 +173,43 @@
             <div class="fields">
                 <div class="checkbox">
                     <div class="input__checkbox sameAdd">
-                        <input type="checkbox" id="sameAddress" value="true" />
+                        <input
+                        v-model="useMailAddress"
+                        type="checkbox"
+                        id="sameAddress"
+                        value="true" />
                         <label for="sameAddress">Same as Mailing Address</label>
                     </div>
                 </div>
 
                 <div class="guest__address">
                     <div class="input__text address">
-                        <label for="baddress">Billing Address</label>
-                        <input id="baddress" />
+                        <label for="baddress">Billing Address <span class="req">*</span></label>
+                        <input
+                        v-model="billing.address"
+                        :disabled="useMailAddress"
+                        id="baddress"
+                        required />
                     </div>
                 </div>
 
                 <div class="guest__address2">
                     <div class="input__text add__city">
-                        <label for="bcity">City</label>
-                        <input id="bcity" />
+                        <label for="bcity">City <span class="req">*</span></label>
+                        <input
+                        v-model="billing.city"
+                        :disabled="useMailAddress"
+                        id="bcity"
+                        required />
                     </div>
 
                     <div class="input__select add__state">
-                        <label for="bstate">State</label>
-                        <select id="bstate">
+                        <label for="bstate">State <span class="req">*</span></label>
+                        <select
+                        v-model="billing.state"
+                        :disabled="useMailAddress"
+                        id="bstate"
+                        required>
                             <option
                             v-for="(state, i) in states"
                             :key="i"
@@ -144,8 +220,12 @@
                     </div>
 
                     <div class="input__text add__zip">
-                        <label for="bzip">Zip Code</label>
-                        <input id="bzip" />
+                        <label for="bzip">Zip Code <span class="req">*</span></label>
+                        <input
+                        v-model="billing.zip"
+                        :disabled="useMailAddress"
+                        id="bzip"
+                        required />
                     </div>
                 </div>
             </div>
@@ -176,14 +256,86 @@ export default {
                 "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA",
                 "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", 
                 "WA", "WI", "WV", "WY"
-            ]
+            ],
+            expYear: null,
+            expMonth: null,
+            useMailAddress: false,
+            customer: {
+                firstName: null,
+                lastName: null,
+                email: null,
+                phone: null,
+                address: null,
+                city: null,
+                state: null,
+                zip: null,
+                preferredPayment: null,
+                preferredDiner: null,
+                earnedPoints: 0,
+            },
+            payment: {
+                ch: null,
+                num: null,
+                cvv: null,
+                exp: null,
+            },
+            billing: {
+                address: null,
+                city: null,
+                state: null,
+                zip: null,
+            }
         }
+    },
+    watch: {
+        // check if billing is same as mailing
+        'useMailAddress': function(val) {
+           if (val) {
+               this.billing = {
+                   address: this.customer.address,
+                   city: this.customer.state,
+                   state: this.customer.city,
+                   zip: this.customer.zip
+               }
+           } 
+        },
+
+        // these all update billing alongside mailing if box is checked
+        'customer.address': function(address) {
+            if (this.useMailAddress)
+                this.billing.address = address;
+        },
+
+        'customer.city': function(city) {
+            if (this.useMailAddress)
+                this.billing.city = city;
+        },
+
+        'customer.state': function(state) {
+            if (this.useMailAddress)
+                this.billing.state = state;
+        },
+
+        'customer.zip': function(zip) {
+            if (this.useMailAddress)
+                this.billing.zip = zip;
+        }
+
     },
     mounted: function() {
 
     },
     methods: {
-
+        // add spaces to credit card number field as user types
+        addSpaces(num) {
+            return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
+        },
+        // add dashes to phone number field as user types
+        addDashes(key, num) {
+            if (key != 'Backspace' && (num.length === 3 || num.length === 7)){
+                return this.customer.phone += '-';
+            }
+        }
     }
 }
 </script>

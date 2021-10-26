@@ -2,13 +2,14 @@
     --background: #3a3939;
     --text: #ffffff;
     --text2: #000000;
-    --label: rgba(88, 88, 88, 0.904);
+    --label: rgba(88, 88, 88, 0.712);
     --accent: #eed1e4;
     --button-icon: #eed1e4;
     --button: #847676;
     --button-l1: #a79797;
     --input-border: rgba(92, 92, 92, 0.493);
     --input-border-focus: rgb(68, 68, 68);
+    --input-disabled: rgba(194, 194, 194, 0.582);
     --primary: #ffffff;
     --success: #4CAF50;
     --info: #2196F3;
