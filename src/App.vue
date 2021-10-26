@@ -1,30 +1,40 @@
 <template>
   <v-app>
+    <!-- navigation bar -->
     <nav id="nav">
       <ul class="items">
-          <li :class="$route.path === '/' ? 'item active' : 'item'">
-          <router-link to="/">
-            Home
-          </router-link>
+        <router-link to="/">
+          <li
+          :class="$route.path === '/' ? 'item active' : 'item'">
+              Home
           </li>
+        </router-link>
 
-          <li :class="$route.path === '/menu' ? 'item active' : 'item'">
+          <!-- EXAMPLE LINKS -->
+          <!--
           <router-link to="/menu">
-            Menu
+            <li
+            :class="$route.path === '/menu' ? 'item active' : 'item'">
+                Menu
+            </li>
           </router-link>
-          </li>
-
-          <li :class="$route.path === '/about' ? 'item active' : 'item'">
+          
           <router-link to="/about">
-            About
+            <li
+            :class="$route.path === '/about' ? 'item active' : 'item'">
+                About
+            </li>
           </router-link>
-          </li>
-
+          -->
         </ul>
-
-        </nav>
+    </nav>
+        <!-- ignore this
         <span class="target inactive" />
+        -->
+
     <v-main>
+      <!-- this part of the page will
+      reload when user navigates to a new page -->
       <div id="router-view">
         <router-view :key="$route.fullPath" />
       </div>
@@ -39,8 +49,12 @@ export default {
   name: 'App',
   mounted: function() {
 
-    /* code for shifting nav menu underline */
-    const target = document.querySelector(".target");
+    /**
+    * code for shifting nav menu underline 
+    * NOT CURRENTLY IN USE
+    */
+   
+    /*const target = document.querySelector(".target");
     const links = document.querySelectorAll("#nav a");
 
     if (document.querySelector('#nav .item.active')) {
@@ -99,10 +113,7 @@ export default {
       links[i].addEventListener("click", (e) => e.preventDefault());
       links[i].addEventListener("mouseenter", mouseenterFunc);
       links[i].addEventListener("mouseout", mouseoutFunc);
-    }
-    
-    //nav.addEventListener("mouseout", mouseoutNavFunc());
-    /* end shifting nav menu underline */
+    }*/
   }
 }
 </script>

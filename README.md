@@ -9,6 +9,8 @@ npm install
 ```
 npm run serve
 ```
+#### If you get a ton of "DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0." warnings:
+Try the [Automatic Migration solution](https://sass-lang.com/documentation/breaking-changes/slash-div#automatic-migration).
 
 ### Compiles and minifies for production
 ```

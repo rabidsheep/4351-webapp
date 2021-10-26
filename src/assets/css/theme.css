@@ -1,18 +1,24 @@
+/* store variables for reuse in style.css */
+
 :root {
     --background: #3a3939;
+    --sub-background: #e6d5d1;
+    --input-background: rgb(241, 223, 215);
+    --gradient-background: linear-gradient(rgb(207, 177, 164), rgb(233, 210, 210));
     --text: #ffffff;
-    --text2: #000000;
-    --label: rgba(88, 88, 88, 0.712);
+    --text2: rgb(124, 99, 99);
+    --label: rgb(124, 99, 99);
+    --hr: rgb(124, 99, 99);
     --accent: #eed1e4;
     --button-icon: #eed1e4;
     --button: #847676;
     --button-l1: #a79797;
-    --input-border: rgba(92, 92, 92, 0.493);
+    --input-border: rgb(102, 84, 84);
     --input-border-focus: rgb(68, 68, 68);
     --input-disabled: rgba(194, 194, 194, 0.582);
     --primary: #ffffff;
     --success: #4CAF50;
     --info: #2196F3;
-    --warning: #FB8C00;
+    --warning: #bd0000;
     --error: #FF5252;
 }

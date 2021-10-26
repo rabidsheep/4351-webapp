@@ -1,7 +1,24 @@
+<!--
+    TODO:
+    - date & time picker
+        - system for determining high traffic days
+            - holidays
+            - day already has a high amount of reservations
+            - etc
+    - input field for # of guests
+    - prompt asking guest if they want to register
+        - api call for quick registration
+    - input/form validation
+    - guest vs logged in check
+    - price calculations
+        - notice of $10 hold fee for high traffic days
+-->
+
 <template>
     <v-form id="reservation">
         <div class="main">
-        
+            
+            <!-- GUEST INFO -->
             <div class="guest">
                 <span><h2>Guest Info</h2> <hr /></span>
             
@@ -86,7 +103,7 @@
                             required />
                         </div>
 
-                        <!--
+                        <!-- IGNORE
                         <div class="input__text seating">
                             <label for="total__seats"># of Seats <span class="req">*</span></label>
                             <input
@@ -98,6 +115,7 @@
                 </div>
             </div>
 
+             <!-- PAYMENT INFO -->
             <div class="payment">
                 <span><h2>Payment Info</h2> <hr /></span>
 
@@ -171,12 +189,10 @@
                             </div>
                         </div>
                     </div>
-
-                    
-
                 </div>
             </div>
 
+            <!-- BILLING INFO -->
             <div class="billing">
                 <span><h2>Billing Info</h2> <hr /></span>
 
@@ -250,6 +266,9 @@ export default {
     components: {
 
     },
+    props: {
+        // router parameters will go here later
+    },
     data: () => {
         return {
             currentYear: parseInt(new Date().getFullYear().toString().slice(-2)),
@@ -305,6 +324,7 @@ export default {
             }
         }
     },
+    /* watchers to check for changes in certain variables */
     watch: {
         // check if billing is same as mailing
         'useMailAddress': function(val) {
@@ -341,19 +361,21 @@ export default {
 
     },
     mounted: function() {
-
+        // code for checking if user is logged in will go here
     },
     methods: {
-        // add spaces to credit card number field as user types
-        addSpaces(num) {
-            return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
-        },
         // add dashes to phone number field as user types
         addDashes(key, num) {
             if (key != 'Backspace' && (num.length === 3 || num.length === 7)){
                 return this.customer.phone += '-';
             }
-        }
+        },
+
+        // add spaces to credit card number field as user types
+        addSpaces(num) {
+            return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
+        },
+        
     }
 }
 </script>

@@ -1,5 +1,7 @@
 @import 'theme.css';
 
+/** GLOBAL STUFF **/
+
 html, #app, #router-view {
     height: 100%;
 }
@@ -26,8 +28,13 @@ html, #app, #router-view {
     text-decoration: none;
 }
 
-#nav li:not(.active--hover) {
+#nav li {
     opacity: 0.25;
+    transition: 0.3s;
+}
+
+#nav li:hover {
+    opacity: 1;
 }
 
 #nav .items {
@@ -126,10 +133,11 @@ select:disabled {
 
 #home .header .d2 { grid-area: d2; }
 
-.header .v-divider {
+#home .header .v-divider {
     border-color: hsla(0,0%,100%,0.5) !important;
 }
-.header h1 {
+
+#home .header h1 {
     font-family: 'Fredericka the Great', cursive;
     font-size: 80px;
     font-weight: 400;
@@ -137,7 +145,7 @@ select:disabled {
     grid-area: title;
 }
 
-.header h2 {
+#home .header h2 {
     font-family: 'Poiret One', cursive;
     font-weight: 400;
     font-size: 40px;
@@ -178,11 +186,11 @@ select:disabled {
 /** RESERVATION FORM **/
 
 #reservation {
-    background-color: white;
+    background-color: var(--sub-background);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 5px 5px 0px rgba(0,0,0,.14);
-    color: rgb(68, 56, 56);
+    color: var(--text2);
     line-height: initial;
     max-width: 660px;
     width: 90%;
@@ -231,7 +239,7 @@ select:disabled {
 #reservation .guest__contact > div {
     flex: calc(50% - 15px);
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 500px) { /** mobile layout */
     #reservation .guest__address2 {
         flex-wrap: wrap;
     }
@@ -302,13 +310,13 @@ select:disabled {
     background-color: #a7958d;
 }
 
-.input__text,
+#reservation .input__text,
 #reservation .exp {
     display: grid;
     row-gap: 5px;
 }
 
-.input__text input {
+#reservation .input__text input {
     border: 1px solid var(--input-border);
     border-radius: 8px;
     padding: 5px;
@@ -316,31 +324,43 @@ select:disabled {
 }
 
 #reservation select,
-.input__select label,
-.input__text input,
-.input__text label {
+#reservation .input__select label,
+#reservation .input__text input,
+#reservation .input__text label {
     align-self: end;
 }
 
 
-.input__text input:focus-visible {
+#reservation .input__text input:focus-visible {
     outline: none;
     border-color: var(--input-border-focus);
 }
 
-.input__text label,
-.input__select label,
-.input__checkbox label {
+#reservation .input__text label,
+#reservation .input__select label,
+#reservation .input__checkbox label {
     color: var(--label);
     font-size: 0.9em;
     text-transform: uppercase;
 }
 
-label > i {
+#reservation label > i {
     text-transform: none;
     font-size: 0.8em;
 }
 
-label > span.req {
+#reservation label > span.req {
     color: var(--warning);
+}
+
+#reservation input,
+#reservation select {
+    background-color: var(--input-background);
+    /*background-image: var(--gradient-background);*/
+}
+
+#reservation hr {
+    border: none;
+    background-color: var(--hr);
+    height: 2px;
 }
