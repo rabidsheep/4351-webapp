@@ -1,231 +1,242 @@
 <template>
     <v-form id="reservation">
+        <div class="main">
         
-        <div class="guest">
-            <h2>Guest Info</h2> <hr />
-        
-            <div class="fields">
-                <div class="guest__name">
-                    <div class="input__text first">
-                        <label for="fname">First Name <span class="req">*</span></label>
-                        <input
-                        v-model="customer.firstName"
-                        id="fname"
-                        required />
+            <div class="guest">
+                <span><h2>Guest Info</h2> <hr /></span>
+            
+                <div class="fields">
+                    <div class="guest__name">
+                        <div class="input__text first">
+                            <label for="fname">First Name <span class="req">*</span></label>
+                            <input
+                            v-model="customer.firstName"
+                            id="fname"
+                            required />
+                        </div>
+
+                        <div class="input__text last">
+                            <label for="lname">Last Name <span class="req">*</span></label>
+                            <input
+                            v-model="customer.lastName"
+                            id="lname"
+                            required />
+                        </div>
                     </div>
 
-                    <div class="input__text last">
-                        <label for="lname">Last Name <span class="req">*</span></label>
-                        <input
-                        v-model="customer.lastName"
-                        id="lname"
-                        required />
-                    </div>
-                </div>
+                    <div class="guest__contact">
+                        <div class="input__text em">
+                            <label for="email">E-mail <span class="req">*</span></label>
+                            <input
+                            v-model="customer.email"
+                            id="email"
+                            required />
+                        </div>
 
-                <div class="guest__contact">
-                    <div class="input__text em">
-                        <label for="email">E-mail <span class="req">*</span></label>
-                        <input
-                        v-model="customer.email"
-                        id="email"
-                        required />
-                    </div>
-
-                    <div class="input__text ph">
-                        <label for="phone">Phone # <i>(Optional)</i></label>
-                        <input
-                        v-model="customer.phone"
-                        placeholder="###-###-####"
-                        maxlength="12"
-                        @keyup="addDashes($event.key, $event.target.value)"
-                        id="phone" />
-                    </div>
-                </div>
-
-                <div class="guest__address">
-                    <div class="input__text address">
-                        <label for="maddress">Mailing Address <span class="req">*</span></label>
-                        <input
-                        v-model="customer.address"
-                        id="maddress"
-                        required />
-                    </div>
-                </div>
-
-                <div class="guest__address2">
-                    <div class="input__text add__city">
-                        <label for="mcity">City <span class="req">*</span></label>
-                        <input
-                        v-model="customer.city"
-                        id="mcity"
-                        required />
+                        <div class="input__text ph">
+                            <label for="phone">Phone # <i>(Optional)</i></label>
+                            <input
+                            v-model="customer.phone"
+                            placeholder="###-###-####"
+                            maxlength="12"
+                            @keyup="addDashes($event.key, $event.target.value)"
+                            id="phone" />
+                        </div>
                     </div>
 
-                    <div class="input__select add__state">
-                        <label for="mstate">State <span class="req">*</span></label>
-                        <select
-                        v-model="customer.state"
-                        id="mstate"
-                        required>
-                            <option
-                            v-for="(state, i) in states"
-                            :key="i"
-                            :value="state">
-                                {{ state }}
-                            </option>
-                        </select>
+                    <div class="guest__address">
+                        <div class="input__text address">
+                            <label for="maddress">Mailing Address <span class="req">*</span></label>
+                            <input
+                            v-model="customer.address"
+                            id="maddress"
+                            required />
+                        </div>
                     </div>
 
-                    <div class="input__text add__zip">
-                        <label for="mzip">Zip Code <span class="req">*</span></label>
-                        <input
-                        v-model="customer.zip"
-                        id="mzip"
-                        required />
+                    <div class="guest__address2">
+                        <div class="input__text add__city">
+                            <label for="mcity">City <span class="req">*</span></label>
+                            <input
+                            v-model="customer.city"
+                            id="mcity"
+                            required />
+                        </div>
+
+                        <div class="input__select add__state">
+                            <label for="mstate">State <span class="req">*</span></label>
+                            <select
+                            v-model="customer.state"
+                            id="mstate"
+                            required>
+                                <option
+                                v-for="(state, i) in states"
+                                :key="i"
+                                :value="state">
+                                    {{ state }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="input__text add__zip">
+                            <label for="mzip">Zip Code <span class="req">*</span></label>
+                            <input
+                            v-model="customer.zip"
+                            id="mzip"
+                            required />
+                        </div>
+
+                        <!--
+                        <div class="input__text seating">
+                            <label for="total__seats"># of Seats <span class="req">*</span></label>
+                            <input
+                            id="seats"
+                            required />
+                        </div>
+                        -->
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="payment">
-            <h2>Payment Info</h2> <hr />
+            <div class="payment">
+                <span><h2>Payment Info</h2> <hr /></span>
 
-            <div class="fields">
-                <div class="cardholder">
-                    <div class="input__text chname">
-                        <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
-                        <input
-                        v-model="payment.ch"
-                        id="card__name"
-                        required />
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="input__text cnum">
-                        <label for="card__num">Card # <span class="req">*</span></label>
-                        <input
-                        v-model="payment.num"
-                        id="card__num"
-                        placeholder="#### #### #### ####"
-                        maxlength="19"
-                        @input="addSpaces($event.target.value)"
-                        required />
+                <div class="fields">
+                    <div class="cardholder">
+                        <div class="input__text chname">
+                            <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
+                            <input
+                            v-model="payment.ch"
+                            id="card__name"
+                            required />
+                        </div>
                     </div>
 
-                    <div class="input__text ccvv">
-                        <label for="card__cvv">CVV <span class="req">*</span></label>
-                        <input
-                        v-model="payment.cvv"
-                        id="card__cvv"
-                        placeholder="###"
-                        maxlength="3"
-                        required />
-                    </div>
+                    <div class="card">
+                        <div class="input__text cnum">
+                            <label for="card__num">Card # <span class="req">*</span></label>
+                            <input
+                            v-model="payment.num"
+                            id="card__num"
+                            placeholder="#### #### #### ####"
+                            maxlength="19"
+                            @input="addSpaces($event.target.value)"
+                            required />
+                        </div>
 
-                    <div class="expiration">
-                        <div class="input__select exp">
-                            <label for="card__expiration">Expiration Date <span class="req">*</span></label>
-                            <div id="card__expiration">
-                                <select
-                                v-model="expMonth"
-                                @change="payment.exp = expMonth + '/' + expYear"
-                                id="card__month"
-                                required>
-                                    <option
-                                    v-for="(month, i) in months"
-                                    :key="i"
-                                    :value="i">
-                                        <template v-if="i > 0">
-                                        {{ i }} - {{ months[i - 1]}}
-                                        </template>
-                                    </option>
-                                </select>
-                                /
-                                <select
-                                v-model="expYear"
-                                @change="payment.exp = expMonth + '/' + expYear"
-                                id="card__year"
-                                required>
-                                    <option
-                                    v-for="j in 21"
-                                    :key="j"
-                                    :value="j > 1 ? currentYear + (j - 2) : ``">
-                                        <template v-if="j > 1">
-                                            {{ currentYear + (j - 2) }}
-                                        </template>
-                                    </option>
-                                </select>
+                        <div class="input__text ccvv">
+                            <label for="card__cvv">CVV <span class="req">*</span></label>
+                            <input
+                            v-model="payment.cvv"
+                            id="card__cvv"
+                            placeholder="###"
+                            maxlength="3"
+                            required />
+                        </div>
+
+                        <div class="expiration">
+                            <div class="input__select exp">
+                                <label for="card__expiration">Expiration Date <span class="req">*</span></label>
+                                <div id="card__expiration">
+                                    <select
+                                    v-model="expMonth"
+                                    @change="payment.exp = expMonth + '/' + expYear"
+                                    id="card__month"
+                                    required>
+                                        <option
+                                        v-for="(month, i) in months"
+                                        :key="i"
+                                        :value="i">
+                                            <template v-if="i > 0">
+                                            {{ i }} - {{ months[i - 1]}}
+                                            </template>
+                                        </option>
+                                    </select>
+                                    /
+                                    <select
+                                    v-model="expYear"
+                                    @change="payment.exp = expMonth + '/' + expYear"
+                                    id="card__year"
+                                    required>
+                                        <option
+                                        v-for="j in 21"
+                                        :key="j"
+                                        :value="j > 1 ? currentYear + (j - 2) : ``">
+                                            <template v-if="j > 1">
+                                                {{ currentYear + (j - 2) }}
+                                            </template>
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    
+
                 </div>
-
-                
-
             </div>
-        </div>
 
-        <div class="billing">
-            <h2>Billing Info</h2> <hr />
+            <div class="billing">
+                <span><h2>Billing Info</h2> <hr /></span>
 
-            <div class="fields">
-                <div class="checkbox">
-                    <div class="input__checkbox sameAdd">
-                        <input
-                        v-model="useMailAddress"
-                        type="checkbox"
-                        id="sameAddress"
-                        value="true" />
-                        <label for="sameAddress">Same as Mailing Address</label>
-                    </div>
-                </div>
-
-                <div class="guest__address">
-                    <div class="input__text address">
-                        <label for="baddress">Billing Address <span class="req">*</span></label>
-                        <input
-                        v-model="billing.address"
-                        :disabled="useMailAddress"
-                        id="baddress"
-                        required />
-                    </div>
-                </div>
-
-                <div class="guest__address2">
-                    <div class="input__text add__city">
-                        <label for="bcity">City <span class="req">*</span></label>
-                        <input
-                        v-model="billing.city"
-                        :disabled="useMailAddress"
-                        id="bcity"
-                        required />
+                <div class="fields">
+                    <div class="checkbox">
+                        <div class="input__checkbox sameAdd">
+                            <input
+                            v-model="useMailAddress"
+                            type="checkbox"
+                            id="sameAddress"
+                            value="true" />
+                            <label for="sameAddress">Same as Mailing Address</label>
+                        </div>
                     </div>
 
-                    <div class="input__select add__state">
-                        <label for="bstate">State <span class="req">*</span></label>
-                        <select
-                        v-model="billing.state"
-                        :disabled="useMailAddress"
-                        id="bstate"
-                        required>
-                            <option
-                            v-for="(state, i) in states"
-                            :key="i"
-                            :value="state">
-                                {{ state }}
-                            </option>
-                        </select>
+                    <div class="guest__address">
+                        <div class="input__text address">
+                            <label for="baddress">Billing Address <span class="req">*</span></label>
+                            <input
+                            v-model="billing.address"
+                            :disabled="useMailAddress"
+                            id="baddress"
+                            required />
+                        </div>
                     </div>
 
-                    <div class="input__text add__zip">
-                        <label for="bzip">Zip Code <span class="req">*</span></label>
-                        <input
-                        v-model="billing.zip"
-                        :disabled="useMailAddress"
-                        id="bzip"
-                        required />
+                    <div class="guest__address2">
+                        <div class="input__text add__city">
+                            <label for="bcity">City <span class="req">*</span></label>
+                            <input
+                            v-model="billing.city"
+                            :disabled="useMailAddress"
+                            id="bcity"
+                            required />
+                        </div>
+
+                        <div class="input__select add__state">
+                            <label for="bstate">State <span class="req">*</span></label>
+                            <select
+                            v-model="billing.state"
+                            :disabled="useMailAddress"
+                            id="bstate"
+                            required>
+                                <option
+                                v-for="(state, i) in states"
+                                :key="i"
+                                :value="state">
+                                    {{ state }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="input__text add__zip">
+                            <label for="bzip">Zip Code <span class="req">*</span></label>
+                            <input
+                            v-model="billing.zip"
+                            :disabled="useMailAddress"
+                            id="bzip"
+                            required />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -284,6 +295,13 @@ export default {
                 city: null,
                 state: null,
                 zip: null,
+            },
+            reservation: {
+                firstName: null,
+                lastName: null,
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                numGuests: 0,
+                tables: [],
             }
         }
     },

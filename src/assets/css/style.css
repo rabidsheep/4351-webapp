@@ -56,7 +56,7 @@ html, #app, #router-view {
     border-bottom-color: transparent;
 }
 
-button {
+.btn {
     display: grid;
     grid-template: 'icon divider label' auto / 0fr 0fr;
     background-color: var(--button) !important;
@@ -67,20 +67,20 @@ button {
     transition: .4s;
 }
 
-button:hover {
+.btn:hover {
     background-color: var(--button-l1) !important;
 }
 
-button > * {
+.btn > * {
     padding: 5px 0px;
     cursor: pointer;
 }
 
-button label {
+.btn label {
     letter-spacing: 0.15em;
 }
 
-button .v-icon {
+.btn .v-icon {
     color: var(--button-icon) !important;
     max-width: max-content;
     margin: 0px 10px;
@@ -89,6 +89,7 @@ button .v-icon {
 input,
 select {
     transition: 0.3s;
+    font-size: 14px !important;
 }
 
 input:disabled,
@@ -185,17 +186,22 @@ select:disabled {
     line-height: initial;
     max-width: 660px;
     width: 90%;
-    display: grid;
-    row-gap: 10px;
+    display: flex;
+    gap: 15px;
 }
 
 #reservation h2 {
-    font-size: 56px;
+    font-size: 50px;
     font-family: 'Amatic SC', cursive;
     letter-spacing: 0.15em;
 }
 
-#reservation > div,
+#reservation > .main {
+    width: 100%;
+}
+
+#reservation > .main,
+#reservation > .main > div,
 #reservation .fields {
     display: grid;
     row-gap: 15px;
@@ -207,25 +213,40 @@ select:disabled {
 
 #reservation .guest__address2 {
     display: flex;
-    gap: 20px;
+    gap: 15px;
+}
+
+#reservation .add__city {
+    flex: 1;
 }
 
 #reservation .guest__name,
 #reservation .guest__contact {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
 }
 
 #reservation .guest__name > div,
 #reservation .guest__contact > div {
-    flex: calc(50% - 20px);
+    flex: calc(50% - 15px);
+}
+@media only screen and (max-width: 500px) {
+    #reservation .guest__address2 {
+        flex-wrap: wrap;
+    }
+
+    #reservation .guest__name > div,
+    #reservation .guest__contact > div,
+    #reservation .guest__address2 > div {
+        flex: 100%;
+    }
 }
 
 #reservation .card {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 15px;
 }
 
 #reservation .card .cnum {
@@ -236,6 +257,10 @@ select:disabled {
     max-width: 100px;
 }
 
+#reservation .seating {
+    max-width: 90px;
+}
+
 #reservation select {
     border: 1px solid var(--input-border);
     border-radius: 8px;
@@ -244,6 +269,7 @@ select:disabled {
     -webkit-appearance: auto !important;
     appearance: auto !important;
     min-width: max-content;
+    height: min-content;
 }
 
 #reservation .billing .checkbox {
@@ -268,6 +294,14 @@ select:disabled {
     color:rgba(100, 100, 100, 0.6);
 }
 
+#reservation .v-picker__title.primary {
+    background-color: #8d7a72;
+}
+
+#reservation .v-picker__body {
+    background-color: #a7958d;
+}
+
 .input__text,
 #reservation .exp {
     display: grid;
@@ -280,6 +314,14 @@ select:disabled {
     padding: 5px;
     width: 100%;
 }
+
+#reservation select,
+.input__select label,
+.input__text input,
+.input__text label {
+    align-self: end;
+}
+
 
 .input__text input:focus-visible {
     outline: none;
@@ -296,7 +338,7 @@ select:disabled {
 
 label > i {
     text-transform: none;
-    font-size: 0.8em
+    font-size: 0.8em;
 }
 
 label > span.req {
