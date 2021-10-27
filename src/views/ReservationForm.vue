@@ -21,8 +21,9 @@
             <!-- GUEST INFO -->
             <div class="guest">
                 <span><h2>Guest Info</h2> <hr /></span>
-            
-                <div class="fields">
+
+                <div class="res__info">
+                <div class="fields guest__fields">
                     <div class="guest__name">
                         <div class="input__text first">
                             <label for="fname">First Name <span class="req">*</span></label>
@@ -111,6 +112,28 @@
                             required />
                         </div>
                         -->
+                    </div>
+
+                    <div class="guest__gnum">
+                        <div class="input__text guestcount">
+                            <label for="guestno"># of Guests <span class="req">*</span></label>
+                            <input
+                            v-model="reservation.numGuests"
+                            id="guestno"
+                            required />
+                        </div>
+                    </div>
+
+                    
+                    </div>
+
+                    <div class="fields res__fields">
+                        <div class="input__text datetime">
+                            <DatePicker
+                            v-model="reservation.date"
+                            mode="dateTime"
+                            :minute-increment="5" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,10 +284,12 @@
 </template>
 
 <script>
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+
 export default {
     name: 'ReservationForm',
     components: {
-
+        DatePicker
     },
     props: {
         // router parameters will go here later
@@ -319,7 +344,7 @@ export default {
                 firstName: null,
                 lastName: null,
                 date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-                numGuests: 0,
+                numGuests: null,
                 tables: [],
             }
         }

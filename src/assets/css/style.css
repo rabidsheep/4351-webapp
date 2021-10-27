@@ -240,6 +240,10 @@ select:disabled {
     flex: calc(50% - 15px);
 }
 @media only screen and (max-width: 500px) { /** mobile layout */
+    #reservation .res__info {
+        flex-direction: column;
+    }
+
     #reservation .guest__address2 {
         flex-wrap: wrap;
     }
@@ -269,15 +273,49 @@ select:disabled {
     max-width: 90px;
 }
 
+#reservation .guest__fields {
+    height: min-content;
+}
+
+#reservation .res__info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+#reservation .guest__fields,
+#reservation .guest__address2 .input__text {
+    flex: 100;
+}
+
+#reservation .vc-container {
+    width: 100%;
+}
+
+#reservation .vc-time-picker {
+    justify-content: center;
+}
+
 #reservation select {
     border: 1px solid var(--input-border);
     border-radius: 8px;
     padding: 5px;
-    -moz-appearance: auto !important;
-    -webkit-appearance: auto !important;
-    appearance: auto !important;
+    -moz-appearance: auto;
+    -webkit-appearance: auto;
+    appearance: auto;
     min-width: max-content;
     height: min-content;
+}
+
+#reservation .vc-select select {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#reservation .vc-select-arrow svg {
+    fill: unset;
 }
 
 #reservation .billing .checkbox {
