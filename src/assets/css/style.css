@@ -291,11 +291,22 @@ select:disabled {
 
 #reservation .vc-container {
     width: 100%;
+    background-color: var(--vc-background);
+    border-color: var(--input-border);
 }
 
 #reservation .vc-time-picker {
     justify-content: center;
 }
+
+#reservation .vc-weekday {
+    color: var(--vc-days);
+}
+
+#reservation .vc-weeks {
+    color: var(--vc-text);
+}
+
 
 #reservation select {
     border: 1px solid var(--input-border);

@@ -103,15 +103,6 @@
                             id="mzip"
                             required />
                         </div>
-
-                        <!-- IGNORE
-                        <div class="input__text seating">
-                            <label for="total__seats"># of Seats <span class="req">*</span></label>
-                            <input
-                            id="seats"
-                            required />
-                        </div>
-                        -->
                     </div>
 
                     <div class="guest__gnum">
