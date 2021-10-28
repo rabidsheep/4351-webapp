@@ -18,12 +18,12 @@ npm run build
 ```
 
 ### TODO
-[ ] date & time picker
-    [ ] system for determining high traffic days
-    [ ] holidays
-    [ ] day already has a high amount of reservations, etc
-[ ] prompt asking guest if they want to register
-    [ ]api call for quick registration
-[ ] input/form validation
-[ ] guest vs logged in check
-[ ] notice of $10 hold fee for high traffic days
+- [ ] date & time picker
+    - [ ] system for determining high traffic days
+    - [ ] holidays
+    - [ ] day already has a high amount of reservations, etc
+- [ ] prompt asking guest if they want to register
+    - [ ] api call for quick registration
+- [ ] input/form validation
+- [ ] guest vs logged in check
+- [ ] notice of $10 hold fee for high traffic days
