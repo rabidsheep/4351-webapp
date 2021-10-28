@@ -5,19 +5,16 @@
             - holidays
             - day already has a high amount of reservations
             - etc
-    - input field for # of guests
     - prompt asking guest if they want to register
         - api call for quick registration
     - input/form validation
     - guest vs logged in check
-    - price calculations
-        - notice of $10 hold fee for high traffic days
+    - notice of $10 hold fee for high traffic days
 -->
 
 <template>
     <v-form id="reservation">
         <div class="main">
-            
             <!-- GUEST INFO -->
             <div class="guest">
                 <span><h2>Reservation Info</h2> <hr /></span>
@@ -48,6 +45,7 @@
                             <input
                             v-model="customer.email"
                             id="email"
+                            type="email"
                             required />
                         </div>
 
@@ -56,8 +54,10 @@
                             <input
                             v-model="customer.phone"
                             placeholder="###-###-####"
+                            type="tel"
                             maxlength="12"
                             @keyup="addDashes($event.key, $event.target.value)"
+                            @keypress="numKeysOnly($event)"
                             id="phone" />
                         </div>
                     </div>
@@ -101,6 +101,7 @@
                             <input
                             v-model="customer.zip"
                             id="mzip"
+                            @keypress="numKeysOnly($event)"
                             required />
                         </div>
                     </div>
@@ -111,6 +112,8 @@
                             <input
                             v-model="reservation.numGuests"
                             id="guestno"
+                            type="number"
+                            @keypress="numKeysOnly($event)"
                             required />
                         </div>
                     </div>
@@ -157,6 +160,7 @@
                             placeholder="#### #### #### ####"
                             maxlength="19"
                             @input="addSpaces($event.target.value)"
+                            @keypress="numKeysOnly($event)"
                             required />
                         </div>
 
@@ -167,6 +171,7 @@
                             id="card__cvv"
                             placeholder="###"
                             maxlength="3"
+                            @keypress="numKeysOnly($event)"
                             required />
                         </div>
 
@@ -269,11 +274,23 @@
                             v-model="billing.zip"
                             :disabled="useMailAddress"
                             id="bzip"
+                            @keypress="numKeysOnly($event)"
                             required />
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="bottom">
+            <div class="legend">
+                <i><span class="req">*</span> = Required</i>
+            </div>
+            <button class="btn submit">
+                <v-icon>mdi-paw</v-icon>
+                <v-divider vertical />
+                <label>Reserve »</label>
+            </button>
         </div>
     </v-form>
 </template>
@@ -397,6 +414,10 @@ export default {
             return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
         },
         
+        numKeysOnly(e) {
+            if (e.key < '0' || e.key > '9')
+                return e.preventDefault()
+        }
     }
 }
 </script>

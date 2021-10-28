@@ -72,6 +72,10 @@ html, #app, #router-view {
                 0 2px 2px 0 rgba(0,0,0,.14),
                 0 1px 5px 0 rgba(0,0,0,.12);
     transition: .4s;
+    font-family: 'Amatic SC', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 10px;
 }
 
 .btn:hover {
@@ -79,18 +83,18 @@ html, #app, #router-view {
 }
 
 .btn > * {
-    padding: 5px 0px;
     cursor: pointer;
 }
 
 .btn label {
     letter-spacing: 0.15em;
+    color: white;
 }
 
 .btn .v-icon {
     color: var(--button-icon) !important;
     max-width: max-content;
-    margin: 0px 10px;
+    margin-right: 10px;
 }
 
 input,
@@ -169,11 +173,6 @@ select:disabled {
     line-height: intiial;
 }
 
-#home .signin button {
-    font-family: 'Amatic SC', cursive;
-    font-size: 20px;
-    font-weight: 700;
-}
 
 #home .signin .wrapper {
     padding: 0px 40px;
@@ -195,6 +194,7 @@ select:disabled {
     max-width: 660px;
     width: 90%;
     display: flex;
+    flex-direction: column;
     gap: 15px;
     min-width: min-content;
 }
@@ -354,6 +354,10 @@ select:disabled {
     row-gap: 5px;
 }
 
+#reservation .guest__gnum {
+    width: max-content;
+}
+
 #reservation .sameAdd {
     display: grid;
     column-gap: 10px;
@@ -412,7 +416,7 @@ select:disabled {
     font-size: 0.8em;
 }
 
-#reservation label > span.req {
+#reservation span.req {
     color: var(--warning);
 }
 
@@ -431,4 +435,20 @@ select:disabled {
     border: none;
     background-color: var(--hr);
     height: 2px;
+}
+
+#reservation .submit {
+    width: max-content;
+    justify-self: center;
+}
+
+#reservation .legend {
+    font-size: 0.85em;
+    text-align: right;
+    justify-content: end;
+}
+
+#reservation .bottom {
+    display: grid;
+    row-gap: 15px;
 }
