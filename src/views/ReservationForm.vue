@@ -20,7 +20,7 @@
             
             <!-- GUEST INFO -->
             <div class="guest">
-                <span><h2>Guest Info</h2> <hr /></span>
+                <span><h2>Reservation Info</h2> <hr /></span>
 
                 <div class="res__info">
                 <div class="fields guest__fields">
@@ -120,10 +120,14 @@
 
                     <div class="fields res__fields">
                         <div class="input__text datetime">
+                            <!---
+                            <label for="date">Reservation Date <span class="req">*</span></label>
+                            -->
                             <DatePicker
                             v-model="reservation.date"
                             mode="dateTime"
-                            :minute-increment="5" />
+                            :minute-increment="5"
+                            id="date" />
                         </div>
                     </div>
                 </div>
@@ -287,6 +291,7 @@ export default {
     },
     data: () => {
         return {
+            currentDate: new Date().toISOString().substr(0, 10), 
             currentYear: parseInt(new Date().getFullYear().toString().slice(-2)),
             months: [
                 'January', 'February', 'March',
@@ -334,7 +339,7 @@ export default {
             reservation: {
                 firstName: null,
                 lastName: null,
-                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                date: null,
                 numGuests: null,
                 tables: [],
             }

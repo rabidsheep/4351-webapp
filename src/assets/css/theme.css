@@ -4,11 +4,14 @@
     --background: #3a3939;
     --sub-background: #e6d5d1;
     --input-background: rgb(241, 223, 215);
+    --input-background-disabled: rgba(206, 187, 182, 0.815);
     --gradient-background: linear-gradient(rgb(207, 177, 164), rgb(233, 210, 210));
-    --vc-background: rgb(255, 255, 255);
+    --vc-background: rgb(252, 233, 225);
     --vc-days: rgb(107, 93, 88);
     --vc-text: rgb(116, 98, 98);
-    --vc-highlight: rgb(241, 223, 215);
+    --vc-highlight: rgb(71, 59, 53);
+    --vc-accent: #8a7d7d;
+    --vc-accent2: #d8c2b3;
     --text: #ffffff;
     --text2: rgb(124, 99, 99);
     --label: rgb(124, 99, 99);

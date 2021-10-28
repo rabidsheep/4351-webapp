@@ -196,6 +196,7 @@ select:disabled {
     width: 90%;
     display: flex;
     gap: 15px;
+    min-width: min-content;
 }
 
 #reservation h2 {
@@ -307,6 +308,15 @@ select:disabled {
     color: var(--vc-text);
 }
 
+#reservation .vc-highlight,
+#reservation .vc-am-pm .active {
+    background-color: var(--vc-highlight) !important;
+}
+
+#reservation .vc-day { color: var(--vc-highlight) !important; }
+#reservation .vc-month,
+#reservation .vc-year { color: var(--vc-accent) }
+#reservation .vc-am-pm { background-color: var(--vc-accent2) }
 
 #reservation select {
     border: 1px solid var(--input-border);
@@ -323,6 +333,10 @@ select:disabled {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
+}
+
+#reservation .vc-select select:hover {
+    color: unset;
 }
 
 #reservation .vc-select-arrow svg {
@@ -406,6 +420,11 @@ select:disabled {
 #reservation select {
     background-color: var(--input-background);
     /*background-image: var(--gradient-background);*/
+}
+
+#reservation input:disabled,
+#reservation select:disabled {
+    background-color: var(--input-background-disabled);
 }
 
 #reservation hr {
