@@ -76,6 +76,7 @@ html, #app, #router-view {
     font-size: 20px;
     font-weight: 700;
     padding: 10px;
+    column-gap: 10px;
 }
 
 .btn:hover {
@@ -94,7 +95,10 @@ html, #app, #router-view {
 .btn .v-icon {
     color: var(--button-icon) !important;
     max-width: max-content;
-    margin-right: 10px;
+}
+
+.btn > hr {
+    border-color: var(--button-hr) !important;
 }
 
 input,
@@ -431,7 +435,7 @@ select:disabled {
     background-color: var(--input-background-disabled);
 }
 
-#reservation hr {
+#reservation .span hr {
     border: none;
     background-color: var(--hr);
     height: 2px;
