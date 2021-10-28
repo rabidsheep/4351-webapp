@@ -450,5 +450,5 @@ select:disabled {
 
 #reservation .bottom {
     display: grid;
-    row-gap: 15px;
+    row-gap: 5px;
 }
