@@ -272,7 +272,7 @@
             <div class="legend">
                 <i><span class="req">*</span> = Required</i>
             </div>
-            <button class="btn submit">
+            <button @click="submitReservation($event)" class="btn submit">
                 <v-icon>mdi-paw</v-icon>
                 <v-divider vertical />
                 <label>Reserve »</label>
@@ -283,6 +283,9 @@
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+
+// needed to print objects to the console without values being displayed as "getter & setter" idk why
+const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
 
 export default {
     name: 'ReservationForm',
@@ -400,9 +403,28 @@ export default {
             return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
         },
         
+        // only allow numerical keys to be pressed
         numKeysOnly(e) {
             if (e.key < '0' || e.key > '9')
                 return e.preventDefault()
+        },
+
+        // submit reservation
+        submitReservation(e) {
+            e.preventDefault();
+
+            // data to be submitted
+            var data = {
+                customer: this.customer,
+                payment: this.payment,
+                billing: this.billing,
+                reservation: {
+                    ...this.reservation,
+                    firstName: this.customer.firstName,
+                    lastName: this.customer.lastName
+                } 
+            }
+            printObj(data);
         }
     }
 }
