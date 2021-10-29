@@ -425,6 +425,14 @@ export default {
                 } 
             }
             printObj(data);
+
+            this.$reservation.save(data)
+            .then((response) => {
+                console.log(response.body);
+            })
+            .catch((error) => { 
+                console.log(error);
+            });
         }
     }
 }
