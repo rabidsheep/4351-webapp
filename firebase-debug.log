@@ -1,0 +1,125 @@
+[debug] [2021-10-29T02:30:06.207Z] ----------------------------------------------------------------------
+[debug] [2021-10-29T02:30:06.209Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Mariah\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init emulators
+[debug] [2021-10-29T02:30:06.210Z] CLI Version:   9.21.0
+[debug] [2021-10-29T02:30:06.210Z] Platform:      win32
+[debug] [2021-10-29T02:30:06.210Z] Node Version:  v14.17.5
+[debug] [2021-10-29T02:30:06.210Z] Time:          Thu Oct 28 2021 21:30:06 GMT-0500 (Central Daylight Time)
+[debug] [2021-10-29T02:30:06.210Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-29T02:30:06.259Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-29T02:30:06.259Z] > authorizing via signed-in user (mariahwerber@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Mariah\Documents\GitHub\4351-webapp
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[debug] [2021-10-29T02:30:19.449Z] ----------------------------------------------------------------------
+[debug] [2021-10-29T02:30:19.451Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Mariah\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2021-10-29T02:30:19.451Z] CLI Version:   9.21.0
+[debug] [2021-10-29T02:30:19.452Z] Platform:      win32
+[debug] [2021-10-29T02:30:19.452Z] Node Version:  v14.17.5
+[debug] [2021-10-29T02:30:19.452Z] Time:          Thu Oct 28 2021 21:30:19 GMT-0500 (Central Daylight Time)
+[debug] [2021-10-29T02:30:19.452Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-29T02:30:19.498Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-29T02:30:19.498Z] > authorizing via signed-in user (mariahwerber@gmail.com)
+[info] i  emulators: Starting emulators: auth, functions, firestore, database, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, database, hosting"}}
+[debug] [2021-10-29T02:30:19.517Z] [hub] writing locator at C:\Users\Mariah\AppData\Local\Temp\hub-webapp-f22de.json
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mpubsub, storage\u001b[22m"}}
+[info] +  functions: Using node@14 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@14 from host."}}
+[debug] [2021-10-29T02:30:19.541Z] defaultcredentials: writing to file C:\Users\Mariah\AppData\Roaming\firebase\mariahwerber_gmail_com_application_default_credentials.json
+[debug] [2021-10-29T02:30:19.543Z] Setting GAC to C:\Users\Mariah\AppData\Roaming\firebase\mariahwerber_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Mariah\\AppData\\Roaming\\firebase\\mariahwerber_gmail_com_application_default_credentials.json"}}
+[debug] [2021-10-29T02:30:19.544Z] > refreshing access token with scopes: []
+[debug] [2021-10-29T02:30:19.545Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-10-29T02:30:19.817Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","date":"Fri, 29 Oct 2021 02:30:05 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-29T02:30:19.851Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/adminSdkConfig [none]
+[debug] [2021-10-29T02:30:20.274Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/adminSdkConfig 200
+[debug] [2021-10-29T02:30:20.274Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/adminSdkConfig {"projectId":"webapp-f22de","databaseURL":"https://webapp-f22de-default-rtdb.firebaseio.com","storageBucket":"webapp-f22de.appspot.com","locationId":"us-central"}
+[debug] [2021-10-29T02:30:20.307Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2021-10-29T02:30:20.308Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-10-29T02:30:20.308Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Mariah\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.13.1.jar","--host","localhost","--port",9199,"--rules","C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\firestore.rules","--functions_emulator","localhost:5001"],"optionalArgs":["port","webchannel_port","host","rules","functions_emulator","seed_from_export"],"joinArgs":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Mariah\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.13.1.jar\",\"--host\",\"localhost\",\"--port\",9199,\"--rules\",\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\firestore.rules\",\"--functions_emulator\",\"localhost:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"functions_emulator\",\"seed_from_export\"],\"joinArgs\":false}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2021-10-29T02:30:22.164Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de [none]
+[debug] [2021-10-29T02:30:22.492Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de 200
+[debug] [2021-10-29T02:30:22.492Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de {"projectId":"webapp-f22de","projectNumber":"913646234610","displayName":"4351-webapp","name":"projects/webapp-f22de","resources":{"hostingSite":"webapp-f22de","realtimeDatabaseInstance":"webapp-f22de-default-rtdb","storageBucket":"webapp-f22de.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[debug] [2021-10-29T02:30:22.493Z] database rules config:  []
+[warn] !  database: Did not find a Realtime Database rules file specified in a firebase.json config file. The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration. {"metadata":{"emulator":{"name":"database"},"message":"Did not find a Realtime Database rules file specified in a firebase.json config file. The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration."}}
+[debug] [2021-10-29T02:30:22.496Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2021-10-29T02:30:22.497Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-10-29T02:30:22.497Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2021-10-29T02:30:22.497Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\Mariah\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.7.2.jar","--host","localhost","--port",9000,"--functions_emulator_host","localhost","--functions_emulator_port",5001],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Mariah\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.7.2.jar\",\"--host\",\"localhost\",\"--port\",9000,\"--functions_emulator_host\",\"localhost\",\"--functions_emulator_port\",5001],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2021-10-29T02:30:26.736Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/webapp-f22de/sites 
+[debug] [2021-10-29T02:30:27.012Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/webapp-f22de/sites 200
+[debug] [2021-10-29T02:30:27.013Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/webapp-f22de/sites {"sites":[{"name":"projects/913646234610/sites/tcc4351","defaultUrl":"https://tcc4351.web.app","appId":"1:913646234610:web:ad3dca034bdeb32edfd96b","type":"USER_SITE"},{"name":"projects/913646234610/sites/webapp-f22de","defaultUrl":"https://webapp-f22de.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2021-10-29T02:30:27.014Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/webApps/-/config [none]
+[debug] [2021-10-29T02:30:27.386Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/webApps/-/config 200
+[debug] [2021-10-29T02:30:27.387Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/webapp-f22de/webApps/-/config {"projectId":"webapp-f22de","appId":"1:913646234610:web:ad3dca034bdeb32edfd96b","databaseURL":"https://webapp-f22de-default-rtdb.firebaseio.com","storageBucket":"webapp-f22de.appspot.com","locationId":"us-central","apiKey":"AIzaSyAgZ7zKMPBQu17I0llD3baDxKcCmylNA80","authDomain":"webapp-f22de.firebaseapp.com","messagingSenderId":"913646234610","measurementId":"G-JJSZPTBFLN"}
+[info] i  hosting[tcc4351]: Serving hosting files from: dist {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mdist\u001b[22m"}}
+[info] +  hosting[tcc4351]: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[info] i  ui: downloading ui-v1.6.4.zip... {"metadata":{"emulator":{"name":"ui"},"message":"downloading ui-v1.6.4.zip..."}}
+[debug] [2021-10-29T02:30:27.445Z] >>> [apiv2][query] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.4.zip 
+[debug] [2021-10-29T02:30:27.833Z] <<< [apiv2][status] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.4.zip 200
+[debug] [2021-10-29T02:30:27.833Z] <<< [apiv2][body] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.6.4.zip [stream]
+[info] i  ui: Removing outdated emulator files: ui-v1.6.3 {"metadata":{"emulator":{"name":"ui"},"message":"Removing outdated emulator files: ui-v1.6.3"}}
+[info] i  ui: Removing outdated emulator files: ui-v1.6.3.zip {"metadata":{"emulator":{"name":"ui"},"message":"Removing outdated emulator files: ui-v1.6.3.zip"}}
+[debug] [2021-10-29T02:30:32.436Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2021-10-29T02:30:32.436Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2021-10-29T02:30:32.437Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\Mariah\\.cache\\firebase\\emulators\\ui-v1.6.4\\server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\Mariah\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.6.4\\\\server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2021-10-29T02:30:32.544Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[info] i  functions: Watching "C:\Users\Mariah\Documents\GitHub\4351-webapp\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\" for Cloud Functions..."}}
+[debug] [2021-10-29T02:30:32.734Z] [worker-pool] addWorker(~diagnostic~) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(~diagnostic~)"}}
+[debug] [2021-10-29T02:30:32.734Z] [worker-pool] Adding worker with key ~diagnostic~, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key ~diagnostic~, total=1"}}
+[debug] [2021-10-29T02:30:32.734Z] [worker-pool] submitWork(triggerId=) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=)"}}
+[debug] [2021-10-29T02:30:32.734Z] [worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: Assigning socketPath: \\?\pipe\C:\Users\Mariah\Documents\GitHub\4351-webapp\functions\11136 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: Assigning socketPath: \\\\?\\pipe\\C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\11136"}}
+[debug] [2021-10-29T02:30:32.735Z] [worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: BUSY"}}
+[debug] [2021-10-29T02:30:32.950Z] [runtime-status] [11136] Functions runtime initialized. {"cwd":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions","node_version":"14.17.5"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Functions runtime initialized. {\"cwd\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\",\"node_version\":\"14.17.5\"}"}}
+[debug] [2021-10-29T02:30:32.952Z] [runtime-status] [11136] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Disabled runtime features: undefined"}}
+[debug] [2021-10-29T02:30:32.954Z] [runtime-status] [11136] Resolved module firebase-admin {"declared":true,"installed":true,"version":"9.12.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"9.12.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:32.958Z] [runtime-status] [11136] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.16.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.16.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:32.960Z] [runtime-status] [11136] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2021-10-29T02:30:32.962Z] [runtime-status] [11136] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.16.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.16.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:33.016Z] [runtime-status] [11136] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Checked functions.config() {\"config\":{}}"}}
+[debug] [2021-10-29T02:30:33.016Z] [runtime-status] [11136] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.16.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-functions\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.16.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}}"}}
+[debug] [2021-10-29T02:30:33.017Z] [runtime-status] [11136] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.16.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.16.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:33.018Z] [runtime-status] [11136] Resolved module firebase-admin {"declared":true,"installed":true,"version":"9.12.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"9.12.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:33.019Z] [runtime-status] [11136] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.16.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-functions\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.16.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\index.js\"}"}}
+[debug] [2021-10-29T02:30:33.019Z] [runtime-status] [11136] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"9.12.0","resolution":"C:\\Users\\Mariah\\Documents\\GitHub\\4351-webapp\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [11136] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"9.12.0\",\"resolution\":\"C:\\\\Users\\\\Mariah\\\\Documents\\\\GitHub\\\\4351-webapp\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Functions      │ localhost:5001 │ http://localhost:4000/functions │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ localhost:9199 │ http://localhost:4000/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Database       │ localhost:9000 │ http://localhost:4000/database  │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Hosting        │ localhost:5000 │ n/a                             │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2021-10-29T02:30:33.028Z] [worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b64442ca-731c-4715-9f83-87c6bee3e7b8]: IDLE"}}
