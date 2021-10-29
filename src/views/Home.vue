@@ -33,7 +33,7 @@
             <button class="btn">
                 <v-icon>mdi-paw</v-icon>
                 <v-divider vertical />
-                <label>I HAVE AN ACCOUNT!</label>
+                <label>I have an account!</label>
             </button>
             </div>
         </div>
