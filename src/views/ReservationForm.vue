@@ -30,9 +30,13 @@
                             <label for="email">E-mail <span class="req">*</span></label>
                             <input
                             v-model="customer.email"
+                            v-model.trim="$v.customer.email.$model"
                             id="email"
                             type="email"
+                            :class="{'is-invalid': validationStatus($v.customer.email)}" class="form-control form-control-lg"
                             required />
+                            <div v-if="!$v.customer.email.required" class="invalid-feedback">The email field is required.</div>
+                            <div v-if="!$v.customer.email.email" class="invalid-feedback">The email is not valid.</div>
                         </div>
 
                         <div class="input__text ph">
@@ -283,7 +287,7 @@
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
-
+import { required, email } from "vuelidate/lib/validators";
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
 const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
 
@@ -348,7 +352,15 @@ export default {
                 date: null,
                 numGuests: null,
                 tables: [],
-            }
+            },
+            submitted: false
+        }
+    },
+    validations: {
+        customer: {
+            firstName: { required },
+            lastName: { required },
+            email: { required, email},
         }
     },
     /* watchers to check for changes in certain variables */
@@ -391,6 +403,11 @@ export default {
         // code for checking if user is logged in will go here
     },
     methods: {
+
+        validationStatus: function(validation) {
+            return typeof validation != "undefined" ? validation.$error : false;
+        },
+
         // add dashes to phone number field as user types
         addDashes(key, num) {
             if (key != 'Backspace' && (num.length === 3 || num.length === 7)){
@@ -412,7 +429,9 @@ export default {
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
-
+            this.$v.$touch();
+            if (this.$v.$pendding || this.$v.$error) return;
+            alert('Successfully submitted!');
             // data to be submitted
             var data = {
                 customer: this.customer,
@@ -433,6 +452,7 @@ export default {
             .catch((error) => { 
                 console.log(error);
             });
+            alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.customer));
         }
     }
 }
