@@ -456,3 +456,6 @@ select:disabled {
     display: grid;
     row-gap: 5px;
 }
+#reservation .invalid-feedback{
+  font-size: 0.6em;
+} 

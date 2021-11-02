@@ -35,6 +35,7 @@
                             type="email"
                             :class="{'is-invalid': validationStatus($v.customer.email)}" class="form-control form-control-lg"
                             required />
+                            
                             <div v-if="!$v.customer.email.required" class="invalid-feedback">The email field is required.</div>
                             <div v-if="!$v.customer.email.email" class="invalid-feedback">The email is not valid.</div>
                         </div>
