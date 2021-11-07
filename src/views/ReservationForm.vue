@@ -424,15 +424,15 @@ export default {
         // only allow numerical keys to be pressed
         numKeysOnly(e) {
             if (e.key < '0' || e.key > '9')
-                return e.preventDefault()
+                return e.preventDefault();
         },
 
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
             this.$v.$touch();
-            if (this.$v.$pendding || this.$v.$error) return;
-            alert('Successfully submitted!');
+            if (this.$v.$pending || this.$v.$error) 
+                return alert("error");
             // data to be submitted
             var data = {
                 customer: this.customer,
