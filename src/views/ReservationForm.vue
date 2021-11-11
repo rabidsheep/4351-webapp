@@ -13,7 +13,11 @@
                             <input
                             v-model="customer.firstName"
                             id="fname"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.firstName.$error }"
                             required />
+                            <div v-if="submitted && $v.customer.firstName.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.firstName.required">firstname is required</span>
+                            </div>
                         </div>
 
                         <div class="input__text last">
@@ -21,23 +25,29 @@
                             <input
                             v-model="customer.lastName"
                             id="lname"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.lastName.$error }"
                             required />
+                            <div v-if="submitted && $v.customer.lastName.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.lastName.required">lastname is required</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="guest__contact">
                         <div class="input__text em">
-                            <label for="email">E-mail <span class="req">*</span></label>
-                            <input
-                            v-model="customer.email"
-                            v-model.trim="$v.customer.email.$model"
-                            id="email"
-                            type="email"
-                            :class="{'is-invalid': validationStatus($v.customer.email)}" class="form-control form-control-lg"
-                            required />
-                            
-                            <div v-if="!$v.customer.email.required" class="invalid-feedback">The email field is required.</div>
-                            <div v-if="!$v.customer.email.email" class="invalid-feedback">The email is not valid.</div>
+                            <div class="form-group">
+                                <label for="email">E-mail <span class="req">*</span></label>
+                                <input
+                                v-model="customer.email"
+                                id="email"
+                                type="email"
+                                class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
+                                required />
+                                <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
+                                    <span v-if="!$v.customer.email.required">email is required</span>
+                                    <span v-if="!$v.customer.email.email">The email is not valid.</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="input__text ph">
@@ -59,7 +69,11 @@
                             <input
                             v-model="customer.address"
                             id="maddress"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address.$error }"
                             required />
+                            <div v-if="submitted && $v.customer.address.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.address.required">address is required</span>
+                            </div>                            
                         </div>
                     </div>
 
@@ -69,7 +83,11 @@
                             <input
                             v-model="customer.city"
                             id="mcity"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                             required />
+                            <div v-if="submitted && $v.customer.city.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.city.required">city is required</span>
+                            </div>
                         </div>
 
                         <div class="input__select add__state">
@@ -77,7 +95,11 @@
                             <select
                             v-model="customer.state"
                             id="mstate"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                             required>
+                            <div v-if="submitted && $v.customer.state.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.state.required">state is required</span>
+                            </div>
                                 <option
                                 v-for="(state, i) in states"
                                 :key="i"
@@ -361,7 +383,10 @@ export default {
         customer: {
             firstName: { required },
             lastName: { required },
-            email: { required, email},
+            email: { required, email },
+            address: { required },
+            city: { required },
+            state: { required },
         }
     },
     /* watchers to check for changes in certain variables */
@@ -430,9 +455,11 @@ export default {
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
+            this.submitted = true;
             this.$v.$touch();
-            if (this.$v.$pending || this.$v.$error) 
-                return alert("error");
+            if (this.$v.$invalid){
+                return alert("Fix errors!");
+            }
             // data to be submitted
             var data = {
                 customer: this.customer,

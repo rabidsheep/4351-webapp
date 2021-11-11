@@ -457,5 +457,9 @@ select:disabled {
     row-gap: 5px;
 }
 #reservation .invalid-feedback{
-  font-size: 0.6em;
-} 
+    font-size: 0.5em;
+}
+#reservation .error-border{
+    border: 5px solid var(--input-border);
+    border-color: red;
+}
