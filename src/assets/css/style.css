@@ -456,10 +456,13 @@ select:disabled {
     display: grid;
     row-gap: 5px;
 }
-#reservation .invalid-feedback{
-    font-size: 0.5em;
+.invalid-feedback{
+    color: red;
+    font-size: 0.8em;
+    position: absolute;
 }
-#reservation .error-border{
-    border: 5px solid var(--input-border);
-    border-color: red;
+.invalid-state{
+    color: red;
+    font-size: 0.8em;
+    position: relative;
 }

@@ -15,9 +15,6 @@
                             id="fname"
                             class="form-control" :class="{ 'is-invalid': submitted && $v.customer.firstName.$error }"
                             required />
-                            <div v-if="submitted && $v.customer.firstName.$error" class="invalid-feedback">
-                                <span v-if="!$v.customer.firstName.required">firstname is required</span>
-                            </div>
                         </div>
 
                         <div class="input__text last">
@@ -27,9 +24,6 @@
                             id="lname"
                             class="form-control" :class="{ 'is-invalid': submitted && $v.customer.lastName.$error }"
                             required />
-                            <div v-if="submitted && $v.customer.lastName.$error" class="invalid-feedback">
-                                <span v-if="!$v.customer.lastName.required">lastname is required</span>
-                            </div>
                         </div>
                     </div>
 
@@ -44,7 +38,6 @@
                                 class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
                                 required />
                                 <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
-                                    <span v-if="!$v.customer.email.required">email is required</span>
                                     <span v-if="!$v.customer.email.email">The email is not valid.</span>
                                 </div>
                             </div>
@@ -70,10 +63,7 @@
                             v-model="customer.address"
                             id="maddress"
                             class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address.$error }"
-                            required />
-                            <div v-if="submitted && $v.customer.address.$error" class="invalid-feedback">
-                                <span v-if="!$v.customer.address.required">address is required</span>
-                            </div>                            
+                            required />                   
                         </div>
                     </div>
 
@@ -85,21 +75,15 @@
                             id="mcity"
                             class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                             required />
-                            <div v-if="submitted && $v.customer.city.$error" class="invalid-feedback">
-                                <span v-if="!$v.customer.city.required">city is required</span>
-                            </div>
-                        </div>
+                    </div>
 
                         <div class="input__select add__state">
-                            <label for="mstate">State <span class="req">*</span></label>
+                        <label for="mstate">State <span class="req">*</span></label>
                             <select
                             v-model="customer.state"
                             id="mstate"
                             class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                             required>
-                            <div v-if="submitted && $v.customer.state.$error" class="invalid-feedback">
-                                <span v-if="!$v.customer.state.required">state is required</span>
-                            </div>
                                 <option
                                 v-for="(state, i) in states"
                                 :key="i"
@@ -110,24 +94,34 @@
                         </div>
 
                         <div class="input__text add__zip">
-                            <label for="mzip">Zip Code <span class="req">*</span></label>
-                            <input
-                            v-model="customer.zip"
-                            id="mzip"
-                            @keypress="numKeysOnly($event)"
-                            required />
+                            <div class="form-group">
+                                <label for="mzip">Zip Code <span class="req">*</span></label>
+                                <input
+                                v-model="customer.zip"
+                                id="mzip"
+                                @keypress="numKeysOnly($event)"
+                                required />
+                                <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
+                                    <span v-if="!$v.customer.zip.required">valid zipcode required</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="guest__gnum">
                         <div class="input__text guestcount">
-                            <label for="guestno"># of Guests <span class="req">*</span></label>
-                            <input
-                            v-model="reservation.numGuests"
-                            id="guestno"
-                            type="number"
-                            @keypress="numKeysOnly($event)"
-                            required />
+                            <div class=form-group>
+                                <label for="guestno"># of Guests <span class="req">*</span></label>
+                                <input
+                                v-model="reservation.numGuests"
+                                id="guestno"
+                                type="number"
+                                @keypress="numKeysOnly($event)"
+                                required />
+                                <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
+                                    <span v-if="!$v.reservation.numGuests.required">Enter valid number of guests</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -387,7 +381,11 @@ export default {
             address: { required },
             city: { required },
             state: { required },
-        }
+            zip: { required },
+        },
+        reservation: {
+            numGuests: { required },
+        },
     },
     /* watchers to check for changes in certain variables */
     watch: {
