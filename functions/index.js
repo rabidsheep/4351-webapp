@@ -6,6 +6,8 @@ const cors = require("cors")({ origin: true });
 const api = express();
 api.use(cors);
 
+const mongoDb = require('./db');
+
 admin.initializeApp();
 
 api.put("/reservations", (req, res) => {
@@ -13,9 +15,24 @@ api.put("/reservations", (req, res) => {
     var payment = req.body.payment;
     var billing = req.body.billing;
     var reservation = req.body.reservation;*/
-    console.log(req.body);
+    //console.log(req.body);
 
-    return res.status(200).send("API call returned successfully");
+    // simple chain to check that mongodb connection works
+    // will delete later
+    return mongoDb()
+    .then((client) =>
+        client.db('4351')
+        .collection('reservations')
+        .find()
+        .toArray()
+    )
+    .then((data) => {
+        console.log(data);
+        return res.status(200).send("API call returned successfully");
+    })
+    .catch((error) => res.status(400).send(error.toString()));
+
+    
 });
 
 api.get("/traffic", (req, res) => {
