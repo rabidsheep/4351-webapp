@@ -13,7 +13,6 @@
                             <input
                             v-model="customer.firstName"
                             id="fname"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.firstName.$error }"
                             required />
                         </div>
 
@@ -22,14 +21,13 @@
                             <input
                             v-model="customer.lastName"
                             id="lname"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.lastName.$error }"
                             required />
                         </div>
                     </div>
 
                     <div class="guest__contact">
+                        <div class="form-group">
                         <div class="input__text em">
-                            <div class="form-group">
                                 <label for="email">E-mail <span class="req">*</span></label>
                                 <input
                                 v-model="customer.email"
@@ -37,9 +35,9 @@
                                 type="email"
                                 class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
                                 required />
-                                <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
-                                    <span v-if="!$v.customer.email.email">The email is not valid.</span>
-                                </div>
+                        </div>
+                            <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.email.email">The email is not valid.</span>
                             </div>
                         </div>
 
@@ -62,7 +60,6 @@
                             <input
                             v-model="customer.address"
                             id="maddress"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address.$error }"
                             required />                   
                         </div>
                     </div>
@@ -73,7 +70,6 @@
                             <input
                             v-model="customer.city"
                             id="mcity"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                             required />
                     </div>
 
@@ -82,7 +78,6 @@
                             <select
                             v-model="customer.state"
                             id="mstate"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                             required>
                                 <option
                                 v-for="(state, i) in states"
@@ -94,35 +89,32 @@
                         </div>
 
                         <div class="input__text add__zip">
-                            <div class="form-group">
-                                <label for="mzip">Zip Code <span class="req">*</span></label>
-                                <input
-                                v-model="customer.zip"
-                                id="mzip"
-                                @keypress="numKeysOnly($event)"
-                                required />
-                                <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
-                                    <span v-if="!$v.customer.zip.required">valid zipcode required</span>
-                                </div>
-                            </div>
+                            <label for="mzip">Zip Code <span class="req">*</span></label>
+                            <input
+                            v-model="customer.zip"
+                            id="mzip"
+                            maxlength="5"
+                            @keypress="numKeysOnly($event)"
+                            required />
                         </div>
                     </div>
 
                     <div class="guest__gnum">
+                    <div class="form-group">
                         <div class="input__text guestcount">
-                            <div class=form-group>
-                                <label for="guestno"># of Guests <span class="req">*</span></label>
-                                <input
-                                v-model="reservation.numGuests"
-                                id="guestno"
-                                type="number"
-                                @keypress="numKeysOnly($event)"
-                                required />
-                                <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
-                                    <span v-if="!$v.reservation.numGuests.required">Enter valid number of guests</span>
-                                </div>
-                            </div>
+                            <label for="guestno"># of Guests <span class="req">*</span></label>
+                            <input
+                            v-model="reservation.numGuests"
+                            id="guestno"
+                            type="number"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.reservation.numGuests.$error }"
+                            @keypress="numKeysOnly($event)"
+                            required />
                         </div>
+                        <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-feedback">
+                            <span v-if="!$v.reservation.numGuests.between">Must be between {{$v.reservation.numGuests.$params.between.min}} and {{$v.reservation.numGuests.$params.between.max}}</span>
+                        </div>
+                    </div>
                     </div>
 
                     
@@ -281,6 +273,7 @@
                             v-model="billing.zip"
                             :disabled="useMailAddress"
                             id="bzip"
+                            maxlength="5"
                             @keypress="numKeysOnly($event)"
                             required />
                         </div>
@@ -304,7 +297,7 @@
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, between } from "vuelidate/lib/validators";
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
 const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
 
@@ -384,7 +377,7 @@ export default {
             zip: { required },
         },
         reservation: {
-            numGuests: { required },
+            numGuests: { between: between(0,50) },
         },
     },
     /* watchers to check for changes in certain variables */
