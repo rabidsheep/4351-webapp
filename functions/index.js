@@ -6,6 +6,8 @@ const cors = require("cors")({ origin: true });
 const api = express();
 api.use(cors);
 
+const mongoDb = require('./db');
+
 admin.initializeApp();
 
 api.put("/reservations", (req, res) => {
@@ -17,6 +19,16 @@ api.put("/reservations", (req, res) => {
 
     return res.status(200).send("API call returned successfully");
 });
+
+api.get("/times", (req, res) => {
+    let date = req.body;
+
+    return mongoDb()
+    .then((client) =>
+        client.db("4351")
+        .collection("reservations")
+    )
+})
 
 api.get("/traffic", (req, res) => {
     // api call for determining high traffic days?
