@@ -28,18 +28,16 @@
                     </div>
 
                     <div class="guest__contact">
-                        <div class="input__text em">
-                            <div class="form-group">
-                                <label for="email">E-mail <span class="req">*</span></label>
-                                <input
-                                v-model="customer.email"
-                                id="email"
-                                type="email"
-                                class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
-                                required />
-                                <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
-                                    <span v-if="!$v.customer.email.email">The email is not valid.</span>
-                                </div>
+                        <div class="input__text em form-group">
+                            <label for="email">E-mail <span class="req">*</span></label>
+                            <input
+                            v-model="customer.email"
+                            id="email"
+                            type="email"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
+                            required />
+                            <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.email.email">The email is not valid.</span>
                             </div>
                         </div>
 
@@ -93,24 +91,21 @@
                             </select>
                         </div>
 
-                        <div class="input__text add__zip">
-                            <div class="form-group">
-                                <label for="mzip">Zip Code <span class="req">*</span></label>
-                                <input
-                                v-model="customer.zip"
-                                id="mzip"
-                                @keypress="numKeysOnly($event)"
-                                required />
-                                <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
-                                    <span v-if="!$v.customer.zip.required">valid zipcode required</span>
-                                </div>
+                        <div class="input__text add__zip form-group">
+                            <label for="mzip">Zip Code <span class="req">*</span></label>
+                            <input
+                            v-model="customer.zip"
+                            id="mzip"
+                            @keypress="numKeysOnly($event)"
+                            required />
+                            <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.zip.required">valid zipcode required</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="guest__gnum">
-                        <div class="input__text guestcount">
-                            <div class=form-group>
+                        <div class="input__text guestcount form-group">
                                 <label for="guestno"># of Guests <span class="req">*</span></label>
                                 <input
                                 v-model="reservation.numGuests"
@@ -121,7 +116,6 @@
                                 <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
                                     <span v-if="!$v.reservation.numGuests.required">Enter valid number of guests</span>
                                 </div>
-                            </div>
                         </div>
                     </div>
 
