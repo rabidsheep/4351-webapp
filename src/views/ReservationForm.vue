@@ -376,9 +376,23 @@ export default {
             state: { required },
             zip: { required },
         },
-        reservation: {
-            numGuests: { between: between(0,50) },
+        payment: {
+            ch: { required },
+            num: { required },
+            cvv: { required },
+            exp: { required },
         },
+        billing: {
+            address: { required },
+            city: { required },
+            state: { required },
+            zip: { required },
+        },
+        reservation: {
+            date: { required },
+            numGuests: { required, between: between(0,50) },
+        }
+
     },
     /* watchers to check for changes in certain variables */
     watch: {
@@ -387,8 +401,8 @@ export default {
            if (val) {
                this.billing = {
                    address: this.customer.address,
-                   city: this.customer.state,
-                   state: this.customer.city,
+                   city: this.customer.city,
+                   state: this.customer.state,
                    zip: this.customer.zip
                }
            } 
