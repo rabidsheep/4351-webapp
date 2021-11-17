@@ -5,10 +5,9 @@
             <div class="guest">
                 <span><h2>Reservation Info</h2> <hr /></span>
 
-                <div class="res__info">
                 <div class="fields guest__fields">
-                    <div class="guest__name">
-                        <div class="input__text first">
+                    <div id="guest__name">
+                        <div class="input__text input__fn">
                             <label for="fname">First Name <span class="req">*</span></label>
                             <input
                             v-model="customer.firstName"
@@ -17,7 +16,7 @@
                             required />
                         </div>
 
-                        <div class="input__text last">
+                        <div class="input__text input__ln">
                             <label for="lname">Last Name <span class="req">*</span></label>
                             <input
                             v-model="customer.lastName"
@@ -27,8 +26,8 @@
                         </div>
                     </div>
 
-                    <div class="guest__contact">
-                        <div class="input__text em form-group">
+                    <div id="guest__contact">
+                        <div class="input__text input__email form-group">
                             <label for="email">E-mail <span class="req">*</span></label>
                             <input
                             v-model="customer.email"
@@ -41,7 +40,7 @@
                             </div>
                         </div>
 
-                        <div class="input__text ph">
+                        <div class="input__text input__phone">
                             <label for="phone">Phone # <i>(Optional)</i></label>
                             <input
                             v-model="customer.phone"
@@ -54,19 +53,27 @@
                         </div>
                     </div>
 
-                    <div class="guest__address">
-                        <div class="input__text address">
+                    <div id="guest__address-1">
+                        <div class="input__text input__address-l1">
                             <label for="maddress">Mailing Address <span class="req">*</span></label>
                             <input
-                            v-model="customer.address"
+                            v-model="customer.address1"
                             id="maddress"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address.$error }"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
+                            required />                   
+                        </div>
+
+                        <div class="input__text input__address-l2">
+                            <label for="maddress2">Apt/Suite/Building #</label>
+                            <input
+                            v-model="customer.address2"
+                            id="maddress2"
                             required />                   
                         </div>
                     </div>
 
-                    <div class="guest__address2">
-                        <div class="input__text add__city">
+                    <div id="guest__address-2">
+                        <div class="input__text input__city">
                             <label for="mcity">City <span class="req">*</span></label>
                             <input
                             v-model="customer.city"
@@ -75,7 +82,7 @@
                             required />
                     </div>
 
-                        <div class="input__select add__state">
+                        <div class="input__select input__state">
                         <label for="mstate">State <span class="req">*</span></label>
                             <select
                             v-model="customer.state"
@@ -91,7 +98,7 @@
                             </select>
                         </div>
 
-                        <div class="input__text add__zip form-group">
+                        <div class="input__text input__zip form-group">
                             <label for="mzip">Zip Code <span class="req">*</span></label>
                             <input
                             v-model="customer.zip"
@@ -104,12 +111,12 @@
                         </div>
                     </div>
 
-                    <div class="guest__gnum">
-                        <div class="input__text guestcount form-group">
-                                <label for="guestno"># of Guests <span class="req">*</span></label>
+                    <div id="guest__seating">
+                        <div class="input__text input__seating form-group">
+                                <label for="seating"># of Guests <span class="req">*</span></label>
                                 <input
                                 v-model="reservation.numGuests"
-                                id="guestno"
+                                id="seating"
                                 type="number"
                                 @keypress="numKeysOnly($event)"
                                 required />
@@ -119,22 +126,25 @@
                         </div>
                     </div>
 
-                    
+                    <div id="guest__time">
+                        <button
+                        class="btn__timeslot"
+                        v-for="(time, i) in availableTimes"
+                        :key="i">
+                            {{ time }}
+                        </button>
                     </div>
 
-                    <div class="fields res__fields">
-                        <div class="input__text datetime">
-                            <!---
-                            <label for="date">Reservation Date <span class="req">*</span></label>
-                            -->
-                            <DatePicker
-                            v-model="reservation.date"
-                            mode="dateTime"
-                            :minute-increment="5"
-                            id="date" />
-                        </div>
+                    <div id="guest__date">
+                        <!---
+                        <label for="date">Reservation Date <span class="req">*</span></label>
+                        -->
+                        <DatePicker
+                        v-model="reservation.date"
+                        mode="date"
+                        id="date" />
                     </div>
-                </div>
+                 </div>
             </div>
 
              <!-- PAYMENT INFO -->
@@ -142,7 +152,7 @@
                 <span><h2>Payment Info</h2> <hr /></span>
 
                 <div class="fields">
-                    <div class="cardholder">
+                    <div id="cardholder">
                         <div class="input__text chname">
                             <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
                             <input
@@ -152,8 +162,8 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="input__text cnum">
+                    <div id="card">
+                        <div class="input__text input__cnum">
                             <label for="card__num">Card # <span class="req">*</span></label>
                             <input
                             v-model="payment.num"
@@ -165,7 +175,7 @@
                             required />
                         </div>
 
-                        <div class="input__text ccvv">
+                        <div class="input__text input__cvv">
                             <label for="card__cvv">CVV <span class="req">*</span></label>
                             <input
                             v-model="payment.cvv"
@@ -176,8 +186,8 @@
                             required />
                         </div>
 
-                        <div class="expiration">
-                            <div class="input__select exp">
+                        <div id="expiration">
+                            <div class="input__select input__exp">
                                 <label for="card__expiration">Expiration Date <span class="req">*</span></label>
                                 <div id="card__expiration">
                                     <select
@@ -222,7 +232,7 @@
 
                 <div class="fields">
                     <div class="checkbox">
-                        <div class="input__checkbox sameAdd">
+                        <div class="input__checkbox input__same-add">
                             <input
                             v-model="useMailAddress"
                             type="checkbox"
@@ -232,33 +242,41 @@
                         </div>
                     </div>
 
-                    <div class="guest__address">
-                        <div class="input__text address">
-                            <label for="baddress">Billing Address <span class="req">*</span></label>
+                    <div id="bill__address-1" class="address1">
+                        <div class="input__text input__address-l1">
+                            <label for="baddress1">Mailing Address <span class="req">*</span></label>
                             <input
-                            v-model="billing.address"
-                            :disabled="useMailAddress"
-                            id="baddress"
-                            required />
+                            v-model="customer.address1"
+                            id="baddress1"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
+                            required />                   
+                        </div>
+
+                        <div class="input__text input__address-l2">
+                            <label for="baddress2">Apt/Suite/Building #</label>
+                            <input
+                            v-model="customer.address2"
+                            id="baddress2"
+                            required />                   
                         </div>
                     </div>
 
-                    <div class="guest__address2">
-                        <div class="input__text add__city">
+                    <div id="bill__address-2" class="address2">
+                        <div class="input__text input__city">
                             <label for="bcity">City <span class="req">*</span></label>
                             <input
-                            v-model="billing.city"
-                            :disabled="useMailAddress"
+                            v-model="customer.city"
                             id="bcity"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                             required />
-                        </div>
+                    </div>
 
-                        <div class="input__select add__state">
-                            <label for="bstate">State <span class="req">*</span></label>
+                        <div class="input__select input__state">
+                        <label for="bstate">State <span class="req">*</span></label>
                             <select
-                            v-model="billing.state"
-                            :disabled="useMailAddress"
+                            v-model="customer.state"
                             id="bstate"
+                            class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                             required>
                                 <option
                                 v-for="(state, i) in states"
@@ -269,14 +287,16 @@
                             </select>
                         </div>
 
-                        <div class="input__text add__zip">
-                            <label for="bzip">Zip Code <span class="req">*</span></label>
+                        <div class="input__text input__zip form-group">
+                            <label for="mzip">Zip Code <span class="req">*</span></label>
                             <input
-                            v-model="billing.zip"
-                            :disabled="useMailAddress"
-                            id="bzip"
+                            v-model="customer.zip"
+                            id="mzip"
                             @keypress="numKeysOnly($event)"
                             required />
+                            <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
+                                <span v-if="!$v.customer.zip.required">valid zipcode required</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -312,7 +332,6 @@ export default {
     },
     data: () => {
         return {
-            currentDate: new Date().toISOString().substr(0, 10), 
             currentYear: parseInt(new Date().getFullYear().toString().slice(-2)),
             months: [
                 'January', 'February', 'March',
@@ -329,6 +348,7 @@ export default {
                 "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", 
                 "WA", "WI", "WV", "WY"
             ],
+            availableTimes: [],
             expYear: null,
             expMonth: null,
             useMailAddress: false,
@@ -337,7 +357,8 @@ export default {
                 lastName: null,
                 email: null,
                 phone: null,
-                address: null,
+                address1: null,
+                address2: null,
                 city: null,
                 state: null,
                 zip: null,
@@ -352,7 +373,8 @@ export default {
                 exp: null,
             },
             billing: {
-                address: null,
+                address1: null,
+                address2: null,
                 city: null,
                 state: null,
                 zip: null,
@@ -360,7 +382,7 @@ export default {
             reservation: {
                 firstName: null,
                 lastName: null,
-                date: null,
+                date: new Date(),
                 numGuests: null,
                 tables: [],
             },
@@ -372,7 +394,7 @@ export default {
             firstName: { required },
             lastName: { required },
             email: { required, email },
-            address: { required },
+            address1: { required },
             city: { required },
             state: { required },
             zip: { required },
@@ -387,7 +409,8 @@ export default {
         'useMailAddress': function(val) {
            if (val) {
                this.billing = {
-                   address: this.customer.address,
+                   address1: this.customer.address1,
+                   address2: this.customer.address2,
                    city: this.customer.state,
                    state: this.customer.city,
                    zip: this.customer.zip
@@ -396,9 +419,14 @@ export default {
         },
 
         // these all update billing alongside mailing if box is checked
-        'customer.address': function(address) {
+        'customer.address1': function(address) {
             if (this.useMailAddress)
-                this.billing.address = address;
+                this.billing.address1 = address;
+        },
+
+        'customer.address2': function(address) {
+            if (this.useMailAddress)
+                this.billing.address2 = address;
         },
 
         'customer.city': function(city) {
@@ -414,11 +442,18 @@ export default {
         'customer.zip': function(zip) {
             if (this.useMailAddress)
                 this.billing.zip = zip;
+        },
+
+        // fetch times
+
+        'reservation.date': function(date) {
+            this.getAvailableTimes(date);
         }
 
     },
     mounted: function() {
         // code for checking if user is logged in will go here
+        this.getAvailableTimes(this.reservation.date);
     },
     methods: {
 
@@ -442,6 +477,16 @@ export default {
         numKeysOnly(e) {
             if (e.key < '0' || e.key > '9')
                 return e.preventDefault();
+        },
+
+        getAvailableTimes(date) {
+            console.log(date);
+            this.$times.get({
+                date: new Date(date).toLocaleString("en-US").split(",")[0] })
+            .then((response) => {
+                this.availableTimes = response.body;
+            })
+            .catch((error) => console.error(error));
         },
 
         // submit reservation

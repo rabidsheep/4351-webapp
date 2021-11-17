@@ -6,6 +6,13 @@ const cors = require("cors")({ origin: true });
 const api = express();
 api.use(cors);
 
+const serviceHours = [
+    "9:00am", "10:00am", "11:00am",
+    "12:00pm", "1:00pm", "2:00pm",
+    "3:00pm", "4:00pm", "5:00pm",
+    "6:00pm", "7:00pm", "8:00pm"
+]
+
 const mongoDb = require('./db');
 
 admin.initializeApp();
@@ -21,13 +28,39 @@ api.put("/reservations", (req, res) => {
 });
 
 api.get("/times", (req, res) => {
-    let date = req.body;
+    // we'll need to go back and add something to figure out
+    // how to determine available times by table size
+    const dateAggregate = [
+        { $match: { 
+            'date': req.query.date
+        } },
+        { $group: {
+            '_id': '$date',
+            'times': { $addToSet: '$time' }
+        } }
+    ]
 
     return mongoDb()
     .then((client) =>
         client.db("4351")
         .collection("reservations")
+        .aggregate(dateAggregate)
+        .toArray()
     )
+    .then((data) => {
+        var availableTimes = [];
+
+        if (data[0]) {
+            let filledTimes = data[0].times;
+            availableTimes = serviceHours.filter(hour => 
+                !filledTimes.includes(hour));
+        } else {
+            availableTimes = serviceHours;
+        }
+
+        return res.status(200).send(availableTimes);
+    })
+    .catch((error) => res.status(400).send(error.toString()))
 })
 
 api.get("/traffic", (req, res) => {

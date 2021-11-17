@@ -21,7 +21,7 @@ let reservationRes = Vue.resource(`${uri}/reservations`, {}, reservationMethods)
 let timesMethods = {
     get: { method: 'GET' }
 }
-let timesRes = Vue.resource(`${uri}/reservations`, {}, timesMethods)
+let timesRes = Vue.resource(`${uri}/times`, {}, timesMethods)
 
 Vue.use({
     install: () => {
