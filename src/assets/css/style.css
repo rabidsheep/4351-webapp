@@ -195,7 +195,7 @@ select:disabled {
     box-shadow: 5px 5px 0px rgba(0,0,0,.14);
     color: var(--text2);
     line-height: initial;
-    max-width: 660px;
+    max-width: 480px;
     width: 90%;
     display: flex;
     flex-direction: column;
@@ -204,74 +204,98 @@ select:disabled {
 }
 
 #reservation h2 {
-    font-size: 50px;
+    font-size: 40px;
     font-family: 'Amatic SC', cursive;
     letter-spacing: 0.15em;
 }
 
-#reservation > .main {
-    width: 100%;
-}
-
 #reservation > .main,
-#reservation > .main > div,
-#reservation .fields {
+#reservation > .main > div {
     display: grid;
     row-gap: 15px;
 }
 
-#reservation .fields {
-    padding: 0px 10px;
+#reservation .field-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 0px 12px;
 }
 
-#reservation .address2 {
+#reservation .date-group {
     display: flex;
-    gap: 15px;
+    gap: 10px;
+    flex-wrap: nowrap;
+    align-items: center;
 }
+
+#reservation .date-dropdowns {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#reservation #date {
+    width: max-content;
+}
+
+#reservation #guest__time {
+    height: max-content;
+}
+
+#reservation #guest__time .btnbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#reservation .datetime-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#reservation .btn__date,
+#reservation .btn__timeslot {
+    background-color: var(--button-choice);
+    border: 1px solid var(--input-border);
+    box-shadow: 2px 2px 0px rgba(0,0,0,.14);
+}
+
+#reservation .btn__timeslot {
+    padding: 6px;
+    border-radius: 10px;
+    width: 80px;
+}
+
+#reservation .btn__date {
+    padding: 5px;
+    height: max-content;
+    border-radius: 100%;
+    box-shadow: 2px 2px 0px rgba(0,0,0,.14);
+}
+
+#reservation .field-w12 {
+   width: 100%;
+}
+
+#reservation .field-w9 {
+    width: calc(80% - 6px);
+}
+
+#reservation .field-w6 {
+    width: calc(50% - 6px);
+ }
+
+ #reservation .field-w4 {
+    width: calc(33.33% - 4px);
+ }
+
+ #reservation .field-w3 {
+    width: calc(20% - 4px);
+ }
 
 #reservation .input__city {
     flex: 1;
-}
-
-#reservation #guest__name,
-#reservation #guest__contact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-#reservation #guest__name > div,
-#reservation #guest__contact > div {
-    flex: calc(50% - 15px);
-}
-@media only screen and (max-width: 500px) { /** mobile layout */
-    #reservation .res__info {
-        flex-direction: column;
-    }
-
-    #reservation .address2 {
-        flex-wrap: wrap;
-    }
-
-    #reservation #guest__name > div,
-    #reservation #guest__contact > div,
-    #reservation .address2 > div {
-        flex: 100%;
-    }
-}
-
-#reservation #card {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-#reservation #card .input__cnum {
-    flex: 10 1 60%;
-}
-
-#reservation #card .input__cvv {
-    max-width: 100px;
 }
 
 #reservation #seating {
@@ -294,7 +318,7 @@ select:disabled {
     flex: 100;
 }
 
-#reservation .vc-container {
+/*#reservation .vc-container {
     width: 100%;
     background-color: var(--vc-background);
     border-color: var(--input-border);
@@ -318,7 +342,7 @@ select:disabled {
 
 #reservation .vc-day { color: var(--vc-highlight) !important; }
 #reservation .vc-month,
-#reservation .vc-year { color: var(--vc-accent) }
+#reservation .vc-year { color: var(--vc-accent) }*/
 
 #reservation select {
     border: 1px solid var(--input-border);
@@ -346,13 +370,6 @@ select:disabled {
     width: max-content;
 }
 
-#reservation .sameAdd {
-    display: grid;
-    column-gap: 10px;
-    grid-template: 'a b' auto / 0fr 1fr;
-    width: max-content;
-}
-
 #reservation ::placeholder {
     color:rgba(100, 100, 100, 0.6);
 }
@@ -366,29 +383,46 @@ select:disabled {
 }
 
 #reservation .input__text,
+#reservation .input__general,
 #reservation .exp {
     display: grid;
     row-gap: 5px;
 }
 
 #reservation .input__text input,
-#reservation .btn__timeslot {
+#reservation #card__expiration {
     border: 1px solid var(--input-border);
-    padding: 5px;
     border-radius: 8px;
-    background-color: var(--input-background)
+    background-color: var(--input-background);
 }
 
-#reservation #guest__time {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
+#reservation #card__expiration {
+    width: max-content;
+    height: max-content;
+}
+
+#reservation #card__expiration input {
+    border: none;
+    background-color: transparent;
+    width: 2em;
+    padding: 5px;
+}
+
+#reservation .input__cvv {
+    width: 3em;
 }
 
 #reservation .input__text input {
     padding: 5px;
     width: 100%;
+    height: 100%;
+}
+
+#reservation select,
+#reservation input,
+#reservation .btn__timeslot {
+    color: var(--input-text);
+    font-size: 15px;
 }
 
 #reservation select,
@@ -404,9 +438,7 @@ select:disabled {
     border-color: var(--input-border-focus);
 }
 
-#reservation .input__text label,
-#reservation .input__select label,
-#reservation .input__checkbox label {
+#reservation label {
     color: var(--label);
     font-size: 0.9em;
     text-transform: uppercase;
@@ -437,6 +469,14 @@ select:disabled {
     height: 2px;
 }
 
+#reservation .input__checkbox {
+    text-align: center;
+}
+
+#reservation .input__checkbox input {
+    margin-right: 10px;
+}
+
 #reservation .submit {
     width: max-content;
     justify-self: center;
@@ -451,6 +491,10 @@ select:disabled {
 #reservation .bottom {
     display: grid;
     row-gap: 5px;
+}
+
+#reservation .btn label {
+    color: white;
 }
 
 /** INPUT VALIDATION */
