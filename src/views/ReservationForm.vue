@@ -3,7 +3,7 @@
         <div class="main">
             <!-- GUEST INFO -->
             <div class="guest">
-                <span><h2>Reservation Info</h2> <hr /></span>
+                <span><h2>Reservation Info</h2> <div class="gdivider" /></span>
 
                 <div class="field-group guest__fields">
                     <div class="input__text input__fn field-w6">
@@ -205,7 +205,7 @@
 
              <!-- PAYMENT INFO -->
             <div class="payment">
-                <span><h2>Payment Info</h2> <hr /></span>
+                <span><h2>Payment Info</h2> <div class="gdivider" /></span>
 
                 <div class="field-group">
                     <div class="input__text chname field-w12">
@@ -262,7 +262,7 @@
 
             <!-- BILLING INFO -->
             <div class="billing">
-                <span><h2>Billing Info</h2> <hr /></span>
+                <span><h2>Billing Info</h2> <div class="gdivider" /></span>
 
                 <div class="field-group">
                     <div class="input__checkbox input__same-add field-w12">

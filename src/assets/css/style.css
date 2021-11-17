@@ -112,6 +112,11 @@ select:disabled {
     background-color: var(--input-disabled);
 }
 
+.gdivider {
+    height: 2px;
+    background: linear-gradient(to right, var(--hr), var(--sub-background));
+}
+
 /** HOME **/
 
 #home {
