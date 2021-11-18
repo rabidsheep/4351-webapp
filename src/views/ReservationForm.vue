@@ -119,12 +119,12 @@
 
                         </div>
                     </div>
-                    <div class="datetime-group">
+
+                    <div class="datetime-group field-w12">
                         <div id="guest__date" class="input__general">
                             <label for="date">Date & Time <span class="req">*</span></label>
 
                             <div class="date-group">
-
                                 <v-date-picker
                                     v-model="selectedDate"
                                     :allowed-dates="allowedDates"
@@ -175,7 +175,6 @@
                                             {{ month }}
                                         </option>
                                     </select>
-
                                     <select
                                     id="day" class="field-w6"
                                     v-model="selected.day">
@@ -186,7 +185,6 @@
                                             {{ day }}
                                         </option>
                                     </select>
-
                                     <select
                                     id="year" class="field-w6"
                                     v-model="selected.year"
@@ -208,13 +206,20 @@
 
                         <div id="guest__time" class="input__general">
                             <div class="btnbox">
-                                <button
-                                :class="reservation.time === time ? `btn__timeslot active` : `btn__timeslot`"
-                                v-for="(time, i) in availableTimes"
-                                :key="i"
-                                @click="selectTime($event, time)">
-                                    {{ time }}
-                                </button>
+                                <template v-if="availableTimes.length > 0">
+                                    <button
+                                    :class="reservation.time === time ? `btn__timeslot active` : `btn__timeslot`"
+                                    v-for="(time, i) in availableTimes"
+                                    :key="i"
+                                    @click="selectTime($event, time)">
+                                        {{ time }}
+                                    </button>
+                                </template>
+
+                                <template v-else>
+                                   Sorry! There are no available timeslots for this date.
+                                </template>
+                                
                             </div>
                         </div>
                     </div>
@@ -380,7 +385,6 @@ import { required, email } from "vuelidate/lib/validators";
 import moment from 'moment';
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
 const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
-
 export default {
     name: 'ReservationForm',
     components: {
@@ -491,7 +495,6 @@ export default {
                }
            } 
         },
-
         // update billing alongside mailing if box is checked
         'customer.mailing': {
             handler: function(mailing) {
@@ -501,7 +504,6 @@ export default {
             },
             deep: true
         },
-
         // fetch times available
         'selectedDate': function(sd) {
             this.reservation.date = moment(sd).format('MM/DD/YYYY')
@@ -509,12 +511,9 @@ export default {
         'reservation.date': function(date) {
             this.getAvailableTimes(date);
         },
-
-
     },
     mounted: function() {
         // code for checking if user is logged in will go here
-
         this.selectedDate = this.currentDate;
         this.getAvailableTimes(this.reservation.date);
     },
@@ -522,31 +521,25 @@ export default {
         dateDropdownUsed: function(month, day, year) {
             this.reservation.date = `${month}/${day}/${year}`
         },
-
         allowedDates: function(v) {
             return (v >= this.currentDate);
         },
-
         daysInMonth: function(month, year) {
             this.days = new Date(year, month, 0).getDate();   
         },
-
         selectTime: function(e, time) {
             e.preventDefault();
             this.reservation.time = time;
         },
-
         validationStatus: function(validation) {
             return typeof validation != "undefined" ? validation.$error : false;
         },
-
         // add dashes to phone number field as user types
         addDashes(key, num) {
             if (key != 'Backspace' && (num.length === 3 || num.length === 7)){
                 return this.customer.phone += '-';
             }
         },
-
         // add spaces to credit card number field as user types
         addSpaces(num) {
             return this.payment.num = num.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ').trim();
@@ -557,7 +550,6 @@ export default {
             if (e.key < '0' || e.key > '9')
                 return e.preventDefault();
         },
-
         getAvailableTimes(date) {
             this.$times.get({
                 date: new Date(date).toLocaleString("en-US").split(",")[0]
@@ -567,7 +559,6 @@ export default {
             })
             .catch((error) => console.error(error));
         },
-
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
@@ -588,7 +579,6 @@ export default {
                 } 
             }
             printObj(data);
-
             this.$reservation.save(data)
             .then((response) => {
                 console.log(response.body);

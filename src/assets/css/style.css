@@ -259,6 +259,8 @@ select:disabled {
 
 #reservation #guest__time {
     height: max-content;
+    text-align: center;
+    width: 100%;
 }
 
 #reservation #guest__time .btnbox {
