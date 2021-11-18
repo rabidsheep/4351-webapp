@@ -559,11 +559,6 @@ select:disabled {
 /** INPUT VALIDATION */
 .invalid-feedback{
     color: red;
-    font-size: 0.8em;
+    font-size: 0.7em;
     position: absolute;
-}
-.invalid-state{
-    color: red;
-    font-size: 0.8em;
-    position: relative;
 }

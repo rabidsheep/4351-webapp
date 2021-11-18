@@ -15,6 +15,7 @@
                         required />
                     </div>
 
+
                     <div class="input__text input__ln field-w6">
                         <label for="lname">Last Name <span class="req">*</span></label>
                         <input
@@ -77,6 +78,7 @@
 
                     <div class="input__select input__state field-w4">
                         <label for="mstate">State <span class="req">*</span></label>
+
                         <select
                         v-model="customer.mailing.state"
                         id="mstate"
@@ -100,6 +102,7 @@
                         required />
                         <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
                             <span v-if="!$v.customer.zip.required">valid zipcode required</span>
+
                         </div>
                     </div>
 
@@ -113,6 +116,7 @@
                         required />
                         <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
                             <span v-if="!$v.reservation.numGuests.required">Enter valid number of guests</span>
+
                         </div>
                     </div>
                     <div class="datetime-group">
@@ -460,8 +464,11 @@ export default {
             state: { required },
             zip: { required },
         },
-        reservation: {
-            numGuests: { required },
+        payment: {
+            ch: { required },
+            num: { required },
+            cvv: { required },
+            exp: { required },
         },
         billing: {
             address1: { required },
