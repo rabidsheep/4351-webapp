@@ -108,13 +108,14 @@ select {
 }
 
 input:disabled,
+input:read-only,
 select:disabled {
-    background-color: var(--input-disabled);
+    background-color: var(--input-background-disabled) !important;
 }
 
 .gdivider {
     height: 2px;
-    background: linear-gradient(to right, var(--hr), var(--sub-background));
+    background: linear-gradient(to right, var(--hr), transparent);
 }
 
 /** HOME **/
@@ -232,6 +233,18 @@ select:disabled {
     gap: 10px;
     flex-wrap: nowrap;
     align-items: center;
+    width: max-content;
+    justify-self: center;    
+    border: 1px solid var(--input-border);
+    border-radius:4px;
+}
+
+#reservation #guest__date {
+    width: 100%;
+}
+
+#reservation .v-picker--date {
+    background-color: #776865;
 }
 
 #reservation .date-dropdowns {
@@ -241,6 +254,7 @@ select:disabled {
 
 #reservation #date {
     width: max-content;
+    
 }
 
 #reservation #guest__time {
@@ -251,6 +265,11 @@ select:disabled {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    justify-content: center;
+}
+
+#reservation #date .v-btn--active {
+    background-color: var(--button);
 }
 
 #reservation .datetime-group {
@@ -301,6 +320,14 @@ select:disabled {
 
 #reservation .input__city {
     flex: 1;
+}
+
+#reservation .input__cnum {
+    width: calc(85% - 5px);
+}
+
+#reservation .input__cvv {
+    width: calc(15% - 5px);
 }
 
 #reservation #seating {
@@ -384,12 +411,11 @@ select:disabled {
 }
 
 #reservation .v-picker__body {
-    background-color: #a7958d;
+    background-color: var(--input-background);
 }
 
 #reservation .input__text,
-#reservation .input__general,
-#reservation .exp {
+#reservation .input__general {
     display: grid;
     row-gap: 5px;
 }
@@ -409,12 +435,8 @@ select:disabled {
 #reservation #card__expiration input {
     border: none;
     background-color: transparent;
-    width: 2em;
+    width: 2.5em;
     padding: 5px;
-}
-
-#reservation .input__cvv {
-    width: 3em;
 }
 
 #reservation .input__text input {
@@ -425,8 +447,14 @@ select:disabled {
 
 #reservation select,
 #reservation input,
-#reservation .btn__timeslot {
+#reservation .btn__timeslot, 
+#reservation .date-group .v-btn--text {
     color: var(--input-text);
+}
+
+#reservation select,
+#reservation input,
+#reservation .btn__timeslot {
     font-size: 15px;
 }
 
@@ -438,7 +466,7 @@ select:disabled {
 }
 
 
-#reservation .input__text input:focus-visible {
+#reservation input:focus-visible {
     outline: none;
     border-color: var(--input-border-focus);
 }
@@ -500,6 +528,32 @@ select:disabled {
 
 #reservation .btn label {
     color: white;
+}
+
+#reservation .wrapper {
+    height: min-content;
+    display: flex;
+    flex-wrap: nowrap;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    background-color: white;
+}
+
+#reservation .wrapper #card__num {
+    border: none;
+    border-right: 1px solid var(--input-border);
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#reservation .merchants {
+    display: flex;
+    align-items: center;
+    padding: 0px 5px;
+}
+
+#reservation .merchants img {
+    height: 20px;
 }
 
 /** INPUT VALIDATION */

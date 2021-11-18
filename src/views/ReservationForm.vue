@@ -52,7 +52,7 @@
                     <div class="input__text input__address-l1 field-w12">
                         <label for="maddress">Mailing Address <span class="req">*</span></label>
                         <input
-                        v-model="customer.address1"
+                        v-model="customer.mailing.address1"
                         id="maddress"
                         class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
                         required />                   
@@ -61,7 +61,7 @@
                     <div class="input__text input__address-l2 field-w12">
                         <label for="maddress2">Apt/Suite/Building # <i>(Optional)</i></label>
                         <input
-                        v-model="customer.address2"
+                        v-model="customer.mailing.address2"
                         id="maddress2"
                         required />                   
                     </div>
@@ -69,7 +69,7 @@
                     <div class="input__text input__city  field-w4">
                         <label for="mcity">City <span class="req">*</span></label>
                         <input
-                        v-model="customer.city"
+                        v-model="customer.mailing.city"
                         id="mcity"
                         class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                         required />
@@ -78,7 +78,7 @@
                     <div class="input__select input__state field-w4">
                         <label for="mstate">State <span class="req">*</span></label>
                         <select
-                        v-model="customer.state"
+                        v-model="customer.mailing.state"
                         id="mstate"
                         class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                         required>
@@ -94,7 +94,7 @@
                     <div class="input__text input__zip field-w4 form-group">
                         <label for="mzip">Zip Code <span class="req">*</span></label>
                         <input
-                        v-model="customer.zip"
+                        v-model="customer.mailing.zip"
                         id="mzip"
                         @keypress="numKeysOnly($event)"
                         required />
@@ -120,6 +120,16 @@
                             <label for="date">Date & Time <span class="req">*</span></label>
 
                             <div class="date-group">
+
+                                <v-date-picker
+                                    v-model="selectedDate"
+                                    :allowed-dates="allowedDates"
+                                    :show-current="false"
+                                    scrollable
+                                    no-title
+                                    id="date"
+                                    />
+                                <!--
                                 <v-menu
                                 ref="dp"
                                 v-model="dpOpened"
@@ -142,10 +152,12 @@
                                     v-model="selectedDate"
                                     :allowed-dates="allowedDates"
                                     scrollable
+                                    no-title
                                     id="date"
                                     />
                                 </v-menu>
-
+                                -->
+                                <!--
                                 <div class="date-group date-dropdowns"
                                 @change="dateDropdownUsed(selected.month, selected.day, selected.year)">
                                     <select
@@ -185,6 +197,8 @@
                                         </option>
                                     </select>
                                 </div>
+                                -->
+                                <!--<label for="date">{{ selectedDate }}</label>-->
                             </div>
                         </div>
 
@@ -208,7 +222,7 @@
                 <span><h2>Payment Info</h2> <div class="gdivider" /></span>
 
                 <div class="field-group">
-                    <div class="input__text chname field-w12">
+                    <div class="input__text input__ch field-w12">
                         <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
                         <input
                         v-model="payment.ch"
@@ -218,14 +232,20 @@
 
                     <div class="input__text input__cnum">
                         <label for="card__num">Card # <span class="req">*</span></label>
-                        <input
-                        v-model="payment.num"
-                        id="card__num"
-                        placeholder="#### #### #### ####"
-                        maxlength="19"
-                        @input="addSpaces($event.target.value)"
-                        @keypress="numKeysOnly($event)"
-                        required />
+                        <div class="wrapper">
+                            <input
+                            v-model="payment.num"
+                            id="card__num"
+                            placeholder="#### #### #### ####"
+                            maxlength="19"
+                            @input="addSpaces($event.target.value)"
+                            @keypress="numKeysOnly($event)"
+                            required />
+
+                            <div class="merchants">
+                            <img :src="require(`@/assets/img/merchants.png`)" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="input__text input__cvv">
@@ -257,6 +277,8 @@
                             placeholder="YY" />
                         </div>
                     </div>
+
+                    
                 </div>
             </div>
 
@@ -275,12 +297,13 @@
                     </div>
 
                     <div class="input__text input__address-l1 field-w12">
-                        <label for="baddress1">Mailing Address <span class="req">*</span></label>
+                        <label for="baddress1">Billing Address <span class="req">*</span></label>
                         <input
                         v-model="billing.address1"
                         id="baddress1"
                         class="form-control" :class="{ 'is-invalid': submitted && $v.billing.address1.$error }"
-                        required />                   
+                        required
+                        :readonly="useMailAddress" />                   
                     </div>
 
                     <div class="input__text input__address-l2 field-w12">
@@ -288,45 +311,49 @@
                         <input
                         v-model="billing.address2"
                         id="baddress2"
-                        required />                   
+                        required
+                        :readonly="useMailAddress" />                   
                     </div>
 
-                        <div class="input__text input__city field-w4">
-                            <label for="bcity">City <span class="req">*</span></label>
-                            <input
-                            v-model="billing.city"
-                            id="bcity"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.billing.city.$error }"
-                            required />
+                    <div class="input__text input__city field-w4">
+                        <label for="bcity">City <span class="req">*</span></label>
+                        <input
+                        v-model="billing.city"
+                        id="bcity"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.city.$error }"
+                        required
+                        :readonly="useMailAddress" />
                     </div>
 
-                        <div class="input__select input__state field-w4">
+                    <div class="input__select input__state field-w4">
                         <label for="bstate">State <span class="req">*</span></label>
-                            <select
-                            v-model="billing.state"
-                            id="bstate"
-                            class="form-control" :class="{ 'is-invalid': submitted && $v.billing.state.$error }"
-                            required>
-                                <option
-                                v-for="(state, i) in states"
-                                :key="i"
-                                :value="state">
-                                    {{ state }}
-                                </option>
-                            </select>
-                        </div>
+                        <select
+                        v-model="billing.state"
+                        id="bstate"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.state.$error }"
+                        required
+                        :disabled="useMailAddress">
+                            <option
+                            v-for="(state, i) in states"
+                            :key="i"
+                            :value="state">
+                                {{ state }}
+                            </option>
+                        </select>
+                    </div>
 
-                        <div class="input__text input__zip form-group field-w4">
-                            <label for="bzip">Zip Code <span class="req">*</span></label>
-                            <input
-                            v-model="billing.zip"
-                            id="bzip"
-                            @keypress="numKeysOnly($event)"
-                            required />
-                            <div v-if="submitted && $v.billing.zip.$error" class="invalid-feedback">
-                                <span v-if="!$v.billing.zip.required">valid zipcode required</span>
-                            </div>
+                    <div class="input__text input__zip form-group field-w4">
+                        <label for="bzip">Zip Code <span class="req">*</span></label>
+                        <input
+                        v-model="billing.zip"
+                        id="bzip"
+                        @keypress="numKeysOnly($event)"
+                        required
+                        :readonly="useMailAddress" />
+                        <div v-if="submitted && $v.billing.zip.$error" class="invalid-feedback">
+                            <span v-if="!$v.billing.zip.required">valid zipcode required</span>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -389,11 +416,13 @@ export default {
                 lastName: null,
                 email: null,
                 phone: null,
-                address1: null,
-                address2: null,
-                city: null,
-                state: null,
-                zip: null,
+                mailing: {
+                    address1: null,
+                    address2: null,
+                    city: null,
+                    state: null,
+                    zip: null,
+                },
                 preferredPayment: null,
                 preferredDiner: null,
                 earnedPoints: 0,
@@ -447,42 +476,26 @@ export default {
         'useMailAddress': function(val) {
            if (val) {
                this.billing = {
-                   address1: this.customer.address1,
-                   address2: this.customer.address2,
-                   city: this.customer.state,
-                   state: this.customer.city,
-                   zip: this.customer.zip
+                   address1: this.customer.mailing.address1,
+                   address2: this.customer.mailing.address2,
+                   city: this.customer.mailing.state,
+                   state: this.customer.mailing.city,
+                   zip: this.customer.mailing.zip
                }
            } 
         },
 
-        // these all update billing alongside mailing if box is checked
-        'customer.address1': function(address) {
-            if (this.useMailAddress)
-                this.billing.address1 = address;
+        // update billing alongside mailing if box is checked
+        'customer.mailing': {
+            handler: function(mailing) {
+                if (this.useMailAddress) {
+                    this.billing = mailing
+                }
+            },
+            deep: true
         },
 
-        'customer.address2': function(address) {
-            if (this.useMailAddress)
-                this.billing.address2 = address;
-        },
-
-        'customer.city': function(city) {
-            if (this.useMailAddress)
-                this.billing.city = city;
-        },
-
-        'customer.state': function(state) {
-            if (this.useMailAddress)
-                this.billing.state = state;
-        },
-
-        'customer.zip': function(zip) {
-            if (this.useMailAddress)
-                this.billing.zip = zip;
-        },
-
-        // fetch times
+        // fetch times available
         'selectedDate': function(sd) {
             this.reservation.date = moment(sd).format('MM/DD/YYYY')
         },
