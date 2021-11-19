@@ -285,7 +285,7 @@
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
-const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
+/* const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); } */
 
 export default {
     name: 'ReservationForm',
@@ -415,23 +415,20 @@ export default {
 
             // data to be submitted
             var data = {
-                customer: this.customer,
-                payment: this.payment,
-                billing: this.billing,
-                reservation: {
-                    ...this.reservation,
-                    firstName: this.customer.firstName,
-                    lastName: this.customer.lastName
-                } 
+                name: this.customer.firstName + this.customer.lastName,
+                phone: this.customer.phone,
+                email: this.customer.email,
+                date: this.reservation.date,
+                tables: this.reservation.tables
             }
-            printObj(data);
+            //printObj(data);
 
             this.$reservation.save(data)
             .then((response) => {
                 console.log(response.body);
             })
             .catch((error) => { 
-                console.log(error);
+                console.log(error.body)
             });
         }
     }
