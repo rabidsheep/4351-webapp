@@ -23,10 +23,10 @@ let timesMethods = {
 }
 let timesRes = Vue.resource(`${uri}/times`, {}, timesMethods)
 
-let tableMethods = {
+let tablesMethods = {
     get: { method: 'GET'}
 }
-let tableRes = Vue.resource(`${uri}'/tables/available`, {}, tableMethods)
+let tablesRes = Vue.resource(`${uri}/tables/available`, {}, tablesMethods)
 
 
 Vue.use({
@@ -38,8 +38,8 @@ Vue.use({
         Object.defineProperty(Vue.prototype, '$times', {
             get () { return timesRes }
         })
-        Object.defineProperty(Vue.prototype, '$table', {
-            get () {return tableRes}
+        Object.defineProperty(Vue.prototype, '$tables', {
+            get () {return tablesRes}
         })
     }
 })

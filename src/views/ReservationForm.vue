@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="input__text input__phone field-w6">
-                        <label for="phone">Phone # <i>(Optional)</i></label>
+                        <label for="phone">Phone # <span class="req">*</span></label>
                         <input
                         v-model="customer.phone"
                         placeholder="###-###-####"
@@ -49,41 +49,44 @@
                         @keypress="numKeysOnly($event)"
                         id="phone" />
                     </div>
-
+                    
                     <div class="input__text input__address-l1 field-w12">
-                        <label for="maddress">Mailing Address <span class="req">*</span></label>
+                        <label for="maddress">Mailing Address <span class="req" v-show="registerUser">*</span></label>
                         <input
                         v-model="customer.mailing.address1"
                         id="maddress"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
-                        required />                   
+                        class="form-control"
+                        :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
+                        :required="registerUser" />                   
                     </div>
 
                     <div class="input__text input__address-l2 field-w12">
-                        <label for="maddress2">Apt/Suite/Building # <i>(Optional)</i></label>
+                        <label for="maddress2">Apt/Suite/Building #</label>
                         <input
                         v-model="customer.mailing.address2"
                         id="maddress2"
-                        required />                   
+                        :required="registerUser" />                   
                     </div>
 
                     <div class="input__text input__city  field-w4">
-                        <label for="mcity">City <span class="req">*</span></label>
+                        <label for="mcity">City <span class="req" v-show="registerUser">*</span></label>
                         <input
                         v-model="customer.mailing.city"
                         id="mcity"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
-                        required />
+                        class="form-control"
+                        :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
+                        :required="registerUser" />
                     </div>
 
                     <div class="input__select input__state field-w4">
-                        <label for="mstate">State <span class="req">*</span></label>
+                        <label for="mstate">State <span class="req" v-show="registerUser">*</span></label>
 
                         <select
                         v-model="customer.mailing.state"
                         id="mstate"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
-                        required>
+                        class="form-control"
+                        :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
+                        :required="registerUser">
                             <option
                             v-for="(state, i) in states"
                             :key="i"
@@ -94,12 +97,12 @@
                     </div>
 
                     <div class="input__text input__zip field-w4 form-group">
-                        <label for="mzip">Zip Code <span class="req">*</span></label>
+                        <label for="mzip">Zip Code <span class="req" v-show="registerUser">*</span></label>
                         <input
                         v-model="customer.mailing.zip"
                         id="mzip"
                         @keypress="numKeysOnly($event)"
-                        required />
+                        :required="registerUser" />
                         <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
                             <span v-if="!$v.customer.zip.required">valid zipcode required</span>
 
@@ -226,6 +229,7 @@
                  </div>
             </div>
 
+            <template v-if="highTraffic">
              <!-- PAYMENT INFO -->
             <div class="payment">
                 <span><h2>Payment Info</h2> <div class="gdivider" /></span>
@@ -365,6 +369,7 @@
                     </div>
                 </div>
             </div>
+            </template>
         </div>
 
         <div class="bottom">
@@ -398,6 +403,8 @@ export default {
             currentYear: parseInt(new Date().getFullYear().toString().slice(-4)),
             currentDate: new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().substr(0, 10),
             selectedDate: null,
+            highTraffic: false,
+            registerUser: false,
             dpOpened: false,
             selected: {
                 date: null,
@@ -516,7 +523,10 @@ export default {
     mounted: function() {
         // code for checking if user is logged in will go here
         this.selectedDate = this.currentDate;
-        this.getAvailableTimes(this.reservation.date);
+        /*this.$tables.get().then((response) => {
+            console.log(response)
+        })
+        .catch((error) => console.error(error));*/
     },
     methods: {
         dateDropdownUsed: function(month, day, year) {
