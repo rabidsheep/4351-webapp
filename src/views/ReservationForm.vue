@@ -11,7 +11,6 @@
                         <input
                         v-model="customer.firstName"
                         id="fname"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.firstName.$error }"
                         required />
                     </div>
 
@@ -21,21 +20,15 @@
                         <input
                         v-model="customer.lastName"
                         id="lname"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.lastName.$error }"
                         required />
                     </div>
-
-                    <div class="input__text input__email field-w6 form-group">
+                    <div class="input__text input__email field-w6">
                         <label for="email">E-mail <span class="req">*</span></label>
                         <input
                         v-model="customer.email"
                         id="email"
                         type="email"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.email.$error }"
                         required />
-                        <div v-if="submitted && $v.customer.email.$error" class="invalid-feedback">
-                            <span v-if="!$v.customer.email.email">The email is not valid.</span>
-                        </div>
                     </div>
 
                     <div class="input__text input__phone field-w6">
@@ -52,11 +45,12 @@
 
                     <div class="input__text input__address-l1 field-w12">
                         <label for="maddress">Mailing Address <span class="req">*</span></label>
+                        <div class="form-group">
                         <input
                         v-model="customer.mailing.address1"
                         id="maddress"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
-                        required />                   
+                        required />
+                        </div>             
                     </div>
 
                     <div class="input__text input__address-l2 field-w12">
@@ -72,17 +66,14 @@
                         <input
                         v-model="customer.mailing.city"
                         id="mcity"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
                         required />
                     </div>
 
                     <div class="input__select input__state field-w4">
                         <label for="mstate">State <span class="req">*</span></label>
-
                         <select
                         v-model="customer.mailing.state"
                         id="mstate"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
                         required>
                             <option
                             v-for="(state, i) in states"
@@ -93,31 +84,25 @@
                         </select>
                     </div>
 
-                    <div class="input__text input__zip field-w4 form-group">
+                    <div class="input__text input__zip field-w4">
                         <label for="mzip">Zip Code <span class="req">*</span></label>
                         <input
                         v-model="customer.mailing.zip"
                         id="mzip"
+                        maxlength="5"
                         @keypress="numKeysOnly($event)"
                         required />
-                        <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
-                            <span v-if="!$v.customer.zip.required">valid zipcode required</span>
-
-                        </div>
                     </div>
 
-                    <div class="input__text input__seating form-group">
+                    <div class="input__text input__seating">
                         <label for="seating"># of Guests <span class="req">*</span></label>
                         <input
                         v-model="reservation.numGuests"
                         id="seating"
                         type="number"
+                        min="0"
                         @keypress="numKeysOnly($event)"
                         required />
-                        <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
-                            <span v-if="!$v.reservation.numGuests.required">Enter valid number of guests</span>
-
-                        </div>
                     </div>
 
                     <div class="datetime-group field-w12">
@@ -275,6 +260,8 @@
                             v-model="expMonth"
                             @change="payment.exp = expMonth + '/' + expYear"
                             id="card__month"
+                            maxlength="2"
+                            @keypress="numKeysOnly($event)"
                             required
                             placeholder="MM" />
                             /
@@ -282,6 +269,8 @@
                             v-model="expYear"
                             @change="payment.exp = expMonth + '/' + expYear"
                             id="card__year"
+                            maxlength="2"
+                            @keypress="numKeysOnly($event)"
                             required
                             placeholder="YY" />
                         </div>
@@ -310,7 +299,6 @@
                         <input
                         v-model="billing.address1"
                         id="baddress1"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.address1.$error }"
                         required
                         :readonly="useMailAddress" />                   
                     </div>
@@ -329,7 +317,6 @@
                         <input
                         v-model="billing.city"
                         id="bcity"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.city.$error }"
                         required
                         :readonly="useMailAddress" />
                     </div>
@@ -339,7 +326,6 @@
                         <select
                         v-model="billing.state"
                         id="bstate"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.state.$error }"
                         required
                         :disabled="useMailAddress">
                             <option
@@ -356,12 +342,10 @@
                         <input
                         v-model="billing.zip"
                         id="bzip"
+                        maxlength="5"
                         @keypress="numKeysOnly($event)"
                         required
                         :readonly="useMailAddress" />
-                        <div v-if="submitted && $v.billing.zip.$error" class="invalid-feedback">
-                            <span v-if="!$v.billing.zip.required">valid zipcode required</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -463,10 +447,12 @@ export default {
             firstName: { required },
             lastName: { required },
             email: { required, email },
-            address1: { required },
-            city: { required },
-            state: { required },
-            zip: { required },
+            mailing: {
+                address1: { required },
+                city: { required },
+                state: { required },
+                zip: { required },
+            },
         },
         payment: {
             ch: { required },
@@ -479,7 +465,11 @@ export default {
             city: { required },
             state: { required },
             zip: { required },
-        }
+        },
+        reservation: {
+            numGuests: { required },
+            date: { required },
+        },
     },
     /* watchers to check for changes in certain variables */
     watch: {
@@ -489,8 +479,8 @@ export default {
                this.billing = {
                    address1: this.customer.mailing.address1,
                    address2: this.customer.mailing.address2,
-                   city: this.customer.mailing.state,
-                   state: this.customer.mailing.city,
+                   city: this.customer.mailing.city,
+                   state: this.customer.mailing.state,
                    zip: this.customer.mailing.zip
                }
            } 
@@ -565,7 +555,7 @@ export default {
             this.submitted = true;
             this.$v.$touch();
             if (this.$v.$invalid){
-                return alert("Fix errors!");
+                return alert("Invalid submission!");
             }
             // data to be submitted
             var data = {
@@ -586,7 +576,7 @@ export default {
             .catch((error) => { 
                 console.log(error);
             });
-            alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.customer));
+            alert("Submission Successful!\n\n" + JSON.stringify(this.customer));
         }
     }
 }
