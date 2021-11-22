@@ -580,7 +580,8 @@ export default {
             }
             // data to be submitted
             var data = {
-                name: this.customer.firstName + this.customer.lastName,
+                firstName: this.customer.firstName,
+                lastName: this.customer.lastName,
                 phone: this.customer.phone,
                 email: this.customer.email,
                 date: this.reservation.date,
