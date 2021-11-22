@@ -211,7 +211,8 @@ api.get("/times", (req, res) => {
 api.put("/reservations", (req, res) => {
   return reservation
     .create({
-      name: req.body.firstName + req.body.lastName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
       date: req.body.date,
