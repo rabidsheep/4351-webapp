@@ -25,6 +25,7 @@ const serviceHours = [
   "3:00pm", "4:00pm", "5:00pm",
   "6:00pm", "7:00pm", "8:00pm"
 ]
+
 // Function for finding optimal set of tables to accomadate a certain number of guests
 function table_combo(array, num, partial = [], available = []) {
   var sum = 0;
@@ -50,6 +51,10 @@ function table_combo(array, num, partial = [], available = []) {
   }
   return available;
 }
+
+/***********
+** TABLES **
+***********/
 
 // Takes date and gets all tables reserved for that hour
 api.get("/tables", (req, res) => {
@@ -86,7 +91,7 @@ api.delete("/tables", (req, res) => {
 api.get("/tables/available", (req, res) => {
   //Fetches the tables that are already reserved for that day
   return reservation
-    .find({ date: req.body.date })
+    .find({ date: req.query.date })
     .select("tables -_id")
     .exec((err, docs) => {
       if (err) {
@@ -115,6 +120,11 @@ api.get("/tables/available", (req, res) => {
       });
     });
 });
+
+
+/************
+** TRAFFIC **
+************/
 
 // Send it a month and it will reply with a boolean array of days that have num of reservations > threshold
 const threshold = 2;
@@ -155,6 +165,12 @@ api.get("/traffic", (req, res) => {
     return res.status(200).send(results);
   });
 });
+
+
+/**********
+** TIMES **
+**********/
+
 // Takes a date = YEAR-MM-DD and num = num of guest and returns object with key = hour and value = a bool of availability
 api.get("/times", (req, res) => {
   console.log(req.query.date);
@@ -209,6 +225,11 @@ api.get("/times", (req, res) => {
   });
 });
 
+
+/*****************
+** RESERVATIONS **
+*****************/
+
 // Takes name, phone, email, date, tables and creates a reservation in the data base then responds with success or fail
 api.put("/reservations", (req, res) => {
   return reservation
@@ -258,6 +279,11 @@ api.delete("/reservations", (req, res) => {
     return res.status(200).send("Reservation canceled!");
   });
 });
+
+
+/**********
+** USERS **
+**********/
 
 // Takes id token from firebase auth and return database information for that user
 api.get("/user", (req, res) => {

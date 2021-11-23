@@ -56,7 +56,7 @@
                         v-model="customer.mailing.line1"
                         id="maddress"
                         class="form-control"
-                        :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
+                        :class="{ 'is-invalid': submitted && $v.customer.line1.$error }"
                         :required="registerUser" />                   
                     </div>
 
@@ -115,6 +115,7 @@
                         v-model="reservation.numGuests"
                         id="seating"
                         type="number"
+                        min="1"
                         @keypress="numKeysOnly($event)"
                         required />
                         <div v-if="submitted && $v.reservation.numGuests.$error" class="invalid-state">
@@ -246,7 +247,7 @@
                         <input
                         v-model="billing.line1"
                         id="baddress1"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.address1.$error }"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.line1.$error }"
                         required
                         :readonly="useMailAddress" />                   
                     </div>
@@ -396,7 +397,7 @@ export default {
                 lastName: null,
                 date: new Date(),
                 time: null,
-                numGuests: null,
+                numGuests: 1,
                 tables: [],
             },
             submitted: false
@@ -452,9 +453,12 @@ export default {
         'selectedDate': function(sd) {
             this.reservation.date = moment(sd).format('MM/DD/YYYY')
         },
-        'reservation.date': function(date) {
-            this.getAvailableTimes(date);
+        'reservation.date': function() {
+            this.getAvailableTimes(this.reservation.date, this.reservation.numGuests);
         },
+        'reservation.numGuests': function() {
+            this.getAvailableTimes(this.reservation.date, this.reservation.numGuests);
+        }
     },
     mounted: function() {
         // code for checking if user is logged in will go here
@@ -498,8 +502,8 @@ export default {
             if (e.key < '0' || e.key > '9')
                 return e.preventDefault();
         },
-        getAvailableTimes(date) {
-            this.$times.get({date})
+        getAvailableTimes(date, guests) {
+            this.$times.get({date, guests})
             .then((response) => {
                 console.log(response)
                 this.availableTimes = response.body;
