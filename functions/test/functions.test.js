@@ -19,29 +19,271 @@ auth.connectAuthEmulator(authInst, "http://localhost:9099");
 
 const user = require("../models/user.model");
 const table = require("../models/table.model");
-const reservation = require("../models/table.model");
+const reservation = require("../models/reservation.model");
 const { should, expect } = require("chai");
+const { ObjectId } = require("bson");
 // Import the exported function definitions from our functions/index.js file
 
-describe("userAuthentication", () => {
-  before(async () => {
-    let Noah = await auth.createUserWithEmailAndPassword(
-      authInst,
-      "NoahRGori@gmail.com",
-      "testing12"
-    );
-    uid = Noah.user.uid;
-    token = await Noah.user.getIdToken();
+describe("Table", () => {
+  before(() => {
+    return table
+      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }])
+      .then((docs) => {
+        return reservation.create({
+          firstName: "Noah",
+          lastName: "Gori",
+          phone: "test",
+          email: "test",
+          date: new Date(2021, 0, 1, 20),
+          tables: [docs[0], docs[1], docs[2]],
+        });
+      });
+  });
+  after(() => {
+    return table.deleteMany({}).then(() => {
+      return reservation.deleteMany({});
+    });
+  });
+  it("GET /tables", () => {
+    return chai
+      .request(myFunctions.api)
+      .get("/tables")
+      .send({ date: new Date(2021, 0, 1, 20) })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body[0]).to.have.property(
+          "firstName",
+          "Noah",
+          "Incorrect Name on reservation"
+        );
+        expect(res.body[0].tables.length).to.be.equal(
+          3,
+          "Incorrect Number of tables"
+        );
+      });
+  });
+  it("PUT /tables", () => {
+    return chai
+      .request(myFunctions.api)
+      .put("/tables")
+      .send({ size: 3 })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("size", 3);
+      });
+  });
+  it("DELETE /tables", () => {
+    return chai
+      .request(myFunctions.api)
+      .delete("/tables")
+      .send({ size: 3 })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.text).to.equal(
+          "Deleted table of size: 3",
+          "Wrong response message"
+        );
+      });
+  });
+  it("GET /tables/available", () => {
+    return chai
+      .request(myFunctions.api)
+      .get("/tables/available")
+      .send({ date: new Date(2021, 0, 1, 20), num: 3 })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("available");
+        expect(res.body.available.length).to.equal(2);
+        expect(res.body.available[0]).to.have.property("size", 2);
+      });
+  });
+});
+
+describe("GET /traffic", () => {
+  before(() => {
+    return reservation
+      .create([
+        {
+          firstName: "Noah",
+          lastName: "Gori",
+          phone: "test",
+          email: "test",
+          date: new Date(2021, 0, 1),
+          tables: [{ size: 2 }],
+        },
+        {
+          firstName: "Noah",
+          lastName: "Gori",
+          phone: "test",
+          email: "test2",
+          date: new Date(2021, 0, 1),
+          tables: [{ size: 2 }],
+        },
+        {
+          firstName: "Noah",
+          lastName: "Gori",
+          phone: "test",
+          email: "test2",
+          date: new Date(2021, 0, 2),
+          tables: [{ size: 2 }],
+        },
+      ])
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+  after(() => {
+    return reservation.deleteMany({});
+  });
+  it("GET Traffic", () => {
+    return chai
+      .request(myFunctions.api)
+      .get("/traffic")
+      .send({ date: new Date(2021, 0, 5) })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body[0]).to.equal(true);
+        expect(res.body[1]).to.equal(false);
+      });
+  });
+});
+
+describe("GET /times", () => {
+  before(() => {
+    return table
+      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }])
+      .then((docs) => {
+        reservation
+          .create({
+            firstName: "Noah",
+            lastName: "Gori",
+            phone: "test",
+            email: "test",
+            date: new Date(2021, 0, 1, 20),
+            tables: docs,
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+  });
+  after(() => {
+    return table.deleteMany({}).then(() => {
+      reservation.deleteMany({});
+    });
+  });
+  it("Response: 200", () => {
+    time = new Date(2021, 0, 1, 0);
+    return chai
+      .request(myFunctions.api)
+      .get("/times")
+      .send({ date: time, num: 4 })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body[0]).to.equal(true, "First time slot not available");
+        expect(res.body[11]).to.equal(false, "Last time slot not unavailable");
+      });
+  });
+});
+
+describe("Reservation", () => {
+  before(() => {
+    return reservation.deleteMany({});
+  });
+  after(() => {
+    return reservation.deleteMany({});
+  });
+  it("PUT /reservations", () => {
+    firstName = "Noah";
+    lastName = "Gori";
+    phone = "555-555-5555";
+    email = "test@gmail.com";
+    date = new Date();
+    tables = [{ _id: new ObjectId(), size: 2 }];
+    paymentMethod = {
+      name: "test",
+      number: "test",
+      expirationDate: new Date(),
+      billing: "test",
+    };
+    return chai
+      .request(myFunctions.api)
+      .put("/reservations")
+      .send({
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        email: email,
+        date: date,
+        tables: tables,
+        payment: paymentMethod,
+      })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property("id");
+      });
+  });
+  it("GET /reservations", () => {
+    return chai
+      .request(myFunctions.api)
+      .get("/reservations")
+      .send({
+        email: email,
+      })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.body[0]).to.have.property("_id");
+        expect(res.body[0].phone).to.equal(phone);
+      });
+  });
+  it("DELETE /reservations", () => {
+    return chai
+      .request(myFunctions.api)
+      .delete("/reservations")
+      .send({
+        email: email,
+        phone: phone,
+      })
+      .then((res) => {
+        expect(res).to.have.status(200);
+        expect(res.text).to.equal("Reservation canceled!");
+      });
+  });
+});
+
+describe("User Authentication", () => {
+  before(() => {
+    return auth
+      .createUserWithEmailAndPassword(
+        authInst,
+        "NoahRGori@gmail.com",
+        "testing12"
+      )
+      .then((userC) => {
+        uid = userC.user.uid;
+        return userC.user
+          .getIdToken()
+          .then((idToken) => {
+            token = idToken;
+          })
+          .catch((err) => {
+            throw err;
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
   after(() => {
     test.cleanup();
   });
-  describe("Get Request", () => {
-    before((done) => {
-      user.create(
-        {
+  describe("User Exists", () => {
+    before(() => {
+      return user
+        .create({
           _id: uid,
-          name: "Noah Gori",
+          firstName: "Noah",
+          lastName: "Gori",
           mailing: "test",
           billing: "test",
           preferred: 10,
@@ -49,18 +291,17 @@ describe("userAuthentication", () => {
           paymentMethod: "test",
           phone: "test",
           email: "test",
-        },
-        (err) => {
-          done();
-        }
-      );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
-    after((done) => {
-      user.deleteMany({}, () => {
-        done();
+    after(() => {
+      return user.deleteMany({}).catch((err) => {
+        console.log(err);
       });
     });
-    it("gets a user's info on login", () => {
+    it("GET /user/login", () => {
       return chai
         .request(myFunctions.api)
         .get("/user/login")
@@ -70,7 +311,8 @@ describe("userAuthentication", () => {
           expect(res).to.be.json;
           expect(res.body).to.deep.equal({
             _id: uid,
-            name: "Noah Gori",
+            firstName: "Noah",
+            lastName: "Gori",
             mailing: "test",
             billing: "test",
             preferred: 10,
@@ -83,20 +325,31 @@ describe("userAuthentication", () => {
           });
         });
     });
+    it("DELETE /user", () => {
+      return chai
+        .request(myFunctions.api)
+        .delete("/user")
+        .send({ idToken: token })
+        .then((res) => {
+          expect(res).to.have.status(200);
+          expect(res.text).to.equal("Account deleted!")
+        });
+    });
   });
-  describe("Put Request", () => {
-    after((done) => {
-      user.deleteMany({}, () => {
-        done();
+  describe("PUT /user/register", () => {
+    after(() => {
+      return user.deleteMany({}).catch((err) => {
+        console.log(err);
       });
     });
-    it("Puts a new user into the database", () => {
+    it("Response: 200", () => {
       return chai
         .request(myFunctions.api)
         .put("/user/register")
         .send({
           idToken: token,
-          name: "Noah Gori",
+          firstName: "Noah",
+          lastName: "Gori",
           mailing: "test",
           billing: "test",
           preferred: 10,

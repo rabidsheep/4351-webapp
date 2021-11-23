@@ -25,7 +25,6 @@ const serviceHours = [
   "3:00pm", "4:00pm", "5:00pm",
   "6:00pm", "7:00pm", "8:00pm"
 ]
-
 // Function for finding optimal set of tables to accomadate a certain number of guests
 function table_combo(array, num, partial = [], available = []) {
   var sum = 0;
