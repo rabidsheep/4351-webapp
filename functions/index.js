@@ -216,6 +216,7 @@ api.put("/reservations", (req, res) => {
       phone: req.body.phone,
       email: req.body.email,
       date: req.body.date,
+      time: req.body.time,
       tables: req.body.tables,
       payment: req.body.payment
     })

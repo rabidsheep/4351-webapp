@@ -136,87 +136,19 @@
                                     no-title
                                     id="date"
                                     />
-                                <!--
-                                <v-menu
-                                ref="dp"
-                                v-model="dpOpened"
-                                :close-on-content-click="true"
-                                :return-value.sync="selectedDate"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto">
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-icon
-                                        class="btn__date"
-                                        size="30px" 
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        @click="$event.preventDefault()">
-                                            mdi-calendar
-                                        </v-icon>
-                                    </template>
-                                    <v-date-picker
-                                    v-model="selectedDate"
-                                    :allowed-dates="allowedDates"
-                                    scrollable
-                                    no-title
-                                    id="date"
-                                    />
-                                </v-menu>
-                                -->
-                                <!--
-                                <div class="date-group date-dropdowns"
-                                @change="dateDropdownUsed(selected.month, selected.day, selected.year)">
-                                    <select
-                                    v-model="selected.month"
-                                    @change="daysInMonth(selected.month, selected.year)"
-                                    id="month" class="field-w12">
-                                        <option
-                                        v-for="(month, i) in months"
-                                        :key="i"
-                                        :value="i+1">
-                                            {{ month }}
-                                        </option>
-                                    </select>
-                                    <select
-                                    id="day" class="field-w6"
-                                    v-model="selected.day">
-                                        <option
-                                        v-for="(day, i) in days"
-                                        :key="i"
-                                        :value="day">
-                                            {{ day }}
-                                        </option>
-                                    </select>
-                                    <select
-                                    id="year" class="field-w6"
-                                    v-model="selected.year"
-                                    @change="daysInMonth(selected.month, selected.year)">
-                                        <option
-                                        v-for="j in 21"
-                                        :key="j"
-                                        :value="j > 1 ? currentYear + (j - 2) : ``">
-                                            <template v-if="j > 1">
-                                                {{ currentYear + (j - 2) }}
-                                            </template>
-                                        </option>
-                                    </select>
-                                </div>
-                                -->
-                                <!--<label for="date">{{ selectedDate }}</label>-->
                             </div>
                         </div>
 
                         <div id="guest__time" class="input__general">
                             <div class="btnbox">
                                 <template v-if="availableTimes.length > 0">
-                                    <button
-                                    :class="reservation.time === time ? `btn__timeslot active` : `btn__timeslot`"
+                                    <TimeslotBtn
                                     v-for="(time, i) in availableTimes"
+                                    :time="time"
+                                    :selectedTimeslot="selectedTimeslot"
+                                    :i="i"
                                     :key="i"
-                                    @click="selectTime($event, time)">
-                                        {{ time }}
-                                    </button>
+                                    @set-time="selectTime($event, time, i)" />
                                 </template>
 
                                 <template v-else>
@@ -386,6 +318,7 @@
 </template>
 
 <script>
+import TimeslotBtn from "../components/TimeslotBtn.vue"
 import { required, email } from "vuelidate/lib/validators";
 import moment from 'moment';
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
@@ -394,6 +327,7 @@ import moment from 'moment';
 export default {
     name: 'ReservationForm',
     components: {
+        TimeslotBtn
     },
     props: {
         // router parameters will go here later
@@ -403,6 +337,7 @@ export default {
             currentYear: parseInt(new Date().getFullYear().toString().slice(-4)),
             currentDate: new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().substr(0, 10),
             selectedDate: null,
+            selectedTimeslot: null,
             highTraffic: false,
             registerUser: false,
             dpOpened: false,
@@ -460,6 +395,7 @@ export default {
                 firstName: null,
                 lastName: null,
                 date: new Date(),
+                time: null,
                 numGuests: null,
                 tables: [],
             },
@@ -538,8 +474,9 @@ export default {
         daysInMonth: function(month, year) {
             this.days = new Date(year, month, 0).getDate();   
         },
-        selectTime: function(e, time) {
+        selectTime: function(e, time, i) {
             e.preventDefault();
+            this.selectedTimeslot = i;
             this.reservation.time = time;
         },
         validationStatus: function(validation) {
@@ -566,6 +503,7 @@ export default {
                 date: new Date(date).toLocaleString("en-US").split(",")[0]
             })
             .then((response) => {
+                console.log(response)
                 this.availableTimes = response.body;
             })
             .catch((error) => console.error(error));
@@ -574,17 +512,18 @@ export default {
         submitReservation(e) {
             e.preventDefault();
             this.submitted = true;
-            this.$v.$touch();
+            /*this.$v.$touch();
             if (this.$v.$invalid){
                 return alert("Fix errors!");
-            }
-            // data to be submitted
+            }*/
+            // data to be submitted for reservation
             var data = {
                 firstName: this.customer.firstName,
                 lastName: this.customer.lastName,
                 phone: this.customer.phone,
                 email: this.customer.email,
                 date: this.reservation.date,
+                time: this.reservation.time,
                 tables: this.reservation.tables
             }
 

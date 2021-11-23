@@ -291,6 +291,12 @@ select:disabled {
     padding: 6px;
     border-radius: 10px;
     width: 80px;
+    transition: 0.3s;
+}
+
+#reservation .btn__timeslot.active {
+    background-color: var(--button-focus);
+    color: white;
 }
 
 #reservation .btn__date {
