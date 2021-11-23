@@ -157,7 +157,8 @@ api.get("/traffic", (req, res) => {
 });
 // Takes a date = YEAR-MM-DD and num = num of guest and returns object with key = hour and value = a bool of availability
 api.get("/times", (req, res) => {
-  time = new Date(req.body.date);
+  console.log(req.query.date);
+  time = new Date(req.query.date);
   var proms = [];
   for (let i = 9; i < 21; i++) {
     proms.push((callback) => {
@@ -259,7 +260,7 @@ api.delete("/reservations", (req, res) => {
 });
 
 // Takes id token from firebase auth and return database information for that user
-api.get("/user/login", (req, res) => {
+api.get("/user", (req, res) => {
   return admin
     .auth()
     .verifyIdToken(req.body.idToken)
@@ -283,7 +284,7 @@ api.get("/user/login", (req, res) => {
 });
 
 // Takes id token and relevant information and returns success or failure
-api.put("/user/register", (req, res) => {
+api.put("/user", (req, res) => {
   return admin
     .auth()
     .verifyIdToken(req.body.idToken)

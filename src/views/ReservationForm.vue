@@ -499,9 +499,7 @@ export default {
                 return e.preventDefault();
         },
         getAvailableTimes(date) {
-            this.$times.get({
-                date: new Date(date).toLocaleString("en-US").split(",")[0]
-            })
+            this.$times.get({date})
             .then((response) => {
                 console.log(response)
                 this.availableTimes = response.body;
