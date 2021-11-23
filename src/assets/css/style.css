@@ -175,21 +175,35 @@ select:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
 #home .signin h2 {
     font-size: 56px;
     font-family: 'Amatic SC', cursive;
-    line-height: intiial;
+    line-height: initial;
 }
 
+#home .signin input {
+    background-color: white;
+    border: 1px solid var(--input-border);
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
 
-#home .signin .wrapper {
-    padding: 0px 40px;
-    display: grid;
-    row-gap: 5px;
-    text-align: center;
-    width: max-content;
+#home .signin .password {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#home .signin .password .show-password {
+    position: absolute;
+    right: 0;
+    padding-right: 5px;
 }
 
 /** RESERVATION FORM **/

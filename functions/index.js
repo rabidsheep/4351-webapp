@@ -54,7 +54,11 @@ function table_combo(array, num, partial = [], available = []) {
 
 // Takes date and gets all tables reserved for that hour
 api.get("/tables", (req, res) => {
-  return reservation.find({date: new Date(req.body.date)}).select('name tables').exec().then((docs) => {
+  return reservation
+  .find({date: new Date(req.body.date)})
+  .select('name tables')
+  .exec()
+  .then((docs) => {
     return res.status(200).send(docs);
   }).catch((err)=> {
     return res.status(400).send(err);
@@ -170,8 +174,6 @@ api.get("/times", (req, res) => {
               booked.push(docs[i].tables[j]._id);
             }
           }
-
-          console.log(booked);
           return booked;
           //Fetches all table combos that can accomadate the num of guests up to size 5 greater than num guests
         })
