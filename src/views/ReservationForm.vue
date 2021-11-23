@@ -53,7 +53,7 @@
                     <div class="input__text input__address-l1 field-w12">
                         <label for="maddress">Mailing Address <span class="req" v-show="registerUser">*</span></label>
                         <input
-                        v-model="customer.mailing.address1"
+                        v-model="customer.mailing.line1"
                         id="maddress"
                         class="form-control"
                         :class="{ 'is-invalid': submitted && $v.customer.address1.$error }"
@@ -63,7 +63,7 @@
                     <div class="input__text input__address-l2 field-w12">
                         <label for="maddress2">Apt/Suite/Building #</label>
                         <input
-                        v-model="customer.mailing.address2"
+                        v-model="customer.mailing.line2"
                         id="maddress2"
                         :required="registerUser" />                   
                     </div>
@@ -170,7 +170,7 @@
                     <div class="input__text input__ch field-w12">
                         <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
                         <input
-                        v-model="payment.ch"
+                        v-model="payment.cardholderName"
                         id="card__name"
                         required />
                     </div>
@@ -179,7 +179,7 @@
                         <label for="card__num">Card # <span class="req">*</span></label>
                         <div class="wrapper">
                             <input
-                            v-model="payment.num"
+                            v-model="payment.cardNum"
                             id="card__num"
                             placeholder="#### #### #### ####"
                             maxlength="19"
@@ -244,7 +244,7 @@
                     <div class="input__text input__address-l1 field-w12">
                         <label for="baddress1">Billing Address <span class="req">*</span></label>
                         <input
-                        v-model="billing.address1"
+                        v-model="billing.line1"
                         id="baddress1"
                         class="form-control" :class="{ 'is-invalid': submitted && $v.billing.address1.$error }"
                         required
@@ -254,7 +254,7 @@
                     <div class="input__text input__address-l2 field-w12">
                         <label for="baddress2">Apt/Suite/Building # <i>(Optional)</i></label>
                         <input
-                        v-model="billing.address2"
+                        v-model="billing.line2"
                         id="baddress2"
                         required
                         :readonly="useMailAddress" />                   
@@ -368,8 +368,8 @@ export default {
                 email: null,
                 phone: null,
                 mailing: {
-                    address1: null,
-                    address2: null,
+                    line1: null,
+                    line2: null,
                     city: null,
                     state: null,
                     zip: null,
@@ -379,14 +379,14 @@ export default {
                 earnedPoints: 0,
             },
             payment: {
-                ch: null,
-                num: null,
+                cardholderName: null,
+                cardNum: null,
                 cvv: null,
                 exp: null,
             },
             billing: {
-                address1: null,
-                address2: null,
+                line1: null,
+                line2: null,
                 city: null,
                 state: null,
                 zip: null,
@@ -413,13 +413,13 @@ export default {
             zip: { required },
         },
         payment: {
-            ch: { required },
-            num: { required },
+            cardholderName: { required },
+            cardNum: { required },
             cvv: { required },
             exp: { required },
         },
         billing: {
-            address1: { required },
+            line1: { required },
             city: { required },
             state: { required },
             zip: { required },
