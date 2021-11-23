@@ -30,7 +30,8 @@ describe("Table", () => {
       .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }])
       .then((docs) => {
         return reservation.create({
-          name: "Noah",
+          firstName: "Noah",
+          lastName: "Gori",
           phone: "test",
           email: "test",
           date: new Date(2021, 0, 1, 20),
@@ -51,7 +52,7 @@ describe("Table", () => {
       .then((res) => {
         expect(res).to.have.status(200);
         expect(res.body[0]).to.have.property(
-          "name",
+          "firstName",
           "Noah",
           "Incorrect Name on reservation"
         );
@@ -103,21 +104,24 @@ describe("GET /traffic", () => {
     return reservation
       .create([
         {
-          name: "Noah",
+          firstName: "Noah",
+          lastName: "Gori",
           phone: "test",
           email: "test",
           date: new Date(2021, 0, 1),
           tables: [{ size: 2 }],
         },
         {
-          name: "Noah",
+          firstName: "Noah",
+          lastName: "Gori",
           phone: "test",
           email: "test2",
           date: new Date(2021, 0, 1),
           tables: [{ size: 2 }],
         },
         {
-          name: "Noah",
+          firstName: "Noah",
+          lastName: "Gori",
           phone: "test",
           email: "test2",
           date: new Date(2021, 0, 2),
@@ -151,7 +155,8 @@ describe("GET /times", () => {
       .then((docs) => {
         reservation
           .create({
-            name: "Noah",
+            firstName: "Noah",
+            lastName: "Gori",
             phone: "test",
             email: "test",
             date: new Date(2021, 0, 1, 20),
@@ -277,7 +282,8 @@ describe("User Authentication", () => {
       return user
         .create({
           _id: uid,
-          name: "Noah Gori",
+          firstName: "Noah",
+          lastName: "Gori",
           mailing: "test",
           billing: "test",
           preferred: 10,
@@ -305,7 +311,8 @@ describe("User Authentication", () => {
           expect(res).to.be.json;
           expect(res.body).to.deep.equal({
             _id: uid,
-            name: "Noah Gori",
+            firstName: "Noah",
+            lastName: "Gori",
             mailing: "test",
             billing: "test",
             preferred: 10,
@@ -341,7 +348,8 @@ describe("User Authentication", () => {
         .put("/user/register")
         .send({
           idToken: token,
-          name: "Noah Gori",
+          firstName: "Noah",
+          lastName: "Gori",
           mailing: "test",
           billing: "test",
           preferred: 10,

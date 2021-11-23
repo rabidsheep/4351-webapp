@@ -19,6 +19,12 @@ const user = require("./models/user.model");
 
 admin.initializeApp({ projectId: "webapp-f22de" });
 
+const serviceHours = [
+  "9:00am", "10:00am", "11:00am",
+  "12:00pm", "1:00pm", "2:00pm",
+  "3:00pm", "4:00pm", "5:00pm",
+  "6:00pm", "7:00pm", "8:00pm"
+]
 // Function for finding optimal set of tables to accomadate a certain number of guests
 function table_combo(array, num, partial = [], available = []) {
   var sum = 0;
@@ -47,7 +53,11 @@ function table_combo(array, num, partial = [], available = []) {
 
 // Takes date and gets all tables reserved for that hour
 api.get("/tables", (req, res) => {
-  return reservation.find({date: new Date(req.body.date)}).select('name tables').exec().then((docs) => {
+  return reservation
+  .find({date: new Date(req.body.date)})
+  .select('name tables')
+  .exec()
+  .then((docs) => {
     return res.status(200).send(docs);
   }).catch((err)=> {
     return res.status(400).send(err);
@@ -202,10 +212,12 @@ api.get("/times", (req, res) => {
 api.put("/reservations", (req, res) => {
   return reservation
     .create({
-      name: req.body.firstName + req.body.lastName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
       date: req.body.date,
+      time: req.body.time,
       tables: req.body.tables,
       payment: req.body.payment
     })

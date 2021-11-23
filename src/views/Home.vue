@@ -12,18 +12,33 @@
             page to check if user is logged in or not
         -->
         <div class="signin">
-            <div class="wrapper">
             <h2>Reserve a Table</h2>
-
             
-            <button class="btn" @click="$router.push('/reserve')">
-                <v-icon>mdi-paw</v-icon>
-                <v-divider vertical />
-                <label>Proceed as Guest</label>
-            </button>
+            <div class="username">
+                <input
+                name="username"
+                placeholder="Username"
+                v-model="username" />
+            </div>
 
-            <br />
-            
+            <div class="password">
+                <input
+                name="password"
+                :type="showPassword ? 'text' : 'password'"
+                placeholder="Password"
+                v-model="password" />
+
+                <v-btn
+                class="show-password"
+                icon
+                plain
+                :ripple="false"
+                @mousedown="showPassword = true"
+                @mouseup="showPassword = false">
+                    <v-icon>mdi-eye</v-icon>
+                </v-btn>
+            </div>
+
             <!--
                 NOT YET FUNCTIONAL 
                 maybe trigger pop-up window with multiple sign-in
@@ -33,9 +48,14 @@
             <button class="btn">
                 <v-icon>mdi-paw</v-icon>
                 <v-divider vertical />
-                <label>I have an account!</label>
+                <label>Login & Proceed »</label>
             </button>
-            </div>
+
+            <button class="btn" @click="$router.push('/reserve')">
+                <v-icon>mdi-paw</v-icon>
+                <v-divider vertical />
+                <label>Proceed as Guest »</label>
+            </button>
         </div>
     </div>
 </template>
@@ -47,6 +67,16 @@ export default {
     components: {
 
     },
+    data: () => {
+        return {
+            username: null,
+            password: null,
+            showPassword: false,
+        }
+    },
+    methods: {
+        
+    }
 
 }
 </script>

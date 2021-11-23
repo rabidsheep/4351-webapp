@@ -18,10 +18,28 @@ let reservationMethods = {
 }
 let reservationRes = Vue.resource(`${uri}/reservations`, {}, reservationMethods)
 
+let timesMethods = {
+    get: { method: 'GET' }
+}
+let timesRes = Vue.resource(`${uri}/times`, {}, timesMethods)
+
+let tablesMethods = {
+    get: { method: 'GET'}
+}
+let tablesRes = Vue.resource(`${uri}/tables/available`, {}, tablesMethods)
+
+
 Vue.use({
     install: () => {
         Object.defineProperty(Vue.prototype, '$reservation', {
             get () { return reservationRes }
+        }),
+
+        Object.defineProperty(Vue.prototype, '$times', {
+            get () { return timesRes }
+        })
+        Object.defineProperty(Vue.prototype, '$tables', {
+            get () {return tablesRes}
         })
     }
 })
