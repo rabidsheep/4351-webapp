@@ -27,7 +27,7 @@ const { ObjectId } = require("bson");
 describe("Table", () => {
   before(() => {
     return table
-      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }])
+      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, {size: 3}, {size: 5}])
       .then((docs) => {
         return reservation.create({
           firstName: "Noah",
@@ -89,12 +89,11 @@ describe("Table", () => {
     return chai
       .request(myFunctions.api)
       .get("/tables/available")
-      .send({ date: new Date(2021, 0, 1, 20), num: 3 })
+      .send({ date: new Date(2021, 0, 1, 20), num: 5 })
       .then((res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property("available");
-        expect(res.body.available.length).to.equal(2);
-        expect(res.body.available[0]).to.have.property("size", 2);
+        expect(res.body.available.length).to.equal(3)
       });
   });
 });
@@ -286,7 +285,7 @@ describe("User Authentication", () => {
           lastName: "Gori",
           mailing: "test",
           billing: "test",
-          preferred: 10,
+          preferred: new ObjectId(),
           points: 10,
           paymentMethod: "test",
           phone: "test",
@@ -310,18 +309,8 @@ describe("User Authentication", () => {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           expect(res.body).to.deep.equal({
-            _id: uid,
             firstName: "Noah",
             lastName: "Gori",
-            mailing: "test",
-            billing: "test",
-            preferred: 10,
-            points: 10,
-            paymentMethod: "test",
-            phone: "test",
-            email: "test",
-            reservations: [],
-            __v: 0,
           });
         });
     });
@@ -352,7 +341,6 @@ describe("User Authentication", () => {
           lastName: "Gori",
           mailing: "test",
           billing: "test",
-          preferred: 10,
           points: 10,
           paymentMethod: "test",
           phone: "test",
