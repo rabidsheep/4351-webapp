@@ -6,12 +6,13 @@ module.exports = mongoose.model(
         mongoose.Schema(
             {
                 _id: {type: String},
-                name: {type: String, required: true},
-                mailing: {type: String, required: true},
-                billing: {type: String, required: true},
-                preferred: {type: ObjectId, required: true, unique: true},
+                firstName: {type: String, required: true},
+                lastName: {type: String, required: true},
+                mailing: {type: Object, required: true},
+                billing: {type: Object, required: true},
+                preferred: {type: Number, required: true, unique: true},
                 points: {type: Number, required: true},
-                paymentMethod: {type: String, required: true},
+                paymentMethod: {type: Object, required: true},
                 phone: { type: String, required: true, unique: true},
                 email: { type: String, required: true, unique: true},
                 reservations: {type: [reservation.schema]}

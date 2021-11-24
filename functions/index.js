@@ -20,6 +20,13 @@ const { ObjectId } = require("bson");
 
 admin.initializeApp({ projectId: "webapp-f22de" });
 
+const serviceHours = [
+  "9:00am", "10:00am", "11:00am",
+  "12:00pm", "1:00pm", "2:00pm",
+  "3:00pm", "4:00pm", "5:00pm",
+  "6:00pm", "7:00pm", "8:00pm"
+]
+
 // Function for finding optimal set of tables to accomadate a certain number of guests
 function table_combo(array, num, partial = [], available = []) {
   var sum = 0;
@@ -46,9 +53,17 @@ function table_combo(array, num, partial = [], available = []) {
   return available;
 }
 
+/***********
+** TABLES **
+***********/
+
 // Takes date and gets all tables reserved for that hour
 api.get("/tables", (req, res) => {
-  return reservation.find({date: new Date(req.body.date)}).select('name tables').exec().then((docs) => {
+  return reservation
+  .find({date: new Date(req.body.date)})
+  .select('name tables')
+  .exec()
+  .then((docs) => {
     return res.status(200).send(docs);
   }).catch((err)=> {
     return res.status(400).send(err);
@@ -77,7 +92,7 @@ api.delete("/tables", (req, res) => {
 api.get("/tables/available", (req, res) => {
   //Fetches the tables that are already reserved for that day
   return reservation
-    .find({ date: req.body.date })
+    .find({ date: req.query.date })
     .select("tables -_id")
     .exec((err, docs) => {
       if (err) {
@@ -106,6 +121,11 @@ api.get("/tables/available", (req, res) => {
       });
     });
 });
+
+
+/************
+** TRAFFIC **
+************/
 
 // Send it a month and it will reply with a boolean array of days that have num of reservations > threshold
 const threshold = 2;
@@ -146,9 +166,16 @@ api.get("/traffic", (req, res) => {
     return res.status(200).send(results);
   });
 });
+
+
+/**********
+** TIMES **
+**********/
+
 // Takes a date = YEAR-MM-DD and num = num of guest and returns object with key = hour and value = a bool of availability
 api.get("/times", (req, res) => {
-  time = new Date(req.body.date);
+  console.log(req.query.date);
+  time = new Date(req.query.date);
   var proms = [];
   for (let i = 9; i < 21; i++) {
     proms.push((callback) => {
@@ -199,14 +226,21 @@ api.get("/times", (req, res) => {
   });
 });
 
+
+/*****************
+** RESERVATIONS **
+*****************/
+
 // Takes name, phone, email, date, tables and creates a reservation in the data base then responds with success or fail
 api.put("/reservations", (req, res) => {
   return reservation
     .create({
-      name: req.body.firstName + req.body.lastName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       phone: req.body.phone,
       email: req.body.email,
       date: req.body.date,
+      time: req.body.time,
       tables: req.body.tables,
       payment: req.body.payment
     })
@@ -247,8 +281,13 @@ api.delete("/reservations", (req, res) => {
   });
 });
 
+
+/**********
+** USERS **
+**********/
+
 // Takes id token from firebase auth and return database information for that user
-api.get("/user/login", (req, res) => {
+api.get("/user", (req, res) => {
   return admin
     .auth()
     .verifyIdToken(req.body.idToken)
@@ -272,7 +311,7 @@ api.get("/user/login", (req, res) => {
 });
 
 // Takes id token and relevant information and returns success or failure
-api.put("/user/register", (req, res) => {
+api.put("/user", (req, res) => {
   return admin
     .auth()
     .verifyIdToken(req.body.idToken)

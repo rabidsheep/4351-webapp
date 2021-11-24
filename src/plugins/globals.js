@@ -14,14 +14,51 @@ let uri = (
 
 let reservationMethods = {
     get: { method: 'GET' },
-    save: { method: 'PUT' }
+    save: { method: 'PUT' },
+    delete: { method: 'DELETE' }
 }
 let reservationRes = Vue.resource(`${uri}/reservations`, {}, reservationMethods)
+
+let timesMethods = {
+    get: { method: 'GET' }
+}
+let timesRes = Vue.resource(`${uri}/times`, {}, timesMethods)
+
+let tablesMethods = {
+    get: { method: 'GET'}
+}
+let tablesRes = Vue.resource(`${uri}/tables/available`, {}, tablesMethods)
+
+let trafficMethods = {
+    get: { method: 'GET' }
+}
+
+let trafficRes = Vue.resource(`${uri}/traffic`, {}, trafficMethods)
+
+let userMethods = {
+    get: { method: 'GET' },
+    save: { method: 'PUT' },
+    delete: { method: 'DELETE' }
+}
+let userRes = Vue.resource(`${uri}/user`, {}, userMethods)
 
 Vue.use({
     install: () => {
         Object.defineProperty(Vue.prototype, '$reservation', {
             get () { return reservationRes }
+        }),
+        Object.defineProperty(Vue.prototype, '$times', {
+            get () { return timesRes }
+        }),
+        Object.defineProperty(Vue.prototype, '$tables', {
+            get () {return tablesRes}
+        }),
+        Object.defineProperty(Vue.prototype, '$traffic', {
+            get () { return trafficRes }
+        }),
+        Object.defineProperty(Vue.prototype, '$user', {
+            get () { return userRes }
         })
+
     }
 })
