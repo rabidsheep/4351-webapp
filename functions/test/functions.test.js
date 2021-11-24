@@ -27,7 +27,7 @@ const { ObjectId } = require("bson");
 describe("Table", () => {
   before(() => {
     return table
-      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }])
+      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, {size: 3}, {size: 5}])
       .then((docs) => {
         return reservation.create({
           name: "Noah",
@@ -88,12 +88,11 @@ describe("Table", () => {
     return chai
       .request(myFunctions.api)
       .get("/tables/available")
-      .send({ date: new Date(2021, 0, 1, 20), num: 3 })
+      .send({ date: new Date(2021, 0, 1, 20), num: 5 })
       .then((res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property("available");
-        expect(res.body.available.length).to.equal(2);
-        expect(res.body.available[0]).to.have.property("size", 2);
+        expect(res.body.available.length).to.equal(3)
       });
   });
 });
@@ -280,7 +279,7 @@ describe("User Authentication", () => {
           name: "Noah Gori",
           mailing: "test",
           billing: "test",
-          preferred: 10,
+          preferred: new ObjectId(),
           points: 10,
           paymentMethod: "test",
           phone: "test",
@@ -303,19 +302,8 @@ describe("User Authentication", () => {
         .then((res) => {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
-          expect(res.body).to.deep.equal({
-            _id: uid,
-            name: "Noah Gori",
-            mailing: "test",
-            billing: "test",
-            preferred: 10,
-            points: 10,
-            paymentMethod: "test",
-            phone: "test",
-            email: "test",
-            reservations: [],
-            __v: 0,
-          });
+          expect(res.body).to.have.property("_id", uid)
+          expect(res.body).to.have.property("name", "Noah Gori")
         });
     });
     it("DELETE /user", () => {
@@ -344,7 +332,6 @@ describe("User Authentication", () => {
           name: "Noah Gori",
           mailing: "test",
           billing: "test",
-          preferred: 10,
           points: 10,
           paymentMethod: "test",
           phone: "test",

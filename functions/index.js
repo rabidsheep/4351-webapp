@@ -16,6 +16,7 @@ mongoDb().catch((error) => console.log(error));
 const reservation = require("./models/reservation.model");
 const table = require("./models/table.model");
 const user = require("./models/user.model");
+const { ObjectId } = require("bson");
 
 admin.initializeApp({ projectId: "webapp-f22de" });
 
@@ -98,7 +99,7 @@ api.get("/tables/available", (req, res) => {
         for (var j = 0; j < 5; j++) {
           var available = table_combo(docs, num + j);
           if (available.length > 0) {
-            return res.status(200).send({available: available[available.length - 1]});
+            return res.status(200).send({available: available});
           }
         }
         return res.status(400).send("No tables available");
@@ -282,8 +283,8 @@ api.put("/user/register", (req, res) => {
           name: req.body.firstname + " " + req.body.lastname,
           mailing: req.body.mailing,
           billing: req.body.billing,
-          preferred: req.body.preferred,
-          points: req.body.points,
+          preferred: new ObjectId(),
+          points: 0,
           paymentMethod: req.body.paymentMethod,
           phone: req.body.phone,
           email: req.body.email,
