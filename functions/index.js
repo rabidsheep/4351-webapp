@@ -33,16 +33,19 @@ function table_combo(array, num, partial = [], available = []) {
   for (var i = 0; i < partial.length; i++) {
     sum += partial[i].size;
   }
+
   if (sum === num) {
     return available.indexOf([partial]) === -1
       ? available.concat([partial])
       : available;
   }
+
   if (sum > num) {
     return;
   }
+  
   for (var i = 0; i < array.length; i++) {
-    n = array[i];
+    var n = array[i];
     var remaining = array.slice(i + 1);
     //console.log("Remaining: ", remaining)
     var result = table_combo(remaining, num, partial.concat([n]), available);
@@ -53,120 +56,59 @@ function table_combo(array, num, partial = [], available = []) {
   return available;
 }
 
-/***********
-** TABLES **
-***********/
+/*****************
+** RESERVATIONS **
+*****************/
 
-// Takes date and gets all tables reserved for that hour
-api.get("/tables", (req, res) => {
+// Takes name, phone, email, date, tables and creates a reservation in the data base then responds with success or fail
+api.put("/reservations", (req, res) => {
   return reservation
-  .find({date: new Date(req.body.date)})
-  .select('name tables')
-  .exec()
-  .then((docs) => {
-    return res.status(200).send(docs);
-  }).catch((err)=> {
-    return res.status(400).send(err);
-  })
-});
-// Takes size and creates a table in database
-api.put("/tables", (req, res) => {
-  return table.create({
-    size: req.body.size
-  }).then((data) => {
-    return res.status(200).send(data);
-  }).catch((err) => {
-    return res.status(400).send(err);
-  })
-});
-// Takes size and deletes a table from database
-api.delete("/tables", (req, res) => {
-  return table.deleteOne({size: req.body.size}).then(() => {
-    return res.status(200).send("Deleted table of size: " + req.body.size)
-  }).catch((err) => {
-    return res.status(400).send(err);
-  })
-});
-
-// Takes date and num of guests and responds with the table combination that can accomodate the group
-api.get("/tables/available", (req, res) => {
-  //Fetches the tables that are already reserved for that day
-  return reservation
-    .find({ date: req.query.date })
-    .select("tables -_id")
-    .exec((err, docs) => {
-      if (err) {
-        return res.status(400).send(err);
+    .create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phone: req.body.phone,
+      email: req.body.email,
+      date: req.body.date,
+      time: req.body.time,
+      tables: req.body.tables,
+      payment: req.body.payment
+    })
+    .then((data) => {
+      return res.status(200).send({id: data._id});
+    })
+    .catch((error) => {
+      if (error.code == 11000) {
+        return res
+          .status(400)
+          .send("It looks like you already have a reservation on that date.");
       }
-      // Converts retrieved documents to id values
-      var booked = [];
-      for (var i = 0; i < docs.length; i++) {
-        for (var j = 0; j < docs[i].tables.length; j++) {
-          booked.push(docs[i].tables[j]._id);
-        }
-      }
-      //Fetches all table combos that can accomadate the num of guests up to size 5 greater than num guests
-      return table.find({ _id: { $nin: booked } }).exec((err, docs) => {
-        if (err) {
-          return res.status(400).send(err);
-        }
-        var num = req.body.num;
-        for (var j = 0; j < 5; j++) {
-          var available = table_combo(docs, num + j);
-          if (available.length > 0) {
-            return res.status(200).send({available: available});
-          }
-        }
-        return res.status(400).send("No tables available");
-      });
+      console.log(error);
+      res.status(400).send(error);
     });
 });
 
-
-/************
-** TRAFFIC **
-************/
-
-// Send it a month and it will reply with a boolean array of days that have num of reservations > threshold
-const threshold = 2;
-api.get("/traffic", (req, res) => {
-  today = new Date(req.body.date);
-  daysInMonth = new Date(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    0
-  ).getDate();
-  var calls = [];
-  for (let i = 1; i < daysInMonth; i++) {
-    calls.push((callback) => {
-      reservation
-        .find({
-          date: {
-            $gte: new Date(today.getFullYear(), today.getMonth(), i),
-            $lt: new Date(today.getFullYear(), today.getMonth(), i + 1),
-          },
-        })
-        .exec()
-        .then((docs) => {
-          if (docs.length >= threshold) {
-            callback(null, true);
-          } else {
-            callback(null, false);
-          }
-        })
-        .catch((err) => {
-          callback(err, null);
-        });
-    });
-  }
-  return async.parallel(calls, (err, results) => {
-    if (err) {
+// Takes an email and returns the reservations associated with that email
+api.get("/reservations", (req, res) => {
+  return reservation
+    .find({ email: req.query.email })
+    .exec()
+    .then((docs) => {
+      return res.status(200).send(docs);
+    })
+    .catch((err) => {
       return res.status(400).send(err);
+    });
+});
+
+// Takes an email and phone number and deletes reservation from database
+api.delete("/reservations", (req, res) => {
+  return reservation.deleteOne({ email: req.body.email, phone: req.body.phone }, (err) => {
+    if (err) {
+      return res.status(400).send("Unable to delete reservation");
     }
-    return res.status(200).send(results);
+    return res.status(200).send("Reservation canceled!");
   });
 });
-
 
 /**********
 ** TIMES **
@@ -174,7 +116,7 @@ api.get("/traffic", (req, res) => {
 
 // Takes a date = YEAR-MM-DD and num = num of guest and returns object with key = hour and value = a bool of availability
 api.get("/times", (req, res) => {
-  console.log(req.query.date);
+
   time = new Date(req.query.date);
   var proms = [];
   for (let i = 9; i < 21; i++) {
@@ -227,59 +169,133 @@ api.get("/times", (req, res) => {
 });
 
 
-/*****************
-** RESERVATIONS **
-*****************/
+/***********
+** TABLES **
+***********/
 
-// Takes name, phone, email, date, tables and creates a reservation in the data base then responds with success or fail
-api.put("/reservations", (req, res) => {
+// Takes date and gets all tables reserved for that hour
+api.get("/tables", (req, res) => {
   return reservation
-    .create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phone: req.body.phone,
-      email: req.body.email,
-      date: req.body.date,
-      time: req.body.time,
-      tables: req.body.tables,
-      payment: req.body.payment
-    })
-    .then((data) => {
-      return res.status(200).send({id: data._id});
-    })
-    .catch((error) => {
-      if (error.code == 11000) {
-        return res
-          .status(400)
-          .send("It looks like you already have a reservation on that date.");
-      }
-      console.log(error);
-      res.status(400).send(error);
-    });
+  .find({date: new Date(req.body.date)})
+  .select('name tables')
+  .exec()
+  .then((docs) => {
+    return res.status(200).send(docs);
+  }).catch((err)=> {
+    return res.status(400).send(err);
+  })
+});
+// Takes size and creates a table in database
+api.put("/tables", (req, res) => {
+  return table.create({
+    size: req.body.size
+  }).then((data) => {
+    return res.status(200).send(data);
+  }).catch((err) => {
+    return res.status(400).send(err);
+  })
+});
+// Takes size and deletes a table from database
+api.delete("/tables", (req, res) => {
+  return table.deleteOne({size: req.body.size}).then(() => {
+    return res.status(200).send("Deleted table of size: " + req.body.size)
+  }).catch((err) => {
+    return res.status(400).send(err);
+  })
 });
 
-// Takes an email and returns the reservations associated with that email
-api.get("/reservations", (req, res) => {
+// Takes date and num of guests and responds with the table combination that can accomodate the group
+api.get("/tables/available", (req, res) => {
+
+  var guests = req.query.guests;
+  const tablesAggregate = [
+    { $match: {
+      date: req.query.date
+    } },
+    { $group: {
+      _id: null,
+      tables: { $addToSet: "$tables._id" }
+    } },
+    { $project: {
+      _id: 0,
+      tables: { $reduce: {
+        input: "$tables",
+        initialValue: [],
+        in: { $setUnion: ["$$value", "$$this"] }
+      } }
+    } }
+  ]
+  //Fetches the tables that are already reserved for that day
   return reservation
-    .find({ email: req.body.email })
+    .aggregate(tablesAggregate)
     .exec()
-    .then((docs) => {
-      return res.status(200).send(docs);
+    .then((booked) => {
+      if (booked.length > 0)
+        return table.find({ _id: { $nin: booked[0].tables } }).exec();
+      else
+        return table.find().exec();
     })
-    .catch((err) => {
-      return res.status(400).send(err);
-    });
+    .then((tables) => {
+      for (var j = 0; j < 5; j++) {
+        var available = table_combo(tables, guests + j);
+        
+        console.log(available);
+        if (available.length > 0) {
+          console.log(available);
+          return res.status(200).send({available: available});
+        }
+      }
+      return res.status(400).send("No tables available");
+    })
+    .catch((error) => res.status(400).send(error));
 });
 
-// Takes an email and phone number and deletes reservation from database
-api.delete("/reservations", (req, res) => {
-  return reservation.deleteOne({ email: req.body.email, phone: req.body.phone }, (err) => {
+
+/************
+** TRAFFIC **
+************/
+
+// Send it a month and it will reply with a boolean array of days that have num of reservations > threshold
+const threshold = 2;
+api.get("/traffic", (req, res) => {
+  today = new Date(req.body.date);
+  daysInMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    0
+  ).getDate();
+  var calls = [];
+  for (let i = 1; i < daysInMonth; i++) {
+    calls.push((callback) => {
+      reservation
+        .find({
+          date: {
+            $gte: new Date(today.getFullYear(), today.getMonth(), i),
+            $lt: new Date(today.getFullYear(), today.getMonth(), i + 1),
+          },
+        })
+        .exec()
+        .then((docs) => {
+          if (docs.length >= threshold) {
+            callback(null, true);
+          } else {
+            callback(null, false);
+          }
+        })
+        .catch((err) => {
+          callback(err, null);
+        });
+    });
+  }
+  return async.parallel(calls, (err, results) => {
     if (err) {
-      return res.status(400).send("Unable to delete reservation");
+      return res.status(400).send(err);
     }
-    return res.status(200).send("Reservation canceled!");
+    return res.status(200).send(results);
   });
 });
+
+
 
 
 /**********

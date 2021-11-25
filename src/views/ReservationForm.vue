@@ -159,6 +159,50 @@
                             </div>
                         </div>
                     </div>
+
+                    <!--
+                    <div id="guest__tables">
+                        <div id="table-grid">
+                            <div
+                            class="table__2p">
+                                <div class="table"
+                                v-for="i in 5"
+                                :key="i + '_2'">
+                                    2
+                                </div>
+                            </div>
+
+                            <div
+                            class="table__4p">
+                                <div class="table"
+                                v-for="i in 2"
+                                :key="i + '_4'">
+                                    4
+                                </div>
+                            </div>
+
+                            <div
+                            class="table__6p">
+                                <div class="table"
+                                v-for="i in 2"
+                                :key="i + '_6'">
+                                    6
+                                </div>
+                            </div>
+
+                            <div
+                            class="table__8p"
+                            v-for="k in 2"
+                            :key="k + '_8'">
+                                <div class="table"
+                                v-for="i in 2"
+                                :key="i + '_8'">
+                                    8
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
                  </div>
             </div>
 
@@ -360,6 +404,7 @@ export default {
                 "WA", "WI", "WV", "WY"
             ],
             availableTimes: [],
+            availableTables: [],
             expYear: null,
             expMonth: null,
             useMailAddress: false,
@@ -503,12 +548,18 @@ export default {
                 return e.preventDefault();
         },
         getAvailableTimes(date, guests) {
-            this.$times.get({date, guests})
+            this.$tables.get({date, guests})
             .then((response) => {
                 console.log(response)
-                this.availableTimes = response.body;
+                //this.availableTimes = response.body;
             })
             .catch((error) => console.error(error));
+
+            /*this.$tables.get({date, guests})
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => console.error(error));*/
         },
         // submit reservation
         submitReservation(e) {

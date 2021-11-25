@@ -584,3 +584,26 @@ select:disabled {
     font-size: 0.7em;
     position: absolute;
 }
+
+/** TABLE GRID **/
+
+#guest__tables {
+    
+    width: 100%;
+}
+
+#table-grid {
+    display: grid;
+    grid-template:
+        'two . four four . six six'
+        'two . four four . six six'
+        'two . four four . six six'
+        'two . four four . six six'
+        'two . four four . six six'
+        'eight eight eight eight eight eight eight'
+}
+
+#table-grid .table__2p { grid-area: two; }
+#table-grid .table__4p { grid-area: four; }
+#table-grid .table__6p { grid-area: six; }
+#table-grid .table__8p { grid-area: eight; }
