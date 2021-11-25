@@ -320,38 +320,37 @@ api.get("/user", (req, res) => {
 });
 
 // Takes id token and relevant information and returns success or failure
-api.put("/user", (req, res) => {
+api.post("/user", (req, res) => {
   return admin
     .auth()
     .verifyIdToken(req.body.idToken)
-    .then((decodedToken) => {
-      return user
-        .create({
-          _id: decodedToken.uid,
-          name: req.body.firstname + " " + req.body.lastname,
-          mailing: req.body.mailing,
-          billing: req.body.billing,
-          preferred: new ObjectId(),
-          points: 0,
-          paymentMethod: req.body.paymentMethod,
-          phone: req.body.phone,
-          email: req.body.email,
-        })
-        .then((data) => {
-          return res.status(200).send("API call returned successfully");
-        })
-        .catch((error) => {
-          if (error.code == 11000) {
-            return res
-              .status(400)
-              .send("Looks like we already have an account");
-          }
-          return res.status(400).send(error);
-        });
+    .then((decodedToken) => 
+      user
+      .create({
+        _id: decodedToken.uid,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        email: req.body.email,
+        mailing: req.body.mailing,
+        dinerId: new ObjectId().toString(),
+        points: 0,
+        paymentMethod: req.body.paymentMethod,
+      })
+    )
+    .then((data) => {
+        console.log(data);
+        return res.status(200).send("API call returned successfully");
     })
     .catch((error) => {
+      if (error.code == 11000) {
+        return res
+          .status(400)
+          .send("Looks like we already have an account");
+      }
       return res.status(400).send(error);
-    });
+    })
+    .catch((error) => res.status(400).send(error));
 });
 
 // Takes id token and deletes user from database

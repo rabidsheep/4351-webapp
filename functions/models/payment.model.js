@@ -5,10 +5,10 @@ module.exports = mongoose.model(
     "payment",
     mongoose.Schema(
         {
-            cardholderName: {type: String, required: true},
-            cardNum: {type: String, required: true},
-            expirationDate: {type: Date, required: true},
-            billing: {type: address.schema, required: true}
+            cardholderName: { type: String, required: true },
+            cardNum: { type: String, required: true },
+            expirationDate: { type: Date, required: true },
+            billing: { type: address.schema, required: true }
         }
     )
 );

@@ -14,11 +14,11 @@
         <div class="signin">
             <h2>Reserve a Table</h2>
             
-            <div class="username">
+            <div class="email">
                 <input
-                name="username"
-                placeholder="Username"
-                v-model="username" />
+                name="email"
+                placeholder="E-mail"
+                v-model="email" />
             </div>
 
             <div class="password">
@@ -69,7 +69,7 @@ export default {
     },
     data: () => {
         return {
-            username: null,
+            email: null,
             password: null,
             showPassword: false,
         }

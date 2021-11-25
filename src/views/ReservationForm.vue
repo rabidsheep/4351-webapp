@@ -369,6 +369,12 @@
                 <v-divider vertical />
                 <label>Reserve »</label>
             </button>
+
+            <button @click="createAccount($event)" class="btn create">
+                <v-icon>mdi-paw</v-icon>
+                <v-divider vertical />
+                <label>Create Account »</label>
+            </button>
         </div>
     </v-form>
 </template>
@@ -376,6 +382,8 @@
 <script>
 import TimeslotBtn from "../components/TimeslotBtn.vue"
 import { required, email } from "vuelidate/lib/validators";
+import "firebase/compat/auth";
+
 import moment from 'moment';
 // needed to print objects to the console without values being displayed as "getter & setter" idk why
 // const printObj = (obj) => { return console.log(JSON.parse(JSON.stringify(obj))); }
@@ -437,7 +445,7 @@ export default {
                     zip: null,
                 },
                 preferredPayment: null,
-                preferredDiner: null,
+                dinerId: null,
                 earnedPoints: 0,
             },
             payment: {
@@ -599,6 +607,21 @@ export default {
             })
             .catch((error) => console.error(error));*/
         },
+
+        createAccount(e) {
+            e.preventDefault();
+
+            /*var data = {
+                ...this.customer,
+            }*/
+
+            this.$firebase.auth().createUserWithEmailAndPassword(this.customer.email, 'password')
+            .then((credential) => {
+                console.log(credential)
+            })
+            .catch((error) => console.error(error));
+        },
+
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
