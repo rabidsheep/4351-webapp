@@ -15,7 +15,7 @@ module.exports = mongoose.model(
             mailing: { type: address.schema, required: true },
             dinerId: { type: String, required: true, unique: true },
             points: { type: Number, required: true },
-            paymentMethod: { type: payment.schema, required: true },
+            paymentMethod: { type: payment.schema, required: false },
             reservations: { type: Array, require: false }
         }
     )

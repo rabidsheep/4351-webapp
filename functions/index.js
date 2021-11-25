@@ -7,6 +7,7 @@ const cors = require("cors")({ origin: true });
 const api = express();
 api.use(express.json());
 api.use(cors);
+const devMode = process.env.FUNCTIONS_EMULATOR === 'true';
 
 // MongoDb + Mongoose
 const mongoDb = require("./db");
@@ -210,10 +211,12 @@ api.delete("/tables", (req, res) => {
 // Takes date and num of guests and responds with the table combination that can accomodate the group
 api.get("/tables/available", (req, res) => {
 
-  var guests = req.query.guests;
+  var guests = parseInt(req.query.guests);
+  var date = new Date(req.query.date);
+
   const tablesAggregate = [
     { $match: {
-      date: req.query.date
+      date: date
     } },
     { $group: {
       _id: null,
@@ -261,8 +264,7 @@ const threshold = 2;
 api.get("/traffic", (req, res) => {
   let current = new Date(new Date(req.query.current).setUTCHours(24,0,0,0));
   let next = new Date(new Date(req.query.next).setUTCHours(24,0,0,0));
-  console.log(current);
-  console.log(next);
+
   const trafficAggregate = [
     { $match: {
       date: {
@@ -297,48 +299,61 @@ api.get("/traffic", (req, res) => {
 
 // Takes id token from firebase auth and return database information for that user
 api.get("/user", (req, res) => {
-  return admin
+  var getUser;
+  var data = req.query;
+  console.log(data);
+
+  if (devMode) {
+    getUser = user.findOne({ uid: data.uid }).exec()
+  } else {
+    getUser = admin
     .auth()
-    .verifyIdToken(req.body.idToken)
-    .then((decodedToken) => {
-      return user
-        .findOne({ _id: decodedToken.uid })
-        .then((doc) => {
-          if (!doc) {
-            throw "Can't find that user";
-          }
-          return res.status(200).send(doc);
-        })
-        .catch((error) => {
-          throw error;
-        });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).send(error);
-    });
+    .verifyIdToken(data.token)
+    .then((decodedToken) => user.findOne({ uid: decodedToken.uid }).exec() )
+  }
+  
+  
+  return getUser.then((doc) => {
+    console.log(doc);
+    return res.status(200).send(doc)
+  })
+  .catch((error) => {
+    console.log(error);
+    return res.status(400).send(error);
+  });
 });
 
 // Takes id token and relevant information and returns success or failure
 api.post("/user", (req, res) => {
-  return admin
+  var data = req.body.data;
+  var createAccount;
+
+  var account = {
+    uid: data.uid,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    phone: data.phone,
+    email: data.email,
+    mailing: data.mailing,
+    dinerId: new ObjectId().toString(),
+    points: 0
+  };
+  
+  if (data.paymentMethod !== null) {
+    account = { ...account, paymentMethod: data.paymentMethod };
+  }
+  
+  // verifyIdToken() doesn't work in dev environments
+  if (devMode) {
+    createAccount = user.create(account);
+  } else {
+    createAccount = admin
     .auth()
-    .verifyIdToken(req.body.idToken)
-    .then((decodedToken) => 
-      user
-      .create({
-        _id: decodedToken.uid,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        phone: req.body.phone,
-        email: req.body.email,
-        mailing: req.body.mailing,
-        dinerId: new ObjectId().toString(),
-        points: 0,
-        paymentMethod: req.body.paymentMethod,
-      })
-    )
-    .then((data) => {
+    .verifyIdToken(req.body.token)
+    .then(() => user.create(account));
+  }
+  
+  createAccount.then((data) => {
         console.log(data);
         return res.status(200).send("API call returned successfully");
     })
@@ -349,8 +364,7 @@ api.post("/user", (req, res) => {
           .send("Looks like we already have an account");
       }
       return res.status(400).send(error);
-    })
-    .catch((error) => res.status(400).send(error));
+    });
 });
 
 // Takes id token and deletes user from database

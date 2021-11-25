@@ -56,7 +56,7 @@
                         v-model="customer.mailing.line1"
                         id="maddress"
                         class="form-control"
-                        :class="{ 'is-invalid': submitted && $v.customer.line1.$error }"
+                        :class="{ 'is-invalid': submitted && $v.customer.mailing.line1.$error }"
                         :required="registerUser" />                   
                     </div>
 
@@ -74,7 +74,7 @@
                         v-model="customer.mailing.city"
                         id="mcity"
                         class="form-control"
-                        :class="{ 'is-invalid': submitted && $v.customer.city.$error }"
+                        :class="{ 'is-invalid': submitted && $v.customer.mailing.city.$error }"
                         :required="registerUser" />
                     </div>
 
@@ -85,7 +85,7 @@
                         v-model="customer.mailing.state"
                         id="mstate"
                         class="form-control"
-                        :class="{ 'is-invalid': submitted && $v.customer.state.$error }"
+                        :class="{ 'is-invalid': submitted && $v.customer.mailing.state.$error }"
                         :required="registerUser">
                             <option
                             v-for="(state, i) in states"
@@ -103,8 +103,8 @@
                         id="mzip"
                         @keypress="numKeysOnly($event)"
                         :required="registerUser" />
-                        <div v-if="submitted && $v.customer.zip.$error" class="invalid-feedback">
-                            <span v-if="!$v.customer.zip.required">valid zipcode required</span>
+                        <div v-if="submitted && $v.customer.mailing.zip.$error" class="invalid-feedback">
+                            <span v-if="!$v.customer.mailing.zip.required">valid zipcode required</span>
 
                         </div>
                     </div>
@@ -300,9 +300,9 @@
                     <div class="input__text input__address-l1 field-w12">
                         <label for="baddress1">Billing Address <span class="req">*</span></label>
                         <input
-                        v-model="billing.line1"
+                        v-model="payment.billing.line1"
                         id="baddress1"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.line1.$error }"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.payment.billing.line1.$error }"
                         required
                         :readonly="useMailAddress" />                   
                     </div>
@@ -310,7 +310,7 @@
                     <div class="input__text input__address-l2 field-w12">
                         <label for="baddress2">Apt/Suite/Building # <i>(Optional)</i></label>
                         <input
-                        v-model="billing.line2"
+                        v-model="payment.billing.line2"
                         id="baddress2"
                         required
                         :readonly="useMailAddress" />                   
@@ -319,9 +319,9 @@
                     <div class="input__text input__city field-w4">
                         <label for="bcity">City <span class="req">*</span></label>
                         <input
-                        v-model="billing.city"
+                        v-model="payment.billing.city"
                         id="bcity"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.city.$error }"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.payment.billing.city.$error }"
                         required
                         :readonly="useMailAddress" />
                     </div>
@@ -329,9 +329,9 @@
                     <div class="input__select input__state field-w4">
                         <label for="bstate">State <span class="req">*</span></label>
                         <select
-                        v-model="billing.state"
+                        v-model="payment.billing.state"
                         id="bstate"
-                        class="form-control" :class="{ 'is-invalid': submitted && $v.billing.state.$error }"
+                        class="form-control" :class="{ 'is-invalid': submitted && $v.payment.billing.state.$error }"
                         required
                         :disabled="useMailAddress">
                             <option
@@ -346,13 +346,13 @@
                     <div class="input__text input__zip form-group field-w4">
                         <label for="bzip">Zip Code <span class="req">*</span></label>
                         <input
-                        v-model="billing.zip"
+                        v-model="payment.billing.zip"
                         id="bzip"
                         @keypress="numKeysOnly($event)"
                         required
                         :readonly="useMailAddress" />
-                        <div v-if="submitted && $v.billing.zip.$error" class="invalid-feedback">
-                            <span v-if="!$v.billing.zip.required">valid zipcode required</span>
+                        <div v-if="submitted && $v.payment.billing.zip.$error" class="invalid-feedback">
+                            <span v-if="!$v.payment.billing.zip.required">valid zipcode required</span>
                         </div>
                     </div>
                 </div>
@@ -370,17 +370,18 @@
                 <label>Reserve »</label>
             </button>
 
-            <button @click="createAccount($event)" class="btn create">
+            <button @click="createAccount($event)" class="btn submit">
                 <v-icon>mdi-paw</v-icon>
                 <v-divider vertical />
-                <label>Create Account »</label>
+                <label>Register & Reserve »</label>
             </button>
         </div>
     </v-form>
 </template>
 
 <script>
-import TimeslotBtn from "../components/TimeslotBtn.vue"
+import TimeslotBtn from "../components/TimeslotBtn.vue";
+//import RegistrationAlert from "../components/RegistrationAlert.vue";
 import { required, email } from "vuelidate/lib/validators";
 import "firebase/compat/auth";
 
@@ -391,10 +392,10 @@ import moment from 'moment';
 export default {
     name: 'ReservationForm',
     components: {
-        TimeslotBtn
+        TimeslotBtn,
+        //RegistrationAlert
     },
     props: {
-        // router parameters will go here later
     },
     data: () => {
         return {
@@ -407,6 +408,7 @@ export default {
             pickerDate: null,
             registerUser: false,
             dpOpened: false,
+            showRegAlert: false,
             selected: {
                 date: null,
                 month: new Date().getMonth()+1,
@@ -444,22 +446,21 @@ export default {
                     state: null,
                     zip: null,
                 },
-                preferredPayment: null,
                 dinerId: null,
-                earnedPoints: 0,
+                points: 0,
             },
             payment: {
                 cardholderName: null,
                 cardNum: null,
                 cvv: null,
                 exp: null,
-            },
-            billing: {
-                line1: null,
-                line2: null,
-                city: null,
-                state: null,
-                zip: null,
+                billing: {
+                    line1: null,
+                    line2: null,
+                    city: null,
+                    state: null,
+                    zip: null,
+                },
             },
             reservation: {
                 firstName: null,
@@ -477,30 +478,34 @@ export default {
             firstName: { required },
             lastName: { required },
             email: { required, email },
-            address1: { required },
-            city: { required },
-            state: { required },
-            zip: { required },
+            mailing: {
+                line1: { required },
+                city: { required },
+                state: { required },
+                zip: { required },
+            }
+            
         },
         payment: {
             cardholderName: { required },
             cardNum: { required },
             cvv: { required },
             exp: { required },
+            billing: {
+                line1: { required },
+                city: { required },
+                state: { required },
+                zip: { required },
+            }
         },
-        billing: {
-            line1: { required },
-            city: { required },
-            state: { required },
-            zip: { required },
-        }
+        
     },
     /* watchers to check for changes in certain variables */
     watch: {
         // check if billing is same as mailing
         'useMailAddress': function(val) {
            if (val) {
-               this.billing = {
+               this.payment.billing = {
                    address1: this.customer.mailing.address1,
                    address2: this.customer.mailing.address2,
                    city: this.customer.mailing.state,
@@ -518,9 +523,8 @@ export default {
         // update billing alongside mailing if box is checked
         'customer.mailing': {
             handler: function(mailing) {
-                if (this.useMailAddress) {
-                    this.billing = mailing
-                }
+                if (this.useMailAddress)
+                    this.payment.billing = mailing;
             },
             deep: true
         },
@@ -533,6 +537,7 @@ export default {
                 this.highTraffic = true;
             else
                 this.highTraffic = false;
+
             this.getAvailableTimes(this.reservation.date, this.reservation.numGuests);
         },
         'reservation.numGuests': function() {
@@ -540,6 +545,25 @@ export default {
         }
     },
     mounted: function() {
+
+        if (this.$route.params?.userDetails) {
+            let details = this.$route.params.userDetails;
+
+            this.customer = {
+                firstName: details.firstName,
+                lastName: details.lastName,
+                phone: details.phone,
+                email: details.email,
+                mailing: details.mailing,
+                dinerId: details.dinerId,
+                points: details.points,
+                preferredPayment: details.preferredPayment ? details.preferredPayment : null
+            }
+
+            if (details.preferredPayment)
+                this.payment.billing = details.preferredPayment;
+
+        }
         // code for checking if user is logged in will go here
         this.selectedDate = this.currentDate;
         /*this.$tables.get().then((response) => {
@@ -616,8 +640,25 @@ export default {
             }*/
 
             this.$firebase.auth().createUserWithEmailAndPassword(this.customer.email, 'password')
-            .then((credential) => {
-                console.log(credential)
+            .then((data) => {
+                var credentials = data.user.multiFactor.user;
+
+                var user = {
+                    ...this.customer,
+                    paymentMethod: this.highTraffic ?
+                        { ...this.payment } :
+                        null,
+                    uid: credentials.uid
+                }
+
+                data.user.updateProfile({
+                    displayName: this.customer.firstName
+                });
+
+                return this.$user.create({data: user, token: credentials.accessToken})
+            })
+            .then((response) => {
+                console.log(response);
             })
             .catch((error) => console.error(error));
         },

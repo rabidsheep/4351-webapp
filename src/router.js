@@ -17,6 +17,9 @@ export default new Router({
       path: '/reserve',
       name: 'reserve',
       component: ReservationForm,
+      props: {
+        userDetails: Object,
+      }
     }
   ]
 })

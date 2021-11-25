@@ -13,8 +13,6 @@ let uri = (
     "https://us-central1-webapp-f22de.cloudfunctions.net/api"
 );
 
-console.log(firebase);
-
 let reservationMethods = {
     get: { method: 'GET' },
     save: { method: 'PUT' },
