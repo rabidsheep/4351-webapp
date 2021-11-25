@@ -132,7 +132,10 @@
                                 <v-date-picker
                                     v-model="selectedDate"
                                     :allowed-dates="allowedDates"
+                                    :events="highTrafficDays"
+                                    event-color="red"
                                     :show-current="false"
+                                    :picker-date.sync="pickerDate"
                                     scrollable
                                     no-title
                                     id="date"
@@ -157,6 +160,14 @@
                                 </template>
                                 
                             </div>
+                        </div>
+
+                        <div class="traffic-warning" v-show="highTraffic">
+                            This date has a high volume of reservations.
+                            <br />
+                            A valid payment method must be held on file.
+                            <br />
+                            No-shows will incur a $10 charge.
                         </div>
                     </div>
 
@@ -384,6 +395,8 @@ export default {
             selectedDate: null,
             selectedTimeslot: null,
             highTraffic: false,
+            highTrafficDays: [],
+            pickerDate: null,
             registerUser: false,
             dpOpened: false,
             selected: {
@@ -403,7 +416,10 @@ export default {
                 "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", 
                 "WA", "WI", "WV", "WY"
             ],
-            availableTimes: [],
+            availableTimes: ["9:00am", "10:00am", "11:00am",
+  "12:00pm", "1:00pm", "2:00pm",
+  "3:00pm", "4:00pm", "5:00pm",
+  "6:00pm", "7:00pm", "8:00pm"],
             availableTables: [],
             expYear: null,
             expMonth: null,
@@ -485,6 +501,12 @@ export default {
                }
            } 
         },
+        'pickerDate': function(current) {
+            let year = parseInt(current.split('-')[0]);
+            let month = parseInt(current.split('-')[1]);
+            let next = month === 12 ? `${year + 1}-01` : `${year}-${(month + 1).toString().padStart(2, 0)}`;
+            this.getHighTrafficDays(moment(current).format('YYYY-MM-DD'), moment(next).format('YYYY-MM-DD'))
+        },
         // update billing alongside mailing if box is checked
         'customer.mailing': {
             handler: function(mailing) {
@@ -496,9 +518,13 @@ export default {
         },
         // fetch times available
         'selectedDate': function(sd) {
-            this.reservation.date = moment(sd).format('MM/DD/YYYY')
+            this.reservation.date = moment(sd).format('YYYY-MM-DD')
         },
         'reservation.date': function() {
+            if (this.highTrafficDays.includes(this.reservation.date))
+                this.highTraffic = true;
+            else
+                this.highTraffic = false;
             this.getAvailableTimes(this.reservation.date, this.reservation.numGuests);
         },
         'reservation.numGuests': function() {
@@ -515,7 +541,7 @@ export default {
     },
     methods: {
         dateDropdownUsed: function(month, day, year) {
-            this.reservation.date = `${month}/${day}/${year}`
+            this.reservation.date = `${year}-${month}-${day}`
         },
         allowedDates: function(v) {
             return (v >= this.currentDate);
@@ -547,6 +573,18 @@ export default {
             if (e.key < '0' || e.key > '9')
                 return e.preventDefault();
         },
+
+        getHighTrafficDays(current, next) {
+            this.$traffic.get({current, next})
+            .then((response) => {
+                this.highTrafficDays = response.body;
+
+                if (this.highTrafficDays.includes(this.reservation.date))
+                    this.highTraffic = true;
+            })
+            .catch((error) => console.error(error));
+        },
+
         getAvailableTimes(date, guests) {
             this.$tables.get({date, guests})
             .then((response) => {
@@ -577,7 +615,8 @@ export default {
                 email: this.customer.email,
                 date: this.reservation.date,
                 time: this.reservation.time,
-                tables: this.reservation.tables
+                tables: this.reservation.tables,
+                numGuests: this.reservation.numGuests,
             }
 
             //printObj(data);

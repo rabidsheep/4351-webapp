@@ -71,7 +71,8 @@ api.put("/reservations", (req, res) => {
       date: req.body.date,
       time: req.body.time,
       tables: req.body.tables,
-      payment: req.body.payment
+      payment: req.body.payment,
+      numGuests: req.body.numGuests,
     })
     .then((data) => {
       return res.status(200).send({id: data._id});
@@ -176,7 +177,7 @@ api.get("/times", (req, res) => {
 // Takes date and gets all tables reserved for that hour
 api.get("/tables", (req, res) => {
   return reservation
-  .find({date: new Date(req.body.date)})
+  .find({date: req.body.date})
   .select('name tables')
   .exec()
   .then((docs) => {
@@ -185,6 +186,7 @@ api.get("/tables", (req, res) => {
     return res.status(400).send(err);
   })
 });
+
 // Takes size and creates a table in database
 api.put("/tables", (req, res) => {
   return table.create({
@@ -195,6 +197,7 @@ api.put("/tables", (req, res) => {
     return res.status(400).send(err);
   })
 });
+
 // Takes size and deletes a table from database
 api.delete("/tables", (req, res) => {
   return table.deleteOne({size: req.body.size}).then(() => {
@@ -238,8 +241,6 @@ api.get("/tables/available", (req, res) => {
     .then((tables) => {
       for (var j = 0; j < 5; j++) {
         var available = table_combo(tables, guests + j);
-        
-        console.log(available);
         if (available.length > 0) {
           console.log(available);
           return res.status(200).send({available: available});
@@ -258,41 +259,33 @@ api.get("/tables/available", (req, res) => {
 // Send it a month and it will reply with a boolean array of days that have num of reservations > threshold
 const threshold = 2;
 api.get("/traffic", (req, res) => {
-  today = new Date(req.body.date);
-  daysInMonth = new Date(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    0
-  ).getDate();
-  var calls = [];
-  for (let i = 1; i < daysInMonth; i++) {
-    calls.push((callback) => {
-      reservation
-        .find({
-          date: {
-            $gte: new Date(today.getFullYear(), today.getMonth(), i),
-            $lt: new Date(today.getFullYear(), today.getMonth(), i + 1),
-          },
-        })
-        .exec()
-        .then((docs) => {
-          if (docs.length >= threshold) {
-            callback(null, true);
-          } else {
-            callback(null, false);
-          }
-        })
-        .catch((err) => {
-          callback(err, null);
-        });
-    });
-  }
-  return async.parallel(calls, (err, results) => {
-    if (err) {
-      return res.status(400).send(err);
-    }
-    return res.status(200).send(results);
-  });
+  let current = new Date(new Date(req.query.current).setUTCHours(24,0,0,0));
+  let next = new Date(new Date(req.query.next).setUTCHours(24,0,0,0));
+  console.log(current);
+  console.log(next);
+  const trafficAggregate = [
+    { $match: {
+      date: {
+        $gte: current,
+        $lt: next,
+      }
+    } },
+    { $group: {
+      _id: "$date" ,
+      reservations: { $sum: 1 }
+    }}
+  ]
+
+  return reservation
+    .aggregate(trafficAggregate)
+    .exec()
+    .then((docs) => {
+      let days = docs.length > 0 ? 
+        docs.filter(doc => doc.reservations >= threshold).map(doc => doc._id.toISOString().substr(0, 10)) :
+        [];
+      return res.status(200).send(days)
+    })
+    .catch((error) => res.status(400).send(error));
 });
 
 

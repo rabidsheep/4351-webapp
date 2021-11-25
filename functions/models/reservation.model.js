@@ -11,7 +11,7 @@ module.exports = mongoose.model(
             lastName: { type: String, required: true},
             phone: { type: String, required: true},
             email: { type: String, required: true},
-            date:  { type: String, required: true},
+            date:  { type: Date, required: true},
             time: { type: String, required: true},
             numGuests: { type: Number, required: true },
             tables: { type: [table.schema], required: true},

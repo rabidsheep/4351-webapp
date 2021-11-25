@@ -578,6 +578,13 @@ select:disabled {
     height: 20px;
 }
 
+#reservation .traffic-warning {
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+}
+
 /** INPUT VALIDATION */
 .invalid-feedback{
     color: red;
