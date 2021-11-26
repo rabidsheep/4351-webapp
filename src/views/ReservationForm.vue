@@ -734,8 +734,9 @@ export default {
         },
 
         'reservation.numGuests': function() {
-            this.selectedTables = [];
+            this.disableAllSeats = false;
             this.totalSeats = 0;
+            this.selectedTables = [];
         },
         
         'reservation.date': function() {
@@ -836,6 +837,7 @@ export default {
             .then((response) => {
                 this.validCombos = response.body.combos;
                 this.validTables = response.body.selectable;
+                this.validTablesOriginal = response.body.selectable;
                 this.selectedTables = [];
             })
             .catch((error) => console.error(error));
