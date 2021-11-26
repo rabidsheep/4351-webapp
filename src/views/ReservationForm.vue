@@ -733,14 +733,9 @@ export default {
             deep: true,
         },
 
-        'reservation.numGuests': function(guests) {
+        'reservation.numGuests': function() {
             this.selectedTables = [];
-
-            if (this.totalSeats < guests) {
-                this.disableAllSeats = false;
-            } else {
-                this.disableAllSeats = true;
-            }
+            this.totalSeats = 0;
         },
         
         'reservation.date': function() {
