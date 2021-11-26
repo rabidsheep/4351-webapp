@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const { devMode } = require("./CloudConfig");
 
 const async = require("async");
 const express = require("express");
@@ -7,7 +8,6 @@ const cors = require("cors")({ origin: true });
 const api = express();
 api.use(express.json());
 api.use(cors);
-const devMode = process.env.FUNCTIONS_EMULATOR === 'true';
 
 // MongoDb + Mongoose
 const mongoDb = require("./db");
@@ -18,9 +18,10 @@ const reservation = require("./models/reservation.model");
 const table = require("./models/table.model");
 const user = require("./models/user.model");
 const { ObjectId } = require("bson");
+admin.initializeApp();
 
-admin.initializeApp({ projectId: "webapp-f22de" });
 
+const maxGuests = 54;
 const serviceHours = [
   "9:00am", "10:00am", "11:00am",
   "12:00pm", "1:00pm", "2:00pm",
@@ -190,8 +191,32 @@ api.get("/tables", (req, res) => {
 
 // Takes size and creates a table in database
 api.put("/tables", (req, res) => {
-  return table.create({
-    size: req.body.size
+  var char;
+
+  switch(req.body.size) {
+    case 2:
+      char = 'A';
+      break;
+    case 4:
+      char = 'B';
+      break;
+    case 6:
+      char = 'C';
+      break;
+    case 8:
+      char = 'D';
+  }
+
+  return table
+  .count({ size: req.body.size })
+  .exec()
+  .then((count) => {
+    let tid = char + count;
+    return table
+    .create({
+      size: req.body.size,
+      tid: tid
+    })
   }).then((data) => {
     return res.status(200).send(data);
   }).catch((err) => {
@@ -213,14 +238,17 @@ api.get("/tables/available", (req, res) => {
 
   var guests = parseInt(req.query.guests);
   var date = new Date(req.query.date);
+  var time = req.query.time;
 
   const tablesAggregate = [
     { $match: {
-      date: date
+      date: date,
+      time: time
     } },
     { $group: {
       _id: null,
-      tables: { $addToSet: "$tables._id" }
+      tables: { $addToSet: "$tables" },
+      totalGuests: { $sum: "$numGuests" }
     } },
     { $project: {
       _id: 0,
@@ -228,28 +256,47 @@ api.get("/tables/available", (req, res) => {
         input: "$tables",
         initialValue: [],
         in: { $setUnion: ["$$value", "$$this"] }
-      } }
+      } },
+      totalGuests: "$totalGuests",
     } }
   ]
+
+  
   //Fetches the tables that are already reserved for that day
   return reservation
     .aggregate(tablesAggregate)
     .exec()
     .then((booked) => {
-      if (booked.length > 0)
-        return table.find({ _id: { $nin: booked[0].tables } }).exec();
-      else
-        return table.find().exec();
+      if (booked.length > 0) {
+        if (booked[0].totalGuests >= 46 || booked[0].totalGuests + guests > 46) {
+          return res.status(200).send({ combos: [], selectable: [] });
+        } else {
+          return table.find({ tid: { $nin: booked[0].tables } }).sort('tid').exec();
+        }
+      } else {
+        return table.find().sort('tid').exec();
+      }
     })
     .then((tables) => {
+      var selectable = [];
+      var combos = [];
       for (var j = 0; j < 5; j++) {
         var available = table_combo(tables, guests + j);
         if (available.length > 0) {
-          console.log(available);
-          return res.status(200).send({available: available});
+          available.forEach((combo) => {
+            if (combo.length > 1) {
+              let tids = combo.map((table) => table.tid);
+              combos.push(tids);
+            } else {
+              combos.push([combo[0].tid])
+            }
+          })
+
+          tables.filter(table => !selectable.includes(table.tid)).map(table => selectable.push(table.tid))
+          return res.status(200).send({ combos, selectable });
         }
       }
-      return res.status(400).send("No tables available");
+      return res.status(200).send({ combos, selectable });
     })
     .catch((error) => res.status(400).send(error));
 });
@@ -299,21 +346,14 @@ api.get("/traffic", (req, res) => {
 
 // Takes id token from firebase auth and return database information for that user
 api.get("/user", (req, res) => {
-  var getUser;
   var data = req.query;
   console.log(data);
-
-  if (devMode) {
-    getUser = user.findOne({ uid: data.uid }).exec()
-  } else {
-    getUser = admin
-    .auth()
-    .verifyIdToken(data.token)
-    .then((decodedToken) => user.findOne({ uid: decodedToken.uid }).exec() )
-  }
   
-  
-  return getUser.then((doc) => {
+  admin
+  .auth()
+  .verifyIdToken(data.token)
+  .then((decodedToken) => user.findOne({ uid: decodedToken.uid }).exec() )
+  .then((doc) => {
     console.log(doc);
     return res.status(200).send(doc)
   })
@@ -326,7 +366,6 @@ api.get("/user", (req, res) => {
 // Takes id token and relevant information and returns success or failure
 api.post("/user", (req, res) => {
   var data = req.body.data;
-  var createAccount;
 
   var account = {
     uid: data.uid,
@@ -335,6 +374,7 @@ api.post("/user", (req, res) => {
     phone: data.phone,
     email: data.email,
     mailing: data.mailing,
+    billing: data.billing,
     dinerId: new ObjectId().toString(),
     points: 0
   };
@@ -343,28 +383,22 @@ api.post("/user", (req, res) => {
     account = { ...account, paymentMethod: data.paymentMethod };
   }
   
-  // verifyIdToken() doesn't work in dev environments
-  if (devMode) {
-    createAccount = user.create(account);
-  } else {
-    createAccount = admin
-    .auth()
-    .verifyIdToken(req.body.token)
-    .then(() => user.create(account));
-  }
-  
-  createAccount.then((data) => {
-        console.log(data);
-        return res.status(200).send("API call returned successfully");
-    })
-    .catch((error) => {
-      if (error.code == 11000) {
-        return res
-          .status(400)
-          .send("Looks like we already have an account");
-      }
-      return res.status(400).send(error);
-    });
+  admin
+  .auth()
+  .verifyIdToken(req.body.token)
+  .then(() => user.create(account))
+  .then((data) => {
+    console.log(data);
+    return res.status(200).send("API call returned successfully");
+  })
+  .catch((error) => {
+    if (error.code == 11000) {
+      return res
+        .status(400)
+        .send("Looks like we already have an account");
+    }
+    return res.status(400).send(error);
+  });
 });
 
 // Takes id token and deletes user from database

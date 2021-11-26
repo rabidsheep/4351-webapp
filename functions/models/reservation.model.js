@@ -14,7 +14,7 @@ module.exports = mongoose.model(
             date:  { type: Date, required: true },
             time: { type: String, required: true },
             numGuests: { type: Number, required: true },
-            tables: { type: [table.schema], required: true },
+            tables: { type: Array, required: true },
             payment: { type: payment.schema, required: false }
         }
     )

@@ -1,12 +1,17 @@
 import Vue from "vue";
 import VueResource from "vue-resource";
-import firebase from 'firebase/compat/app';
-import config from "./config.js"
-
+import config from "./config.js";
+import firebase from "firebase/compat/app";
 firebase.initializeApp(config);
-
 Vue.use(VueResource);
-Vue.prototype.$isDevEnv = process.env.NODE_ENV === "development";
+let devMode = process.env.NODE_ENV === "development";
+
+Vue.prototype.$devMode = devMode;
+
+if (devMode) {
+    firebase.auth().useEmulator("http://localhost:9099");
+}
+
 let uri = (
     process.env.NODE_ENV === "development" ?
     "http://localhost:5001/webapp-f22de/us-central1/api" :

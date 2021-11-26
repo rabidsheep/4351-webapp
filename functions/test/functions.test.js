@@ -27,15 +27,30 @@ const { ObjectId } = require("bson");
 describe("Table", () => {
   before(() => {
     return table
-      .create([{ size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, { size: 2 }, {size: 3}, {size: 5}])
+      .create([
+        { size: 2 },
+        { size: 2 },
+        { size: 2 },
+        { size: 2 },
+        { size: 2 },
+        { size: 4 },
+        { size: 4 },
+        { size: 4 },
+        { size: 4 },
+        { size: 6 },
+        { size: 6 },
+        { size: 8 },
+        { size: 8 }
+      ])
       .then((docs) => {
         return reservation.create({
           firstName: "Noah",
           lastName: "Gori",
-          phone: "test",
-          email: "test",
-          date: new Date(2021, 0, 1, 20),
-          tables: [docs[0], docs[1], docs[2]],
+          phone: "123-456-7890",
+          email: "test@gmail.com",
+          date: new Date(),
+          numGuests: 6,
+          tables: [docs[0].tid, docs[1].tid, docs[2].tid],
         });
       });
   });
@@ -105,26 +120,29 @@ describe("GET /traffic", () => {
         {
           firstName: "Noah",
           lastName: "Gori",
-          phone: "test",
-          email: "test",
+          phone: "123-456-7890",
+          email: "test@gmail.com",
           date: new Date(2021, 0, 1),
-          tables: [{ size: 2 }],
+          numGuests: 2,
+          tables: ["A2"],
         },
         {
           firstName: "Noah",
           lastName: "Gori",
-          phone: "test",
-          email: "test2",
+          phone: "0987-654-321",
+          email: "test2@gmail.com",
           date: new Date(2021, 0, 1),
-          tables: [{ size: 2 }],
+          numGuests: 2,
+          tables: ["A3"],
         },
         {
           firstName: "Noah",
           lastName: "Gori",
-          phone: "test",
-          email: "test2",
+          phone: "0987-654-321",
+          email: "test2@gmail.com",
           date: new Date(2021, 0, 2),
-          tables: [{ size: 2 }],
+          numGuests: 2,
+          tables: ["A1"],
         },
       ])
       .catch((err) => {
@@ -156,9 +174,11 @@ describe("GET /times", () => {
           .create({
             firstName: "Noah",
             lastName: "Gori",
-            phone: "test",
-            email: "test",
-            date: new Date(2021, 0, 1, 20),
+            phone: "123-456-7890",
+            email: "test@gmail.com",
+            date: new Date(2021, 0, 1),
+            numGuests: 2,
+            tables: ["A2"],
             tables: docs,
           })
           .catch((err) => {

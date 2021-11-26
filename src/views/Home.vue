@@ -90,6 +90,7 @@ export default {
         }
     },
     mounted() {
+        
         this.$firebase.auth().onAuthStateChanged((data) => {
             if (data) {
                 let user = data.multiFactor.user;

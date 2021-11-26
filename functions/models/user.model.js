@@ -13,8 +13,10 @@ module.exports = mongoose.model(
             phone: { type: String, required: true, unique: true },
             email: { type: String, required: true, unique: true },
             mailing: { type: address.schema, required: true },
+            billing: { type: address.schema, required: true },
             dinerId: { type: String, required: true, unique: true },
             points: { type: Number, required: true },
+            preferredPayment: { type: String, required: false },
             paymentMethod: { type: payment.schema, required: false },
             reservations: { type: Array, require: false }
         }
