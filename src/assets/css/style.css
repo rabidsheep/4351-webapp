@@ -64,8 +64,8 @@ html, #app, #router-view {
 }
 
 .btn {
-    display: grid;
-    grid-template: 'icon divider label' auto / 0fr 0fr;
+    display: flex;
+    gap: 10px;
     background-color: var(--button) !important;
     border-radius: 5px;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),
@@ -76,7 +76,6 @@ html, #app, #router-view {
     font-size: 20px;
     font-weight: 700;
     padding: 10px;
-    column-gap: 10px;
 }
 
 .btn:hover {
@@ -175,60 +174,87 @@ select:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
 #home .signin h2 {
     font-size: 56px;
     font-family: 'Amatic SC', cursive;
-    line-height: intiial;
+    line-height: initial;
 }
 
+#home .signin input {
+    background-color: white;
+    border: 1px solid var(--input-border);
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
 
-#home .signin .wrapper {
-    padding: 0px 40px;
-    display: grid;
-    row-gap: 5px;
-    text-align: center;
-    width: max-content;
+#home .signin .password {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#home .signin .password .show-password {
+    position: absolute;
+    right: 0;
+    padding-right: 5px;
 }
 
 /** RESERVATION FORM **/
 
-#reservation {
-    background-color: var(--sub-background);
-    padding: 20px;
+
+.registration__stepper {
+    background-color: var(--sub-background) !important;
     border-radius: 10px;
     box-shadow: 5px 5px 0px rgba(0,0,0,.14);
-    color: var(--text2);
+    color: var(--text2) !important;
     line-height: initial;
     max-width: 480px;
     width: 90%;
+}
+
+.reservation__form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     min-width: min-content;
 }
 
-#reservation h2 {
+.v-overlay__content {
+    max-width: 480px;
+    width: 90%;
+}
+
+.registration__stepper .v-stepper__wrapper {
+    overflow: visible !important;
+
+}
+
+.reservation__form h2 {
     font-size: 40px;
     font-family: 'Amatic SC', cursive;
     letter-spacing: 0.15em;
 }
 
-#reservation > .main,
-#reservation > .main > div {
+.reservation__form > .main,
+.reservation__form > .main > div {
     display: grid;
     row-gap: 15px;
 }
 
-#reservation .field-group {
+.reservation__form .field-group {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     padding: 0px 12px;
 }
 
-#reservation .date-group {
+.reservation__form .date-group {
     display: flex;
     gap: 10px;
     flex-wrap: nowrap;
@@ -239,146 +265,142 @@ select:disabled {
     border-radius:4px;
 }
 
-#reservation #guest__date {
+.reservation__form #guest__date {
     width: 100%;
 }
 
-#reservation .v-picker--date {
+.reservation__form .v-picker--date {
     background-color: #776865;
 }
 
-#reservation .date-dropdowns {
+.reservation__form .date-dropdowns {
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
-#reservation #date {
+.reservation__form #date {
     width: max-content;
     
 }
 
-#reservation #guest__time {
+.reservation__form #guest__time {
     height: max-content;
     text-align: center;
     width: 100%;
 }
 
-#reservation #guest__time .btnbox {
+.reservation__form #guest__time .btnbox {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
 }
 
-#reservation #date .v-btn--active {
+.reservation__form #date .v-btn--active {
     background-color: var(--button);
 }
 
-#reservation .datetime-group {
+.reservation__form .datetime-group {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-#reservation .btn__date,
-#reservation .btn__timeslot {
+.reservation__form .btn__date,
+.reservation__form .btn__timeslot {
     background-color: var(--button-choice);
     border: 1px solid var(--input-border);
     box-shadow: 2px 2px 0px rgba(0,0,0,.14);
 }
 
-#reservation .btn__timeslot {
+.reservation__form .btn__timeslot {
     padding: 6px;
     border-radius: 10px;
     width: 80px;
+    transition: 0.3s;
 }
 
-#reservation .btn__date {
+.reservation__form .btn__timeslot.active {
+    background-color: var(--button-focus);
+    color: white;
+}
+
+.reservation__form .btn__date {
     padding: 5px;
     height: max-content;
     border-radius: 100%;
     box-shadow: 2px 2px 0px rgba(0,0,0,.14);
 }
 
-#reservation .field-w12 {
+.reservation__form .field-w12 {
    width: 100%;
 }
 
-#reservation .field-w9 {
+.reservation__form .field-w9 {
     width: calc(80% - 6px);
 }
 
-#reservation .field-w6 {
+.reservation__form .field-w6 {
     width: calc(50% - 6px);
  }
 
- #reservation .field-w4 {
+ .reservation__form .field-w4 {
     width: calc(33.33% - 4px);
  }
 
- #reservation .field-w3 {
+ .reservation__form .field-w3 {
     width: calc(20% - 4px);
  }
 
-#reservation .input__city {
+.reservation__form .input__city {
     flex: 1;
 }
 
-#reservation .input__cnum {
+.reservation__form .input__cnum {
     width: calc(85% - 5px);
 }
 
-#reservation .input__cvv {
+.reservation__form .input__cvv {
     width: calc(15% - 5px);
 }
+.reservation__form .input__text.input__discount {
 
-#reservation #seating {
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.reservation__form .input__text.input__discount label {
+    align-self: center;
+    text-align: center;
+}
+
+.reservation__form #discount {
+    width: 6em;
+    justify-self: center;
+}
+
+.reservation__form #seating {
     max-width: 90px;
 }
 
-#reservation #guest__fields {
+.reservation__form #guest__fields {
     height: min-content;
 }
 
-#reservation .res__info {
+.reservation__form .res__info {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
 }
 
-#reservation #guest__fields,
-#reservation #guest__address2 .input__text {
+.reservation__form #guest__fields,
+.reservation__form #guest__address2 .input__text {
     flex: 100;
 }
 
-/*#reservation .vc-container {
-    width: 100%;
-    background-color: var(--vc-background);
-    border-color: var(--input-border);
-}
-
-#reservation .vc-time-picker {
-    justify-content: center;
-}
-
-#reservation .vc-weekday {
-    color: var(--vc-days);
-}
-
-#reservation .vc-weeks {
-    color: var(--vc-text);
-}
-
-#reservation .vc-highlight {
-    background-color: var(--vc-highlight) !important;
-}
-
-#reservation .vc-day { color: var(--vc-highlight) !important; }
-#reservation .vc-month,
-#reservation .vc-year { color: var(--vc-accent) }*/
-
-#reservation select {
+.reservation__form select {
     border: 1px solid var(--input-border);
     border-radius: 8px;
     padding: 5px;
@@ -389,150 +411,148 @@ select:disabled {
     height: min-content;
 }
 
-#reservation .billing .checkbox {
+.reservation__form .billing .checkbox {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#reservation .input__state {
+.reservation__form .input__state {
     display: grid;
     row-gap: 5px;
 }
 
-#reservation #guest__seating {
+.reservation__form #guest__seating {
     width: max-content;
 }
 
-#reservation ::placeholder {
+.reservation__form ::placeholder {
     color:rgba(100, 100, 100, 0.6);
 }
 
-#reservation .v-picker__title.primary {
+.reservation__form .v-picker__title.primary {
     background-color: #8d7a72;
 }
 
-#reservation .v-picker__body {
-    background-color: var(--input-background);
+.reservation__form .v-picker__body {
+    background-color: var(--input-background) !important;
 }
 
-#reservation .input__text,
-#reservation .input__general {
+.reservation__form .input__text,
+.reservation__form .input__general {
     display: grid;
     row-gap: 5px;
 }
 
-#reservation .input__text input,
-#reservation #card__expiration {
+.reservation__form .input__text input,
+.reservation__form #card__expiration {
     border: 1px solid var(--input-border);
     border-radius: 8px;
     background-color: var(--input-background);
 }
 
-#reservation #card__expiration {
+.reservation__form #card__expiration {
     width: max-content;
     height: max-content;
 }
 
-#reservation #card__expiration input {
+.reservation__form #card__expiration input {
     border: none;
     background-color: transparent;
     width: 2.5em;
     padding: 5px;
 }
 
-#reservation .input__text input {
+.reservation__form .input__text input {
     padding: 5px;
     width: 100%;
     height: 100%;
 }
 
-#reservation select,
-#reservation input,
-#reservation .btn__timeslot, 
-#reservation .date-group .v-btn--text {
+.reservation__form select,
+.reservation__form input,
+.reservation__form .btn__timeslot, 
+.reservation__form .date-group .v-btn--text {
     color: var(--input-text);
 }
 
-#reservation select,
-#reservation input,
-#reservation .btn__timeslot {
+.reservation__form select,
+.reservation__form input,
+.reservation__form .btn__timeslot {
     font-size: 15px;
 }
 
-#reservation select,
-#reservation .input__select label,
-#reservation .input__text input,
-#reservation .input__text label {
+.reservation__form select,
+.reservation__form .input__select label,
+.reservation__form .input__text input,
+.reservation__form .input__text label {
     align-self: end;
 }
 
 
-#reservation input:focus-visible {
+.reservation__form input:focus-visible {
     outline: none;
     border-color: var(--input-border-focus);
 }
 
-#reservation label {
+.reservation__form label {
     color: var(--label);
     font-size: 0.9em;
     text-transform: uppercase;
 }
 
-#reservation label > i {
+.reservation__form label > i {
     text-transform: none;
     font-size: 0.8em;
 }
 
-#reservation span.req {
+.reservation__form span.req {
     color: var(--warning);
 }
 
-#reservation input,
-#reservation select {
+.reservation__form input,
+.reservation__form select {
     background-color: var(--input-background);
 }
 
-#reservation input:disabled,
-#reservation select:disabled {
+.reservation__form input:disabled,
+.reservation__form select:disabled {
     background-color: var(--input-background-disabled);
 }
 
-#reservation .span hr {
+.reservation__form .span hr {
     border: none;
     background-color: var(--hr);
     height: 2px;
 }
 
-#reservation .input__checkbox {
+.reservation__form .input__checkbox {
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
-#reservation .input__checkbox input {
+.reservation__form .input__checkbox input {
     margin-right: 10px;
 }
 
-#reservation .submit {
+.reservation__form .submit {
     width: max-content;
     justify-self: center;
 }
 
-#reservation .legend {
+.reservation__form .legend {
     font-size: 0.85em;
     text-align: right;
     justify-content: end;
 }
 
-#reservation .bottom {
-    display: grid;
-    row-gap: 5px;
-}
-
-#reservation .btn label {
+.reservation__form .btn label {
     color: white;
 }
 
-#reservation .wrapper {
+.reservation__form .wrapper {
     height: min-content;
     display: flex;
     flex-wrap: nowrap;
@@ -541,21 +561,29 @@ select:disabled {
     background-color: white;
 }
 
-#reservation .wrapper #card__num {
+.reservation__form .wrapper #card__num {
     border: none;
     border-right: 1px solid var(--input-border);
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }
 
-#reservation .merchants {
+.reservation__form .merchants {
     display: flex;
     align-items: center;
     padding: 0px 5px;
 }
 
-#reservation .merchants img {
+.reservation__form .merchants img {
     height: 20px;
+}
+
+.reservation__form .warning {
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    color: var(--warning);
 }
 
 /** INPUT VALIDATION */
@@ -564,6 +592,7 @@ select:disabled {
     font-size: 0.7em;
     position: absolute;
 }
+
 .has-error{
     color: red;
 }
@@ -579,3 +608,202 @@ select:disabled {
 #reservation select:invalid {
     border-color: red;
 }*/
+
+
+/** TABLE DISPLAY **/
+.tables {
+    width: 100%;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+#floor {
+    width: 100%;
+    display: grid;
+    grid-template: 
+    't2 . t4 . t6'
+    't8 t8 t8 t8 t8' auto / 0fr 0fr 1fr;
+    row-gap: 10px;
+    background-color: rgb(243, 231, 231);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+#floor .group__t2 {
+    grid-area: t2;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    gap: 10px;
+ }
+
+
+#floor .group__t4 {
+    grid-area: t4;
+    display: grid;
+    grid-template:
+    'a b'
+    'c d';
+    row-gap: 20px;
+    column-gap: 20px;
+    justify-content: space-evenly;
+    align-content: space-around;
+}
+
+#floor .group__t6 {
+    grid-area: t6;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+#floor .group__t8 {
+    grid-area: t8;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#floor .table {
+    color: white;
+    background-color: var(--button);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#floor .table label {
+    position: absolute;
+    z-index: 4;
+    color: white !important;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#floor .table:disabled label {
+    cursor: default;
+}
+
+#floor .table:not(.t4):disabled,
+#floor .table.t4:disabled:after {
+    background-color: var(--button-disabled);
+}
+
+#floor .table.selected:not(.t4),
+#floor .table.selected.t4:after {
+    background-color: var(--button-l1);
+}
+
+
+/* small rectangle */
+#floor .t2 {
+    width: 50px;
+    height: 30px;
+}
+
+/* diamond */
+#floor .t4 {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: transparent;
+}
+  .t4:after {
+    position: absolute;
+    content: '';
+    height: 50px;
+    width: 50px;
+    transform: rotateZ(45deg);
+    background-color: var(--button);
+  }
+
+/* circle */
+#floor .t6 {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+/* long rectangle*/
+#floor .t8 {
+    width: 50%;
+    height: 30px;
+
+}
+
+/* REGISTRATION STEPPER */
+.registration__stepper {
+    border-radius: 10px !important;
+}
+
+.registration__stepper .buttons {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons > div {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+#reservation .buttons .right {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#registration .buttons > div {
+    width: 50%;
+}
+
+.alertContent {
+    padding: 0px !important;
+}
+
+.alertContent .v-stepper__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.alertContent h1 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 60px;
+}
+/* RESERVATION FORM BOTTOM AREA */
+.bottom {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#registration .bottom {
+    gap: 15px;
+}
+
+.bottom .legend {
+    width: 100%;
+}
+
+.bottom h1 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 50px;
+}
+

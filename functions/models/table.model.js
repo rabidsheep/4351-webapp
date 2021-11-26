@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 module.exports = mongoose.model(
-        "table",
-        mongoose.Schema(
-            {
-                size: {type: Number, required: true}
-            }
-        )
-    );
+    "tables",
+    mongoose.Schema(
+        {
+            tid: { type: String, required: true, unique: true },
+            size: { type: Number, required: true }
+        }
+    )
+);

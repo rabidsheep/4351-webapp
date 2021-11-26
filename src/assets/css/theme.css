@@ -19,9 +19,11 @@
     --accent: #eed1e4;
     --button-icon: #eed1e4;
     --button: #847676;
+    --button-disabled: #c0c0c0;
     --button-l1: #a79797;
     --button-hr: rgba(255, 255, 255, 0.425);
     --button-choice: rgb(241, 223, 215);
+    --button-focus: #847676;
     --input-border: rgb(139, 114, 114);
     --input-border-focus: rgb(68, 68, 68);
     --input-disabled: rgba(194, 194, 194, 0.582);
@@ -29,6 +31,6 @@
     --primary: #ffffff;
     --success: #4CAF50;
     --info: #2196F3;
-    --warning: #bd0000;
+    --warning: #c74e4e;
     --error: #FF5252;
 }
