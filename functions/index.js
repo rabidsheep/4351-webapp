@@ -64,19 +64,36 @@ function table_combo(array, num, partial = [], available = []) {
 
 // Takes name, phone, email, date, tables and creates a reservation in the data base then responds with success or fail
 api.put("/reservations", (req, res) => {
+  let uid = req.body.uid;
+  let data = req.body.reservation;
+  let pointsEarned = 10 - data.discount;
+
   return reservation
     .create({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phone: req.body.phone,
-      email: req.body.email,
-      date: req.body.date,
-      time: req.body.time,
-      tables: req.body.tables,
-      payment: req.body.payment,
-      numGuests: req.body.numGuests,
+      uid: data.uid,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phone: data.phone,
+      email: data.email,
+      date: data.date,
+      time: data.time,
+      tables: data.tables,
+      payment: data.payment,
+      numGuests: data.numGuests,
     })
     .then((data) => {
+      if (uid) {
+        user
+        .findOneAndUpdate(
+          { uid: uid },
+          { 
+            $addToSet: { reservations: data._id },
+            $inc: { points: pointsEarned }
+          }
+        )
+        .exec()
+      }
+
       return res.status(200).send({id: data._id});
     })
     .catch((error) => {
@@ -118,6 +135,7 @@ api.delete("/reservations", (req, res) => {
 **********/
 
 // Takes a date = YEAR-MM-DD and num = num of guest and returns object with key = hour and value = a bool of availability
+// not being used rn
 api.get("/times", (req, res) => {
 
   time = new Date(req.query.date);

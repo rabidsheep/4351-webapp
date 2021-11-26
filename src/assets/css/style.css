@@ -363,6 +363,22 @@ select:disabled {
 .reservation__form .input__cvv {
     width: calc(15% - 5px);
 }
+.reservation__form .input__text.input__discount {
+
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.reservation__form .input__text.input__discount label {
+    align-self: center;
+    text-align: center;
+}
+
+.reservation__form #discount {
+    width: 6em;
+    justify-self: center;
+}
 
 .reservation__form #seating {
     max-width: 90px;

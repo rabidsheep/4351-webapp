@@ -78,15 +78,15 @@
 
                                         <div class="date-group">
                                             <v-date-picker
-                                                v-model="selectedDate"
-                                                :allowed-dates="allowedDates"
-                                                :events="highTrafficDays"
-                                                event-color="#c74e4e"
-                                                :show-current="false"
-                                                :picker-date.sync="pickerDate"
-                                                no-title
-                                                id="date"
-                                                />
+                                            v-model="selectedDate"
+                                            :allowed-dates="allowedDates"
+                                            :events="highTrafficDays"
+                                            event-color="#c74e4e"
+                                            :show-current="false"
+                                            :picker-date.sync="pickerDate"
+                                            no-title
+                                            id="date"
+                                            />
                                         </div>
                                     </div>
 
@@ -264,15 +264,28 @@
                             </div>
                         </div>
                         </template>
+
+                        <div class="discount" v-if="uid">
+                            <div class="input__text input__discount field-w12">
+                                <label for="discount">Points Applied<br /><i>(10 pts = $1 off)</i></label>
+                                <input
+                                v-model="pointsApplied"
+                                step="10"
+                                id="discount"
+                                type="number"
+                                min="0"
+                                :max="customer.points" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="bottom">
                         <div class="legend">
                         <i><span class="req">*</span> = Required</i>
                         </div>
+
                         
                         <template v-if="!uid">
-
                             <div class="buttons">
                                 <div class="right">
                                     <button @click="$event.preventDefault(); step = 3" class="btn submit">
@@ -547,6 +560,18 @@
                     </div>
                 </v-form>
             </v-stepper-content>
+
+            <v-stepper-content
+            step="3">
+                <div class="header">
+                    <h2>Your reservation has been booked!</h2>
+                    <h4>Confirmation #{{ confirmationNumber }}</h4>
+                </div>
+
+                <div class="content">
+                    See you soon!
+                </div>
+            </v-stepper-content>
         </v-stepper-items>
     </v-stepper>
 </template>
@@ -657,7 +682,8 @@ export default {
             selectedTables: [],
             submitted: false,
             totalSeats: 0,
-            checkTables: true,
+            confirmationNumber: null,
+            pointsApplied: 0,
         }
     },
     validations: {
@@ -685,6 +711,11 @@ export default {
                 zip: { required },
             }
         },
+        reservation: {
+            date: { required },
+            time: { required },
+            numGuests: { required },
+        }
         
     },
     /* watchers to check for changes in certain variables */
@@ -874,7 +905,6 @@ export default {
         // submit reservation
         submitReservation(e) {
             e.preventDefault();
-            this.step = 3;
             this.submitted = true;
             /*this.$v.$touch();
             if (this.$v.$invalid){
@@ -888,18 +918,22 @@ export default {
                 email: this.customer.email,
                 ...this.reservation,
                 tables: this.selectedTables,
+                discount: this.pointsApplied,
             }
+            let uid = this.uid;
 
             //printObj(data);
 
-            this.$reservation.save(reservation)
+            this.$reservation.save({ reservation, uid })
             .then((response) => {
                 console.log(response.body);
+                this.confirmationNumber = response.body.id;
+                this.step = 3;
             })
             .catch((error) => { 
                 console.log(error.body)
+                alert("Something went wrong.");
             });
-            alert("SUCCESS!! :-)\n\n" + JSON.stringify(this.customer));
         }
     }
 }
