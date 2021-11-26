@@ -652,7 +652,7 @@ export default {
             reservation: {
                 date: new Date(),
                 time: null,
-                numGuests: 5,
+                numGuests: 1,
             },
             selectedTables: [],
             submitted: false,
