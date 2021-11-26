@@ -1,5 +1,4 @@
 <template>
-    
     <v-stepper
     v-model="step"
     class="registration__stepper">
@@ -14,7 +13,7 @@
 
                             <div class="field-group guest__fields">
 
-                                <div class="input__text input__fn field-w6">
+                                <div class="input__text input__fn field-w6" :class="{ 'has-error': $v.customer.firstName.$error }">
                                     <label for="fname">First Name <span class="req">*</span></label>
                                     <input
                                     v-model="customer.firstName"
@@ -29,11 +28,10 @@
                                     <input
                                     v-model="customer.lastName"
                                     id="lname"
-                                    class="form-control" :class="{ 'is-invalid': submitted && $v.customer.lastName.$error }"
                                     required />
                                 </div>
 
-                                <div class="input__text input__email field-w6 form-group">
+                                <div class="input__text input__email field-w6 form-group" :class="{ 'has-error': $v.customer.email.$error }">
                                     <label for="email">E-mail <span class="req">*</span></label>
                                     <input
                                     v-model="customer.email"
@@ -140,7 +138,7 @@
                             <span><h2>Payment Info</h2> <div class="gdivider" /></span>
 
                             <div class="field-group">
-                                <div class="input__text input__ch field-w12">
+                                <div class="input__text input__ch field-w12" :class="{ 'has-error': $v.payment.ch.$error }">
                                     <label for="card__name">CARDHOLDER'S NAME <span class="req">*</span></label>
                                     <input
                                     v-model="payment.cardholderName"
@@ -148,7 +146,7 @@
                                     required />
                                 </div>
 
-                                <div class="input__text input__cnum">
+                                <div class="input__text input__cnum" :class="{ 'has-error': $v.payment.cnum.$error }">
                                     <label for="card__num">Card # <span class="req">*</span></label>
                                     <div class="wrapper">
                                         <input
@@ -166,7 +164,7 @@
                                     </div>
                                 </div>
 
-                                <div class="input__text input__cvv">
+                                <div class="input__text input__cvv" :class="{ 'has-error': $v.payment.cvv.$error }">
                                     <label for="card__cvv">CVV <span class="req">*</span></label>
                                     <input
                                     v-model="payment.cvv"
@@ -177,7 +175,7 @@
                                     required />
                                 </div>
 
-                                <div class="input__select input__general input__exp">
+                                <div class="input__select input__general input__exp" :class="{ 'has-error': $v.expMonth.$error || $v.expYear.$error }">
                                     <label for="card__expiration">Expiration <span class="req">*</span></label>
                                     <div id="card__expiration">
                                         <input
@@ -208,7 +206,6 @@
                                     <input
                                     v-model="payment.billing.line1"
                                     id="baddress1"
-                                    class="form-control" :class="{ 'is-invalid': submitted && $v.payment.billing.line1.$error }"
                                     required
                                     :readonly="useMailAddress" />                   
                                 </div>
@@ -227,7 +224,6 @@
                                     <input
                                     v-model="payment.billing.city"
                                     id="bcity"
-                                    class="form-control" :class="{ 'is-invalid': submitted && $v.payment.billing.city.$error }"
                                     required
                                     :readonly="useMailAddress" />
                                 </div>
@@ -279,12 +275,12 @@
                         </div>
                     </div>
 
+
                     <div class="bottom">
                         <div class="legend">
                         <i><span class="req">*</span> = Required</i>
                         </div>
 
-                        
                         <template v-if="!uid">
                             <div class="buttons">
                                 <div class="right">
@@ -328,7 +324,7 @@
                         <div class="mailing">
                             <span><h2>Mailing Info</h2> <div class="gdivider" /></span>
                             <div class="field-group">
-                                <div class="input__text input__address-l1 field-w12">
+                                <div class="input__text input__address-l1 field-w12" :class="{ 'has-error': $v.customer.mailing.address1.$error }">
                                     <label for="maddress">Mailing Address <span class="req">*</span></label>
                                     <input
                                     v-model="customer.mailing.line1"
@@ -345,7 +341,7 @@
                                     required />                   
                                 </div>
 
-                                <div class="input__text input__city field-w4">
+                                <div class="input__text input__city field-w4" :class="{ 'has-error': $v.customer.mailing.city.$error }">
                                     <label for="mcity">City <span class="req">*</span></label>
                                     <input
                                     v-model="customer.mailing.city"
@@ -354,7 +350,7 @@
                                     required />
                                 </div>
 
-                                <div class="input__select input__state field-w4">
+                                <div class="input__select input__state field-w4" :class="{ 'has-error': $v.customer.mailing.state.$error }">
                                     <label for="mstate">State <span class="req">*</span></label>
 
                                     <select
@@ -371,7 +367,7 @@
                                     </select>
                                 </div>
 
-                                <div class="input__text input__zip field-w4 form-group">
+                                <div class="input__text input__zip field-w4 form-group" :class="{ 'has-error': $v.customer.mailing.zip.$error }">
                                     <label for="mzip">Zip Code <span class="req">*</span></label>
                                     <input
                                     v-model="customer.mailing.zip"
@@ -460,7 +456,7 @@
                                         <label for="sameAddress">Use Mailing Address</label>
                                     </div>
 
-                                    <div class="input__text input__address-l1 field-w12">
+                                    <div class="input__text input__address-l1 field-w12" :class="{ 'has-error': $v.billing.address1.$error }>
                                         <label for="baddress1">Billing Address <span class="req">*</span></label>
                                         <input
                                         v-model="customer.billing.line1"
@@ -479,7 +475,7 @@
                                         :readonly="useMailAddress" />                   
                                     </div>
 
-                                    <div class="input__text input__city field-w4">
+                                    <div class="input__text input__city field-w4" :class="{ 'has-error': $v.billing.city.$error }>
                                         <label for="bcity">City <span class="req">*</span></label>
                                         <input
                                         v-model="customer.billing.city"
@@ -489,7 +485,7 @@
                                         :readonly="useMailAddress" />
                                     </div>
 
-                                    <div class="input__select input__state field-w4">
+                                    <div class="input__select input__state field-w4" :class="{ 'has-error': $v.billing.state.$error }>
                                         <label for="bstate">State <span class="req">*</span></label>
                                         <select
                                         v-model="customer.billing.state"
@@ -506,7 +502,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="input__text input__zip form-group field-w4">
+                                    <div class="input__text input__zip form-group field-w4" :class="{ 'has-error': $v.billing.zip.$error }>
                                         <label for="bzip">Zip Code <span class="req">*</span></label>
                                         <input
                                         v-model="customer.billing.zip"
@@ -557,6 +553,7 @@
                             <v-divider vertical />
                             <label>Submit »</label>
                         </button>-->
+
                     </div>
                 </v-form>
             </v-stepper-content>
@@ -577,6 +574,7 @@
 </template>
 
 <script>
+import { required, minLength, maxLength, email } from "vuelidate/lib/validators";
 import TimeslotBtn from "../components/TimeslotBtn.vue";
 import FloorLayout from "../components/FloorLayout.vue";
 import { required, email } from "vuelidate/lib/validators";
@@ -687,17 +685,29 @@ export default {
         }
     },
     validations: {
+        expYear: { required, minLength: minLength(2) },
+        expMonth: { required, minLength: minLength(2) },
         customer: {
             firstName: { required },
             lastName: { required },
             email: { required, email },
             mailing: {
-                line1: { required },
+                address1: { required },
                 city: { required },
                 state: { required },
-                zip: { required },
-            }
-            
+                zip: { required, minLength: minLength(5) },
+            },
+        },
+        payment: {
+            ch: { required },
+            num: { required, minLength: minLength(18), maxLength: maxLength(19) },
+            cvv: { required, minLength: minLength(3) },
+        },
+        billing: {
+            address1: { required },
+            city: { required },
+            state: { required },
+            zip: { required, minLength: minLength(5) },
         },
         payment: {
             cardholderName: { required },
@@ -906,11 +916,12 @@ export default {
         submitReservation(e) {
             e.preventDefault();
             this.submitted = true;
-            /*this.$v.$touch();
-            if (this.$v.$invalid){
-                return alert("Fix errors!");
-            }*/
-            // data to be submitted for reservation
+
+            this.$v.$touch();
+            if (this.$v.$error){
+                return alert("Invalid submission!");
+            }
+            // data to be submitted
             var reservation = {
                 firstName: this.customer.firstName,
                 lastName: this.customer.lastName,
@@ -920,6 +931,7 @@ export default {
                 tables: this.selectedTables,
                 discount: this.pointsApplied,
             }
+            
             let uid = this.uid;
 
             //printObj(data);
@@ -934,6 +946,9 @@ export default {
                 console.log(error.body)
                 alert("Something went wrong.");
             });
+            
+            alert("Submission Successful!\n\n");
+
         }
     }
 }

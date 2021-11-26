@@ -593,6 +593,23 @@ select:disabled {
     position: absolute;
 }
 
+.has-error{
+    color: red;
+}
+#reservation .has-error input,
+#reservation .has-error select,
+#reservation .has-error #card__expiration,
+#reservation .has-error #card__expiration input,
+#reservation .has-error .wrapper,
+#reservation .has-error .wrapper #card__num {
+    border-color: red;
+}
+/*#reservation input:invalid,
+#reservation select:invalid {
+    border-color: red;
+}*/
+
+
 /** TABLE DISPLAY **/
 .tables {
     width: 100%;
@@ -789,3 +806,4 @@ select:disabled {
     font-family: 'Amatic SC', cursive;
     font-size: 50px;
 }
+
