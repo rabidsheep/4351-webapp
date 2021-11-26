@@ -293,9 +293,12 @@ api.get("/tables/available", (req, res) => {
           })
 
           tables.filter(table => !selectable.includes(table.tid)).map(table => selectable.push(table.tid))
+          console.log(selectable);
           return res.status(200).send({ combos, selectable });
         }
       }
+      
+      console.log("2");
       return res.status(200).send({ combos, selectable });
     })
     .catch((error) => res.status(400).send(error));

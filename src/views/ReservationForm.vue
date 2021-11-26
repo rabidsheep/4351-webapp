@@ -125,7 +125,7 @@
                                         :validCombos="validCombos"
                                         :validTables="validTables"
                                         :disableAllSeats="disableAllSeats"
-                                        :selectedTables="reservation.tables"
+                                        :selectedTables="selectedTables"
                                         @table-select="setTable($event.label, $event.size)"
                                         @table-deselect="removeTable($event.label, $event.size)" />
                                     </div>
@@ -653,10 +653,11 @@ export default {
                 date: new Date(),
                 time: null,
                 numGuests: 5,
-                tables: [],
             },
+            selectedTables: [],
             submitted: false,
             totalSeats: 0,
+            checkTables: true,
         }
     },
     validations: {
@@ -733,7 +734,7 @@ export default {
         },
 
         'reservation.numGuests': function(guests) {
-            this.reservation.tables = []
+            this.selectedTables = [];
 
             if (this.totalSeats < guests) {
                 this.disableAllSeats = false;
@@ -816,7 +817,7 @@ export default {
         },
         
         setTable(table, size) {
-            this.reservation.tables.push(table);
+            this.selectedTables.push(table);
             this.totalSeats += size;
 
             if (this.totalSeats >= this.reservation.numGuests) {
@@ -825,25 +826,9 @@ export default {
 
         },
 
-        findValidCombos(combos, selected, tid) {
-            let tables = [];
-            
-            combos
-            .filter((combo) => combo.length > 1 && selected.every(table => combo.includes(table)))
-            .map((combo) => {
-                combo.forEach((table) => {
-                    if (!tables.includes(table) && table !== tid)
-                        tables.push(table);
-                })
-            })
-
-            this.validTables = tables;
-
-        },
-
         removeTable(table, size) {
-            let i = this.reservation.tables.findIndex(t => t === table);
-            this.reservation.tables.splice(i, 1);
+            let i = this.selectedTables.findIndex(t => t === table);
+            this.selectedTables.splice(i, 1);
             this.totalSeats -= size;
 
             if (this.totalSeats < this.reservation.numGuests) {
@@ -856,7 +841,7 @@ export default {
             .then((response) => {
                 this.validCombos = response.body.combos;
                 this.validTables = response.body.selectable;
-                this.validTablesOriginal = response.body.selectable;
+                this.selectedTables = [];
             })
             .catch((error) => console.error(error));
         },
@@ -904,10 +889,8 @@ export default {
                 lastName: this.customer.lastName,
                 phone: this.customer.phone,
                 email: this.customer.email,
-                date: this.reservation.date,
-                time: this.reservation.time,
-                tables: this.reservation.tables,
-                numGuests: this.reservation.numGuests,
+                ...this.reservation,
+                tables: this.selectedTables,
             }
 
             //printObj(data);
