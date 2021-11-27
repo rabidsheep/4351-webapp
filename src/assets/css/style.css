@@ -82,7 +82,12 @@ html, #app, #router-view {
     background-color: var(--button-l1) !important;
 }
 
-.btn > * {
+.btn:disabled {
+    background-color: var(--button-disabled) !important;
+}
+
+
+.btn:not(:disabled) > * {
     cursor: pointer;
 }
 
@@ -101,13 +106,15 @@ html, #app, #router-view {
 }
 
 input,
-select {
+select,
+.input-divider {
     transition: 0.3s;
     font-size: 14px !important;
 }
 
 input:disabled,
 input:read-only,
+.input-divider.read-only,
 select:disabled {
     background-color: var(--input-background-disabled) !important;
 }
@@ -211,7 +218,8 @@ select:disabled {
 .registration__stepper {
     background-color: var(--sub-background) !important;
     border-radius: 10px;
-    box-shadow: 5px 5px 0px rgba(0,0,0,.14);
+    box-shadow:
+        5px 5px 0px rgba(0,0,0,.14) !important;
     color: var(--text2) !important;
     line-height: initial;
     max-width: 480px;
@@ -451,16 +459,40 @@ select:disabled {
     background-color: var(--input-background);
 }
 
-.reservation__form #card__expiration {
-    width: max-content;
-    height: max-content;
+.reservation__form .input__exp .grouped {
+    display: flex;
+    flex-wrap: nowrap;
 }
 
-.reservation__form #card__expiration input {
-    border: none;
-    background-color: transparent;
-    width: 2.5em;
+.reservation__form .input__exp .grouped > input,
+.reservation__form .input__exp .grouped > div {
+    border: 1px solid var(--input-border);
+    background-color: var(--input-background);
     padding: 5px;
+}
+
+.reservation__form .input__exp .grouped > input {
+    width: 3em;
+}
+
+.reservation__form .input__exp .grouped > #card__month {
+    border-radius: 10px 0px 0px 10px;
+}
+.reservation__form .input__exp .grouped > #card__year {
+    border-radius: 0px 10px 10px 0px;
+}
+
+.reservation__form .input__exp .grouped > #card__month,
+.reservation__form .input__exp .grouped > div {
+    border-right: none;
+}
+.reservation__form .input__exp .grouped > #card__year,
+.reservation__form .input__exp .grouped > div {
+    border-left: none;
+}
+
+.reservation__form .input-divider {
+    width: max-content;
 }
 
 .reservation__form .input__text input {
@@ -592,22 +624,42 @@ select:disabled {
     font-size: 0.7em;
     position: absolute;
 }
+@keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
 
-.has-error{
+  .has-error {
+    animation: shake 0.8s; 
+}
+
+/*.has-error {
     color: red;
-}
-#reservation .has-error input,
-#reservation .has-error select,
-#reservation .has-error #card__expiration,
-#reservation .has-error #card__expiration input,
-#reservation .has-error .wrapper,
-#reservation .has-error .wrapper #card__num {
-    border-color: red;
-}
-/*#reservation input:invalid,
-#reservation select:invalid {
-    border-color: red;
 }*/
+.reservation__form .has-error input,
+.reservation__form .has-error select,
+.reservation__form .has-error .grouped input,
+.reservation__form .has-error .grouped .input-divider,
+.reservation__form .has-error .wrapper,
+.reservation__form .has-error .wrapper #card__num,
+.reservation__form .has-error#date-group,
+.reservation__form .has-error#guest__time .btn-box > div,
+.reservation__form .has-error #floor {
+    border-color: red;
+}
 
 
 /** TABLE DISPLAY **/
@@ -627,6 +679,7 @@ select:disabled {
     background-color: rgb(243, 231, 231);
     padding: 10px;
     border-radius: 10px;
+    border: 1px solid var(--input-border);
 }
 
 
@@ -807,3 +860,55 @@ select:disabled {
     font-size: 50px;
 }
 
+.bottom h3 {
+    
+    font-family: 'Amatic SC', cursive;
+    font-size: 40px;
+}
+
+/* RESERVATION SUCCESS */
+#submitted {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+#submitted h2 {
+    font-size: 50px;
+    font-family: 'Amatic SC', cursive;
+    line-height: initial;
+    
+    letter-spacing: 0.15em;
+}
+
+.reservation__details {
+    width: max-content;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.reservation__details, .reservation__details td {
+    border: 1px solid var(--input-border);
+}
+
+.reservation__details td {
+    padding: 10px;
+    /*box-shadow: 1px 1px 10px inset rgba(66, 60, 60, 0.452);*/
+}
+
+.reservation__details tr td:nth-child(n) {
+    background-color: rgb(243, 226, 226);
+}
+
+.reservation__details tr td:nth-child(2n - 1) {
+    background-color: var(--table-2n-1);
+    color: rgba(37, 32, 31, 0.548);
+    text-align: right;
+}
+
+.reservation__details td:nth-child(2n - 1) {
+    font-weight: bold;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}

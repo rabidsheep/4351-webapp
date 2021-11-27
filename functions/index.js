@@ -316,7 +316,6 @@ api.get("/tables/available", (req, res) => {
         }
       }
       
-      console.log("2");
       return res.status(200).send({ combos, selectable });
     })
     .catch((error) => res.status(400).send(error));
@@ -389,20 +388,10 @@ api.post("/user", (req, res) => {
   var data = req.body.data;
 
   var account = {
-    uid: data.uid,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    phone: data.phone,
-    email: data.email,
-    mailing: data.mailing,
-    billing: data.billing,
+    ...data,
     dinerId: new ObjectId().toString(),
     points: 0
   };
-  
-  if (data.paymentMethod !== null) {
-    account = { ...account, paymentMethod: data.paymentMethod };
-  }
   
   admin
   .auth()
@@ -410,9 +399,10 @@ api.post("/user", (req, res) => {
   .then(() => user.create(account))
   .then((data) => {
     console.log(data);
-    return res.status(200).send("API call returned successfully");
+    return res.status(200).send(data._id);
   })
   .catch((error) => {
+    console.log(error);
     if (error.code == 11000) {
       return res
         .status(400)

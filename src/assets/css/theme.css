@@ -28,6 +28,8 @@
     --input-border-focus: rgb(68, 68, 68);
     --input-disabled: rgba(194, 194, 194, 0.582);
     --input-text: rgb(92, 72, 72);
+    --table-n: rgb(230, 209, 209);
+    --table-2n-1: rgb(187, 167, 167);
     --primary: #ffffff;
     --success: #4CAF50;
     --info: #2196F3;

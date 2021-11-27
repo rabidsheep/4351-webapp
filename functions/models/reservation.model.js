@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const payment = require('./payment.model');
-const table = require('./table.model');
 
 module.exports = mongoose.model(
     "reservations",
