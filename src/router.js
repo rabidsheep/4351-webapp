@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import ReservationForm from './views/ReservationForm.vue'
+import Reserve from './views/Reserve.vue'
 
 Vue.use(Router)
 
@@ -16,7 +16,10 @@ export default new Router({
     {
       path: '/reserve',
       name: 'reserve',
-      component: ReservationForm,
+      component: Reserve,
+      props: {
+        userDetails: Object,
+      }
     }
   ]
 })

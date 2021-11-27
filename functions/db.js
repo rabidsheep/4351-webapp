@@ -1,6 +1,6 @@
 /** ensure connection to mongodb */
 const { mongodb } = require('./CloudConfig');
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongoose');
 var client;
 
 module.exports = async () => {
