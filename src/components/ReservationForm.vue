@@ -328,7 +328,7 @@
                     <div class="right">
                         <button class="btn submit"
                         :disabled="!$v.$anyDirty || $v.$anyError && $v.$dirty || $v.$invalid"
-                        @click="reserveAsGuest($event)">
+                        @click="submitReservation($event)">
                             <v-icon>mdi-paw</v-icon>
                             <v-divider vertical />
                             <label>Reserve as Guest »</label>
@@ -360,6 +360,7 @@
                 <div class="buttons">
                     <div class="right">
                         <button class="btn submit"
+                        :disabled="!$v.$anyDirty || $v.$anyError && $v.$dirty || $v.$invalid"
                         @click="submitReservation($event)">
                             <v-icon>mdi-paw</v-icon>
                             <v-divider vertical />
@@ -609,7 +610,7 @@ export default {
             input.$touch();
         },
 
-        reserveAsGuest(e) {
+        submitReservation(e) {
             e.preventDefault();
             
             this.submitted = true;
